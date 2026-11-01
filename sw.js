@@ -1,5 +1,5 @@
-const CACHE_NAME = 'steffi-rezeptewelt-v7';
-const APP_SHELL = ['./', './index.html', './styles.css?v=7', './app.js?v=7', './manifest.webmanifest', './icon.svg', './data/recipes.json'];
+const CACHE_NAME = 'steffi-rezeptewelt-v8';
+const APP_SHELL = ['./', './index.html', './styles.css?v=8', './app.js?v=8', './manifest.webmanifest', './icon.svg', './data/recipes.json'];
 const NETWORK_FIRST_PATHS = new Set(['/','/index.html','/styles.css','/app.js','/data/recipes.json']);
 
 self.addEventListener('install', (event) => {
