@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#18382f" />
-    <meta name="description" content="Steffis persönliche Rezeptbibliothek für Lieblingsrezepte, Instagram-Links und GitHub-Importe." />
+    <meta name="description" content="Steffis persönliche Rezeptbibliothek für Lieblingsrezepte, Instagram-Links und versionierte GitHub-Rezepte." />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
     <link rel="stylesheet" href="./styles.css" />
@@ -55,15 +55,24 @@
         </div>
 
         <div class="sidebar-bottom">
-          <button class="github-card" id="githubImportButton">
-            <span class="github-card-icon" aria-hidden="true">◉</span>
-            <span>
-              <strong>GitHub verbinden</strong>
-              <small>Rezepte aus einem Repo holen</small>
-            </span>
-            <span class="github-card-arrow" aria-hidden="true">↗</span>
-          </button>
-          <div class="local-status"><span class="status-dot"></span>Alles lokal gespeichert</div>
+          <div class="github-actions">
+            <button class="github-card" id="githubImportButton" type="button">
+              <span class="github-card-icon" aria-hidden="true">◉</span>
+              <span>
+                <strong>GitHub verbinden</strong>
+                <small>Rezepte aus einem Repo holen</small>
+              </span>
+              <span class="github-card-arrow" aria-hidden="true">↗</span>
+            </button>
+            <button class="github-export-button" id="githubExportButton" type="button">
+              <span class="github-export-icon" aria-hidden="true">↓</span>
+              <span>
+                <strong>GitHub-Datei exportieren</strong>
+                <small>recipes.json für data/</small>
+              </span>
+            </button>
+          </div>
+          <div class="local-status"><span class="status-dot"></span>Browser + GitHub-Datei</div>
         </div>
       </aside>
 
@@ -216,6 +225,8 @@
           <section class="form-mode is-hidden" id="githubMode" data-mode-panel="github">
             <div class="quick-import-panel github-import-panel">
               <div class="quick-import-heading"><span class="quick-import-badge github-badge">GH</span><div><h3>Öffentliches Repository verbinden</h3><p>Markdown-Rezepte werden erkannt und als eigene Karten übernommen.</p></div></div>
+              <div class="import-note github-sync-note"><span aria-hidden="true">↕</span><span>Der aktuelle Bestand liegt sofort im Browser. Mit „Exportieren“ erzeugst du <code>recipes.json</code>; diese Datei kommt im GitHub-Repo nach <code>data/recipes.json</code>.</span></div>
+              <button type="button" class="button button-secondary button-full" id="githubExportDialogButton"><span aria-hidden="true">↓</span> Aktuellen Bestand exportieren</button>
               <div class="form-grid two-columns">
                 <label class="field field-wide"><span>GitHub-Repository</span><input id="githubRepo" type="text" placeholder="owner/repository oder https://github.com/owner/repository" /></label>
                 <label class="field"><span>Unterordner <small>optional</small></span><input id="githubPath" type="text" placeholder="recipes" /></label>
