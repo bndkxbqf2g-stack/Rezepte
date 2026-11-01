@@ -746,6 +746,11 @@ function registerInteractions() {
     state.sort = event.target.value;
     render();
   });
+  $('#recipeSubmitButton').addEventListener('click', () => {
+    if (state.mode === 'recipe') saveRecipeFromForm();
+    else if (state.mode === 'links') importBulkLinks();
+    else closeDialog('recipeDialog');
+  });
   $('#recipeForm').addEventListener('submit', (event) => {
     event.preventDefault();
     if (state.mode === 'recipe') saveRecipeFromForm();
