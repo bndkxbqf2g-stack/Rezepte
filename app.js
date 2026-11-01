@@ -330,15 +330,26 @@ function parseInstagramCaption(caption, source, authorName) {
 
 async function fetchInstagramRecipe(source) {
   const endpoint = 'https://www.instagram.com/api/v1/oembed/?url=' + encodeURIComponent(source);
-  const response = await fetch(endpoint, {
-    cache: 'no-store',
-    headers: { Accept: 'application/json' }
-  });
-  if (!response.ok) throw new Error('Instagram antwortete mit ' + response.status);
-  const payload = await response.json();
-  const caption = String(payload.title || payload.caption || '').trim();
-  if (!caption) throw new Error('Instagram hat keinen auslesbaren Text geliefert.');
-  return parseInstagramCaption(caption, source, payload.author_name || '');
+  const endpoints = [endpoint, 'https://proxy.cors.dev/' + endpoint];
+  let lastError = null;
+  for (const requestUrl of endpoints) {
+    try {
+      const response = await fetch(requestUrl, {
+        cache: 'no-store',
+        credentials: 'omit',
+        headers: { Accept: 'application/json' },
+        referrerPolicy: 'no-referrer'
+      });
+      if (!response.ok) throw new Error('Instagram antwortete mit ' + response.status);
+      const payload = await response.json();
+      const caption = String(payload.title || payload.caption || '').trim();
+      if (!caption) throw new Error('Instagram hat keinen auslesbaren Text geliefert.');
+      return parseInstagramCaption(caption, source, payload.author_name || '');
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError || new Error('Instagram konnte nicht ausgelesen werden.');
 }
 
 function isPlaceholderTitle(title) {
