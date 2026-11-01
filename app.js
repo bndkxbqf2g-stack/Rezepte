@@ -284,8 +284,8 @@ function instagramNoteFromCaption(caption, authorName) {
   const author = cleanInstagramLine(authorName).replace(/^@/, '');
   const prefix = author ? 'Aus Instagram von @' + author + ' importiert.' : 'Aus Instagram importiert.';
   const lines = String(caption || '').split(/\r?\n/).map(cleanInstagramLine).filter(Boolean);
-  const noteLine = lines.find((line) => /^(?:lasst es euch schmecken|speichert|tipp|hinweis|bei bedarf)/i.test(line));
-  return noteLine && !/^lasst es euch schmecken/i.test(noteLine) ? prefix + ' ' + noteLine : prefix;
+  const noteLine = lines.find((line) => /^(?:tipp|hinweis|variante|aufbewahrung|serviervorschlag)\b/i.test(line));
+  return noteLine ? prefix + ' ' + noteLine : prefix;
 }
 
 function parseInstagramCaption(caption, source, authorName) {
@@ -360,7 +360,8 @@ function instagramNeedsEnrichment(recipe) {
   return isInstagramSource(recipe && recipe.source) && (
     isPlaceholderTitle(recipe.title) ||
     !(Array.isArray(recipe.ingredients) && recipe.ingredients.length) ||
-    !(Array.isArray(recipe.steps) && recipe.steps.length)
+    !(Array.isArray(recipe.steps) && recipe.steps.length) ||
+    /speichert!?\s*euch das rezept/i.test(String(recipe.note || ''))
   );
 }
 
@@ -661,7 +662,7 @@ async function enrichPendingInstagramRecipes() {
       if (!(Array.isArray(recipe.ingredients) && recipe.ingredients.length)) recipe.ingredients = parsed.ingredients;
       if (!(Array.isArray(recipe.steps) && recipe.steps.length)) recipe.steps = parsed.steps;
       if (!Number(recipe.time)) recipe.time = parsed.time;
-      if (!recipe.note || /später ergänzen|noch nicht automatisch/i.test(recipe.note)) recipe.note = parsed.note;
+      if (!recipe.note || /später ergänzen|noch nicht automatisch|speichert!?\s*euch das rezept/i.test(recipe.note)) recipe.note = parsed.note;
       recipe.updatedAt = new Date().toISOString();
       updatedCount += 1;
     } catch (error) {
@@ -1013,7 +1014,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=8', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=9', { updateViaCache: 'none' }).catch(() => {});
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
