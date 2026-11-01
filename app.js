@@ -117,6 +117,7 @@ let state = {
   sort: 'newest',
   mode: 'recipe',
   editingId: '',
+  editingCategoryId: '',
   readerId: ''
 };
 let githubFiles = [];
@@ -423,9 +424,12 @@ function renderCategories() {
 
   list.innerHTML = categories.map((category) => {
     const count = recipes.filter((recipe) => recipe.categoryId === category.id).length;
-    return '<button class="category-item' + (state.categoryId === category.id ? ' active' : '') + '" data-category="' + escapeHtml(category.id) + '">' +
-      '<span class="category-dot"></span><span>' + escapeHtml(category.name) + '</span><span class="category-number">' + count + '</span>' +
-    '</button>';
+    return '<div class="category-row">' +
+      '<button class="category-item' + (state.categoryId === category.id ? ' active' : '') + '" data-category="' + escapeHtml(category.id) + '">' +
+        '<span class="category-dot"></span><span>' + escapeHtml(category.name) + '</span><span class="category-number">' + count + '</span>' +
+      '</button>' +
+      '<button class="category-rename-button" data-rename-category="' + escapeHtml(category.id) + '" aria-label="' + escapeHtml(category.name) + ' umbenennen" title="Kategorie umbenennen">✎</button>' +
+    '</div>';
   }).join('');
   renderCategorySelect(state.editingId ? ((recipes.find((recipe) => recipe.id === state.editingId) || {}).categoryId || categories[0].id) : categories[0].id);
 }
@@ -909,20 +913,36 @@ async function importAllGithubFiles() {
   showToast(githubFiles.length + ' GitHub-Rezepte importiert.');
 }
 
-function openCategoryDialog() {
+function openCategoryDialog(categoryId) {
+  const category = categories.find((item) => item.id === categoryId);
+  state.editingCategoryId = category ? category.id : '';
   $('#categoryForm').reset();
+  $('#categoryDialogTitle').textContent = category ? 'Kategorie umbenennen' : 'Kategorie anlegen';
+  $('#categorySubmitButton').innerHTML = category ? 'Umbenennen <span aria-hidden="true">↗</span>' : 'Kategorie speichern <span aria-hidden="true">↗</span>';
+  if (category) $('#categoryName').value = category.name;
   $('#categoryDialog').showModal();
   setTimeout(() => $('#categoryName').focus(), 60);
 }
 
-function addCategoryFromForm() {
+function saveCategoryFromForm() {
   const name = $('#categoryName').value.trim();
   if (!name) return;
-  const id = slugify(name) || uid('category');
-  if (categories.some((category) => category.name.toLowerCase() === name.toLowerCase())) {
+  if (categories.some((category) => category.id !== state.editingCategoryId && category.name.toLowerCase() === name.toLowerCase())) {
     showToast('Diese Kategorie gibt es schon.');
     return;
   }
+  if (state.editingCategoryId) {
+    const category = categories.find((item) => item.id === state.editingCategoryId);
+    if (!category) return;
+    category.name = name;
+    writeStorage();
+    state.editingCategoryId = '';
+    closeDialog('categoryDialog');
+    render();
+    showToast('Kategorie umbenannt.');
+    return;
+  }
+  const id = slugify(name) || uid('category');
   categories.push({ id, name });
   writeStorage();
   state.view = 'category';
@@ -963,6 +983,12 @@ function registerInteractions() {
     if (viewButton) {
       event.preventDefault();
       setView(viewButton.dataset.view);
+      return;
+    }
+    const renameButton = event.target.closest('[data-rename-category]');
+    if (renameButton) {
+      event.stopPropagation();
+      openCategoryDialog(renameButton.dataset.renameCategory);
       return;
     }
     const categoryButton = event.target.closest('[data-category]');
@@ -1023,7 +1049,7 @@ function registerInteractions() {
   });
   $('#categoryForm').addEventListener('submit', (event) => {
     event.preventDefault();
-    addCategoryFromForm();
+    saveCategoryFromForm();
   });
   $('#recipeSource').addEventListener('blur', () => {
     if (!$('#recipeTitle').value.trim() && $('#recipeSource').value.trim()) $('#recipeTitle').value = recipeTitleFromUrl($('#recipeSource').value);
@@ -1071,7 +1097,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=10', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=11', { updateViaCache: 'none' }).catch(() => {});
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
