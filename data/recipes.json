@@ -87,6 +87,19 @@
       "note": "Für die alkoholfreie Variante genauso gedacht.",
       "createdAt": "2026-10-18T15:20:00.000Z",
       "isFavorite": false
+    },
+    {
+      "id": "instagram-damgkx-tpfv",
+      "title": "Instagram-Rezept · DAMGkx_tPfv",
+      "categoryId": "schnell-einfach",
+      "source": "https://www.instagram.com/reel/DAMGkx_tPfv/?exln=ZG4xb25wcWtkeXA=",
+      "sourceType": "Instagram",
+      "time": 0,
+      "ingredients": [],
+      "steps": [],
+      "note": "Aus einem Instagram-Reel importiert — Zutaten und Zubereitung später ergänzen.",
+      "createdAt": "2026-11-01T00:00:00.000Z",
+      "isFavorite": false
     }
   ]
 }
