@@ -2,12 +2,12 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#18382f" />
     <meta name="description" content="Steffis persönliche Rezeptbibliothek für Lieblingsrezepte, Instagram-Links und versionierte GitHub-Rezepte." />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
-    <link rel="stylesheet" href="./styles.css?v=11" />
+    <link rel="stylesheet" href="./styles.css?v=12" />
     <title>Steffi’s Rezeptewelt</title>
   </head>
   <body>
@@ -71,8 +71,15 @@
                 <small>recipes.json für data/</small>
               </span>
             </button>
+            <button class="github-refresh-button" id="githubRefreshButton" type="button">
+              <span class="github-refresh-icon" aria-hidden="true">↻</span>
+              <span>
+                <strong>Aktualisieren</strong>
+                <small>GitHub-Rezepte laden</small>
+              </span>
+            </button>
           </div>
-          <div class="local-status"><span class="status-dot"></span>Browser + GitHub-Datei</div>
+          <div class="local-status"><span class="status-dot"></span>Lokal gespeichert · GitHub manuell</div>
         </div>
       </aside>
 
@@ -176,7 +183,7 @@
               <span class="source-callout-icon" aria-hidden="true">↗</span>
               <div>
                 <strong>Schon auf Instagram entdeckt?</strong>
-                <p>Öffentlichen Link einfügen — Titel, Zutaten und Zubereitung werden automatisch übernommen.</p>
+                <p>Öffentlichen Link einfügen — Caption mit Zutaten und Zubereitung wird automatisch übernommen.</p>
               </div>
             </div>
             <div class="form-grid two-columns">
@@ -218,14 +225,14 @@
               <div class="quick-import-heading"><span class="quick-import-badge">01</span><div><h3>Links sammeln</h3><p>Füge mehrere Instagram- oder Rezept-Links ein — jeweils eine URL pro Zeile.</p></div></div>
               <textarea id="bulkLinks" class="bulk-links" rows="8" placeholder="https://www.instagram.com/p/…&#10;https://www.instagram.com/reel/…&#10;https://dein-lieblingsblog.de/rezept"></textarea>
               <label class="file-import-button"><input id="linkFileInput" type="file" accept=".txt,.csv,text/plain,text/csv" /><span aria-hidden="true">▣</span> Text- oder CSV-Liste laden</label>
-              <div class="import-note"><span aria-hidden="true">i</span><span>Öffentliche Instagram-Captions werden ausgelesen. Bei einer CORS-Sperre hilft automatisch ein öffentlicher Fallback; ohne Rezepttext bleibt der Link gespeichert.</span></div>
+              <div class="import-note"><span aria-hidden="true">i</span><span>Öffentliche Instagram-Captions werden ausgelesen. Steht das Rezept nur im Video, bleibt der Link gespeichert und Zutaten/Zubereitung können im Editor ergänzt werden.</span></div>
             </div>
           </section>
 
           <section class="form-mode is-hidden" id="githubMode" data-mode-panel="github">
             <div class="quick-import-panel github-import-panel">
               <div class="quick-import-heading"><span class="quick-import-badge github-badge">GH</span><div><h3>Öffentliches Repository verbinden</h3><p>Markdown-Rezepte werden erkannt und als eigene Karten übernommen.</p></div></div>
-              <div class="import-note github-sync-note"><span aria-hidden="true">↕</span><span>Der aktuelle Bestand liegt sofort im Browser. Mit „Exportieren“ erzeugst du <code>recipes.json</code>; diese Datei kommt im GitHub-Repo nach <code>data/recipes.json</code>.</span></div>
+              <div class="import-note github-sync-note"><span aria-hidden="true">↕</span><span>Neue Rezepte liegen zuerst nur im Browser. Mit „Exportieren“ erzeugst du <code>recipes.json</code>; lade diese Datei im GitHub-Repo nach <code>data/recipes.json</code>. Auf dem anderen Handy lädt „Aktualisieren“ den gemeinsamen Bestand.</span></div>
               <button type="button" class="button button-secondary button-full" id="githubExportDialogButton"><span aria-hidden="true">↓</span> Aktuellen Bestand exportieren</button>
               <div class="form-grid two-columns">
                 <label class="field field-wide"><span>GitHub-Repository</span><input id="githubRepo" type="text" placeholder="owner/repository oder https://github.com/owner/repository" /></label>
@@ -271,7 +278,7 @@
       </div>
     </dialog>
 
-    <script src="./app.js?v=11" defer></script>
+    <script src="./app.js?v=12" defer></script>
   </body>
 </html>
 
