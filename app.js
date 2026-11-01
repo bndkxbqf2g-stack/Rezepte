@@ -180,6 +180,13 @@ function updateGithubConnectionUi() {
   const connected = Boolean(getGithubSettings().token);
   const status = document.querySelector('.local-status');
   if (status) status.innerHTML = '<span class="status-dot"></span>' + (connected ? 'Lokal gespeichert · GitHub verbunden' : 'Lokal gespeichert · GitHub nicht verbunden');
+  const card = $('#githubImportButton');
+  if (card) {
+    const title = card.querySelector('strong');
+    const detail = card.querySelector('small');
+    if (title) title.textContent = connected ? 'GitHub verbunden' : 'GitHub verbinden';
+    if (detail) detail.textContent = connected ? 'Einstellungen öffnen' : 'Einmal einrichten · automatisch speichern';
+  }
   const syncButton = $('#githubSyncButton');
   if (syncButton) syncButton.classList.toggle('is-hidden', !connected);
 }
@@ -261,8 +268,8 @@ async function connectGithub() {
     status.className = 'github-status is-success';
     status.textContent = 'Verbunden. Änderungen werden jetzt direkt gespeichert.';
     showToast('GitHub verbunden. Rezeptbestand wird gespeichert …');
-    await queueGithubSync({ silent: true, message: 'Rezeptbestand initial synchronisiert' });
-    status.textContent = 'Verbunden und synchronisiert.';
+    const synced = await queueGithubSync({ silent: true, message: 'Rezeptbestand initial synchronisiert' });
+    status.textContent = synced ? 'Verbunden und synchronisiert.' : 'Verbunden, aber der erste Upload ist fehlgeschlagen.';
   } catch (error) {
     status.className = 'github-status is-error';
     status.textContent = 'Verbindung fehlgeschlagen. Prüfe Repository, Schlüssel und Berechtigungen.';
