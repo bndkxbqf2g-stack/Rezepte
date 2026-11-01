@@ -1,11 +1,14 @@
 const STORAGE_KEYS = {
   recipes: 'steffi-rezeptewelt-recipes-v1',
   categories: 'steffi-rezeptewelt-categories-v1',
-  github: 'steffi-rezeptewelt-github-v1'
+  github: 'steffi-rezeptewelt-github-v1',
+  githubToken: 'steffi-rezeptewelt-github-token-v1',
+  githubBranch: 'steffi-rezeptewelt-github-branch-v1'
 };
 
 const REPOSITORY_RECIPES_URL = './data/recipes.json';
 const DEFAULT_GITHUB_REPO = 'bndkxbqf2g-stack/Rezepte';
+const GITHUB_RECIPES_PATH = 'data/recipes.json';
 
 const palette = [
   { accent: '#e68b63', soft: '#f5dccd' },
@@ -125,6 +128,7 @@ let githubContext = null;
 let deferredInstallPrompt = null;
 let toastTimer = null;
 let wakeLock = null;
+let githubSyncPromise = Promise.resolve();
 
 categories = Array.isArray(categories) && categories.length ? categories : starterCategories;
 recipes = Array.isArray(recipes) ? recipes : starterRecipes;
@@ -141,6 +145,190 @@ function readStorage(key, fallback) {
 function writeStorage() {
   localStorage.setItem(STORAGE_KEYS.categories, JSON.stringify(categories));
   localStorage.setItem(STORAGE_KEYS.recipes, JSON.stringify(recipes));
+}
+
+function readTextStorage(key, fallback = '') {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored == null ? fallback : stored;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function buildRepositoryPayload() {
+  return {
+    schemaVersion: 1,
+    app: 'Steffi’s Rezeptewelt',
+    updatedAt: new Date().toISOString(),
+    categories,
+    recipes
+  };
+}
+
+function getGithubSettings() {
+  const repoText = readTextStorage(STORAGE_KEYS.github, DEFAULT_GITHUB_REPO) || DEFAULT_GITHUB_REPO;
+  return {
+    repoText,
+    repo: parseRepoInput(repoText) || parseRepoInput(DEFAULT_GITHUB_REPO),
+    token: readTextStorage(STORAGE_KEYS.githubToken, '').trim(),
+    branch: readTextStorage(STORAGE_KEYS.githubBranch, 'main').trim() || 'main'
+  };
+}
+
+function updateGithubConnectionUi() {
+  const connected = Boolean(getGithubSettings().token);
+  const status = document.querySelector('.local-status');
+  if (status) status.innerHTML = '<span class="status-dot"></span>' + (connected ? 'Lokal gespeichert · GitHub verbunden' : 'Lokal gespeichert · GitHub nicht verbunden');
+  const syncButton = $('#githubSyncButton');
+  if (syncButton) syncButton.classList.toggle('is-hidden', !connected);
+}
+
+function githubApiHeaders(token) {
+  return {
+    Accept: 'application/vnd.github+json',
+    Authorization: 'Bearer ' + token,
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+}
+
+function githubRepoApiUrl(repo) {
+  return 'https://api.github.com/repos/' + encodeURIComponent(repo.owner) + '/' + encodeURIComponent(repo.repo);
+}
+
+function githubContentsApiUrl(repo) {
+  return githubRepoApiUrl(repo) + '/contents/' + GITHUB_RECIPES_PATH.split('/').map(encodeURIComponent).join('/');
+}
+
+function encodeBase64Utf8(value) {
+  const bytes = new TextEncoder().encode(String(value));
+  let binary = '';
+  const chunkSize = 0x8000;
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize));
+  }
+  return btoa(binary);
+}
+
+function decodeBase64Utf8(value) {
+  const binary = atob(String(value || '').replace(/\s/g, ''));
+  const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+async function readGithubRepositoryFile(settings) {
+  const response = await fetch(githubContentsApiUrl(settings.repo) + '?ref=' + encodeURIComponent(settings.branch), {
+    headers: githubApiHeaders(settings.token),
+    cache: 'no-store'
+  });
+  if (response.status === 404) return { sha: '', payload: null };
+  if (!response.ok) throw new Error('GitHub antwortete mit ' + response.status);
+  const file = await response.json();
+  const content = file.encoding === 'base64' ? decodeBase64Utf8(file.content) : String(file.content || '');
+  return { sha: file.sha || '', payload: content ? JSON.parse(content) : null };
+}
+
+async function connectGithub() {
+  const repoText = $('#githubRepo').value.trim();
+  const repo = parseRepoInput(repoText);
+  const token = $('#githubToken').value.trim();
+  const branch = $('#githubBranch').value.trim() || 'main';
+  const status = $('#githubStatus');
+  const button = $('#githubConnectButton');
+  if (!repo) {
+    status.className = 'github-status is-error';
+    status.textContent = 'Bitte das Repository im Format owner/repository eintragen.';
+    return;
+  }
+  if (!token) {
+    status.className = 'github-status is-error';
+    status.textContent = 'Bitte einmal einen GitHub-Schlüssel eintragen.';
+    $('#githubToken').focus();
+    return;
+  }
+  button.disabled = true;
+  button.textContent = 'GitHub wird verbunden …';
+  try {
+    const response = await fetch(githubRepoApiUrl(repo), {
+      headers: githubApiHeaders(token),
+      cache: 'no-store'
+    });
+    if (!response.ok) throw new Error('GitHub antwortete mit ' + response.status);
+    localStorage.setItem(STORAGE_KEYS.github, repo.owner + '/' + repo.repo);
+    localStorage.setItem(STORAGE_KEYS.githubToken, token);
+    localStorage.setItem(STORAGE_KEYS.githubBranch, branch);
+    updateGithubConnectionUi();
+    status.className = 'github-status is-success';
+    status.textContent = 'Verbunden. Änderungen werden jetzt direkt gespeichert.';
+    showToast('GitHub verbunden. Rezeptbestand wird gespeichert …');
+    await queueGithubSync({ silent: true, message: 'Rezeptbestand initial synchronisiert' });
+    status.textContent = 'Verbunden und synchronisiert.';
+  } catch (error) {
+    status.className = 'github-status is-error';
+    status.textContent = 'Verbindung fehlgeschlagen. Prüfe Repository, Schlüssel und Berechtigungen.';
+  } finally {
+    button.disabled = false;
+    button.textContent = 'GitHub verbinden & speichern';
+  }
+}
+
+async function syncRepositoryToGithub({ silent = false, message = 'Rezepte synchronisiert' } = {}) {
+  const settings = getGithubSettings();
+  if (!settings.repo || !settings.token) {
+    if (!silent) {
+      showToast('Verbinde GitHub einmal, damit Rezepte automatisch gespeichert werden.');
+      openRecipeDialog('github');
+    }
+    return false;
+  }
+  const syncButton = $('#githubSyncButton');
+  const syncLabel = syncButton && syncButton.querySelector('strong');
+  const originalLabel = syncLabel ? syncLabel.textContent : 'Jetzt speichern';
+  if (syncButton) syncButton.disabled = true;
+  if (syncLabel) syncLabel.textContent = 'Speichere …';
+  try {
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const remote = await readGithubRepositoryFile(settings);
+      if (remote.payload && Array.isArray(remote.payload.recipes)) {
+        const mergeResult = mergeRepositoryData(remote.payload);
+        if (mergeResult.changed) {
+          writeStorage();
+          render();
+        }
+      }
+      const content = JSON.stringify(buildRepositoryPayload(), null, 2) + '\n';
+      const body = {
+        message,
+        content: encodeBase64Utf8(content),
+        branch: settings.branch
+      };
+      if (remote.sha) body.sha = remote.sha;
+      const response = await fetch(githubContentsApiUrl(settings.repo), {
+        method: 'PUT',
+        headers: { ...githubApiHeaders(settings.token), 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (response.status === 409 && attempt === 0) continue;
+      if (!response.ok) throw new Error('GitHub antwortete mit ' + response.status);
+      updateGithubConnectionUi();
+      if (!silent) showToast('Rezeptbestand auf GitHub gespeichert.');
+      return true;
+    }
+  } catch (error) {
+    if (!silent) showToast('GitHub konnte nicht gespeichert werden. Prüfe die Verbindung.');
+    return false;
+  } finally {
+    if (syncButton) syncButton.disabled = false;
+    if (syncLabel) syncLabel.textContent = originalLabel;
+  }
+  if (!silent) showToast('GitHub war zwischenzeitlich geändert. Bitte erneut speichern.');
+  return false;
+}
+
+function queueGithubSync(options = {}) {
+  if (!getGithubSettings().token) return Promise.resolve(false);
+  githubSyncPromise = githubSyncPromise.catch(() => false).then(() => syncRepositoryToGithub(options));
+  return githubSyncPromise;
 }
 
 function recipeCompleteness(recipe) {
@@ -259,13 +447,7 @@ async function hydrateRepositoryRecipes() {
 }
 
 function exportGithubData() {
-  const payload = {
-    schemaVersion: 1,
-    app: 'Steffi’s Rezeptewelt',
-    updatedAt: new Date().toISOString(),
-    categories,
-    recipes
-  };
+  const payload = buildRepositoryPayload();
   const blob = new Blob([JSON.stringify(payload, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -642,8 +824,11 @@ function setDialogMode(mode) {
   $('#dialogTitle').textContent = mode === 'github' ? 'GitHub importieren' : mode === 'links' ? 'Links speichern' : (state.editingId ? 'Rezept bearbeiten' : 'Neues Rezept');
   $('#recipeSubmitButton').textContent = mode === 'recipe' ? (state.editingId ? 'Änderungen speichern ↗' : 'Rezept speichern ↗') : mode === 'links' ? 'Links speichern ↗' : 'Fertig';
   if (mode === 'github') {
-    const storedRepo = readStorage(STORAGE_KEYS.github, '');
-    if (!$('#githubRepo').value) $('#githubRepo').value = storedRepo || DEFAULT_GITHUB_REPO;
+    const settings = getGithubSettings();
+    if (!$('#githubRepo').value) $('#githubRepo').value = settings.repoText || DEFAULT_GITHUB_REPO;
+    $('#githubBranch').value = settings.branch;
+    $('#githubToken').value = settings.token;
+    updateGithubConnectionUi();
   }
   if (isRecipe) renderCategorySelect($('#recipeCategory').value || (categories[0] || {}).id);
 }
@@ -715,6 +900,7 @@ async function saveRecipeFromForm() {
   recipes = [recipe].concat(recipes.filter((item) => item.id !== recipe.id));
   writeStorage();
   render();
+  queueGithubSync({ silent: true, message: state.editingId ? 'Rezept aktualisiert' : 'Rezept hinzugefügt' });
   closeDialog('recipeDialog');
   if (parsed) showToast('Instagram-Rezept ausgelesen und gespeichert.');
   else if (shouldReadInstagram) showToast(readError ? 'Link gespeichert — Instagram-Text konnte nicht gelesen werden. Im Reader ↻ erneut versuchen.' : 'Link gespeichert. Im Reader ↻ erneut auslesen.');
@@ -771,6 +957,7 @@ async function importBulkLinks() {
   recipes = newRecipes.concat(recipes);
   writeStorage();
   render();
+  queueGithubSync({ silent: true, message: 'Instagram-Rezepte importiert' });
   closeDialog('recipeDialog');
   const importedLabel = newRecipes.length + (newRecipes.length === 1 ? ' Link wurde' : ' Links wurden') + ' importiert';
   if (failedCount) {
@@ -801,6 +988,7 @@ async function enrichPendingInstagramRecipes() {
   if (!updatedCount) return;
   writeStorage();
   render();
+  queueGithubSync({ silent: true, message: 'Instagram-Rezepte ergänzt' });
   if (state.readerId) {
     const readerRecipe = recipes.find((recipe) => recipe.id === state.readerId);
     if (readerRecipe) renderReader(readerRecipe);
@@ -861,6 +1049,7 @@ async function retryInstagramRecipe() {
     recipe.updatedAt = new Date().toISOString();
     writeStorage();
     render();
+    queueGithubSync({ silent: true, message: 'Instagram-Rezept aktualisiert' });
     renderReader(recipe);
     showToast('Instagram-Rezept ausgelesen und aktualisiert.');
   } catch (error) {
@@ -877,6 +1066,7 @@ function deleteRecipe(recipeId) {
   if (!window.confirm('„' + recipe.title + '“ wirklich löschen?')) return;
   recipes = recipes.filter((item) => item.id !== recipeId);
   writeStorage();
+  queueGithubSync({ silent: true, message: 'Rezept gelöscht' });
   state.readerId = '';
   closeDialog('readerDialog');
   render();
@@ -889,6 +1079,7 @@ function toggleFavorite(recipeId) {
   recipe.isFavorite = !recipe.isFavorite;
   writeStorage();
   render();
+  queueGithubSync({ silent: true, message: 'Favoriten aktualisiert' });
   if (state.readerId === recipeId) renderReader(recipe);
   showToast(recipe.isFavorite ? 'Zu Favoriten hinzugefügt.' : 'Aus Favoriten entfernt.');
 }
@@ -1006,6 +1197,7 @@ async function importGithubFile(file) {
     recipes = [recipe].concat(recipes);
     writeStorage();
     render();
+    queueGithubSync({ silent: true, message: 'GitHub-Rezept importiert' });
     status.className = 'github-status is-success';
     status.textContent = '„' + recipe.title + '“ wurde importiert.';
     showToast('GitHub-Rezept importiert.');
@@ -1045,6 +1237,7 @@ function saveCategoryFromForm() {
     if (!category) return;
     category.name = name;
     writeStorage();
+    queueGithubSync({ silent: true, message: 'Kategorie umbenannt' });
     state.editingCategoryId = '';
     closeDialog('categoryDialog');
     render();
@@ -1054,6 +1247,7 @@ function saveCategoryFromForm() {
   const id = slugify(name) || uid('category');
   categories.push({ id, name });
   writeStorage();
+  queueGithubSync({ silent: true, message: 'Kategorie angelegt' });
   state.view = 'category';
   state.categoryId = id;
   closeDialog('categoryDialog');
@@ -1132,7 +1326,10 @@ function registerInteractions() {
   $('#githubImportButton').addEventListener('click', () => openRecipeDialog('github'));
   $('#githubExportButton').addEventListener('click', exportGithubData);
   $('#githubRefreshButton').addEventListener('click', refreshRepositoryRecipes);
+  $('#githubSyncButton').addEventListener('click', () => syncRepositoryToGithub());
   $('#githubExportDialogButton').addEventListener('click', exportGithubData);
+  $('#githubSyncDialogButton').addEventListener('click', () => syncRepositoryToGithub());
+  $('#githubConnectButton').addEventListener('click', connectGithub);
   $('#addCategoryButton').addEventListener('click', openCategoryDialog);
   $('#menuButton').addEventListener('click', openSidebar);
   $('#sidebarClose').addEventListener('click', closeSidebar);
@@ -1207,7 +1404,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=12', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=13', { updateViaCache: 'none' }).catch(() => {});
   document.addEventListener('gesturestart', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gesturechange', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gestureend', (event) => event.preventDefault(), { passive: false });
@@ -1248,6 +1445,7 @@ function importSharedLink() {
 }
 
 render();
+updateGithubConnectionUi();
 registerInteractions();
 registerPwa();
 hydrateRepositoryRecipes().then(() => enrichPendingInstagramRecipes()).catch(() => {});
