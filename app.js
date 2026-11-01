@@ -4,6 +4,9 @@ const STORAGE_KEYS = {
   github: 'steffi-rezeptewelt-github-v1'
 };
 
+const REPOSITORY_RECIPES_URL = './data/recipes.json';
+const DEFAULT_GITHUB_REPO = 'bndkxbqf2g-stack/Rezepte';
+
 const palette = [
   { accent: '#e68b63', soft: '#f5dccd' },
   { accent: '#8eae91', soft: '#dce9df' },
@@ -137,6 +140,45 @@ function readStorage(key, fallback) {
 function writeStorage() {
   localStorage.setItem(STORAGE_KEYS.categories, JSON.stringify(categories));
   localStorage.setItem(STORAGE_KEYS.recipes, JSON.stringify(recipes));
+}
+
+async function hydrateRepositoryRecipes() {
+  if (localStorage.getItem(STORAGE_KEYS.recipes)) return;
+  try {
+    const response = await fetch(REPOSITORY_RECIPES_URL, { cache: 'no-store' });
+    if (!response.ok) return;
+    const payload = await response.json();
+    const repositoryRecipes = Array.isArray(payload.recipes) ? payload.recipes : [];
+    const repositoryCategories = Array.isArray(payload.categories) ? payload.categories : [];
+    if (!repositoryRecipes.length) return;
+    if (repositoryCategories.length) categories = repositoryCategories;
+    recipes = repositoryRecipes;
+    writeStorage();
+    render();
+    showToast('GitHub-Rezeptbestand geladen.');
+  } catch (error) {
+    // The embedded starter data keeps the app usable when the repository file is unavailable.
+  }
+}
+
+function exportGithubData() {
+  const payload = {
+    schemaVersion: 1,
+    app: 'Steffi’s Rezeptewelt',
+    updatedAt: new Date().toISOString(),
+    categories,
+    recipes
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'recipes.json';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast('recipes.json ist bereit für GitHub/data/.');
 }
 
 function escapeHtml(value) {
@@ -341,7 +383,7 @@ function setDialogMode(mode) {
   $('#recipeSubmitButton').textContent = mode === 'recipe' ? (state.editingId ? 'Änderungen speichern ↗' : 'Rezept speichern ↗') : mode === 'links' ? 'Links speichern ↗' : 'Fertig';
   if (mode === 'github') {
     const storedRepo = readStorage(STORAGE_KEYS.github, '');
-    if (storedRepo && !$('#githubRepo').value) $('#githubRepo').value = storedRepo;
+    if (!$('#githubRepo').value) $('#githubRepo').value = storedRepo || DEFAULT_GITHUB_REPO;
   }
   if (isRecipe) renderCategorySelect($('#recipeCategory').value || (categories[0] || {}).id);
 }
@@ -688,6 +730,8 @@ function registerInteractions() {
   $('#addRecipeButton').addEventListener('click', () => openRecipeDialog('recipe'));
   $('#quickLinkButton').addEventListener('click', () => openRecipeDialog('links'));
   $('#githubImportButton').addEventListener('click', () => openRecipeDialog('github'));
+  $('#githubExportButton').addEventListener('click', exportGithubData);
+  $('#githubExportDialogButton').addEventListener('click', exportGithubData);
   $('#addCategoryButton').addEventListener('click', openCategoryDialog);
   $('#menuButton').addEventListener('click', openSidebar);
   $('#sidebarClose').addEventListener('click', closeSidebar);
@@ -792,5 +836,6 @@ function importSharedLink() {
 render();
 registerInteractions();
 registerPwa();
+hydrateRepositoryRecipes();
 importSharedLink();
 
