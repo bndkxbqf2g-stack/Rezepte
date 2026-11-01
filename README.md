@@ -4,9 +4,9 @@ Mobile-first PWA für eine persönliche Rezeptsammlung mit Kategorien, Instagram
 
 ## GitHub-Rezepte
 
-Die veröffentlichte App liest den versionierten Bestand aus `data/recipes.json`. Neue Rezepte werden zunächst sofort im Browser gespeichert. Über **GitHub-Datei exportieren** wird der aktuelle Bestand als `recipes.json` heruntergeladen. Diese Datei anschließend im Repository als `data/recipes.json` ersetzen und committen; beim nächsten App-Aufruf ist der neue Bestand verfügbar.
+Die veröffentlichte App liest den gemeinsamen Bestand aus `data/recipes.json`. Für den einfachen Alltag kann GitHub einmal direkt in der App verbunden werden: Repository, Branch und ein fein-granularer GitHub-Schlüssel mit `Contents: Read and write` werden auf dem Schreibgerät hinterlegt. Danach werden neue, bearbeitete, gelöschte oder favorisierte Rezepte automatisch in `data/recipes.json` gespeichert. Auf dem anderen Handy reicht **Aktualisieren**.
 
-Die App enthält bewusst keinen persönlichen GitHub-Token. Für automatisches Zurückschreiben aus der öffentlichen App wäre ein sicherer GitHub-OAuth-/PKCE-Flow oder ein kleines Backend mit geschütztem Secret erforderlich.
+Der Schlüssel bleibt ausschließlich im lokalen Speicher des verbundenen Browsers. Dafür sollte ein eigener, fein-granularer Schlüssel verwendet werden, der nur Zugriff auf dieses Repository hat. Ohne Verbindung bleibt der Export als `recipes.json` als manueller Fallback verfügbar.
 
 ## Instagram-Import
 
