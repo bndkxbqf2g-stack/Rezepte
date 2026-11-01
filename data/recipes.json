@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "app": "Steffi’s Rezeptewelt",
+  "updatedAt": "2026-11-01T00:00:00.000Z",
+  "categories": [
+    { "id": "schnell-einfach", "name": "Schnell & einfach" },
+    { "id": "pasta", "name": "Pasta" },
+    { "id": "ofengerichte", "name": "Ofengerichte" },
+    { "id": "suesses", "name": "Süßes" },
+    { "id": "drinks", "name": "Drinks" }
+  ],
+  "recipes": [
+    {
+      "id": "starter-lemon-pasta",
+      "title": "Cremige Zitronenpasta",
+      "categoryId": "pasta",
+      "source": "https://www.instagram.com/",
+      "sourceType": "Instagram",
+      "time": 25,
+      "ingredients": ["300 g Linguine", "1 Bio-Zitrone", "2 EL Olivenöl", "40 g Parmesan", "Salz & schwarzer Pfeffer"],
+      "steps": ["Pasta in Salzwasser al dente kochen und eine Tasse Kochwasser auffangen.", "Zitronenschale abreiben und den Saft mit Olivenöl verrühren.", "Pasta mit Zitronenöl, Parmesan und etwas Kochwasser cremig schwenken.", "Mit Pfeffer und Zitronenzeste servieren."],
+      "note": "Am liebsten mit extra viel schwarzem Pfeffer.",
+      "createdAt": "2026-10-28T09:00:00.000Z",
+      "isFavorite": true
+    },
+    {
+      "id": "starter-miso-gnocchi",
+      "title": "Miso-Butter-Gnocchi",
+      "categoryId": "schnell-einfach",
+      "source": "https://www.instagram.com/",
+      "sourceType": "Instagram",
+      "time": 20,
+      "ingredients": ["500 g Gnocchi", "2 EL Butter", "1 EL helles Miso", "1 Knoblauchzehe", "Frühlingszwiebeln"],
+      "steps": ["Gnocchi in einer großen Pfanne goldbraun anbraten.", "Butter und fein gehackten Knoblauch dazugeben.", "Miso mit einem Schuss Wasser glatt rühren und unterheben.", "Mit Frühlingszwiebeln und Sesam toppen."],
+      "note": "Funktioniert auch mit gebratenem Brokkoli.",
+      "createdAt": "2026-10-27T16:10:00.000Z",
+      "isFavorite": true
+    },
+    {
+      "id": "starter-roasted-veg",
+      "title": "Ofengemüse mit Tahini",
+      "categoryId": "ofengerichte",
+      "source": "https://www.instagram.com/",
+      "sourceType": "Instagram",
+      "time": 40,
+      "ingredients": ["1 Süßkartoffel", "2 Möhren", "1 rote Zwiebel", "1 Dose Kichererbsen", "2 EL Tahini"],
+      "steps": ["Gemüse würfeln, mit Öl und Gewürzen mischen.", "Bei 200 °C ca. 30 Minuten rösten.", "Tahini mit Zitronensaft, Wasser und Salz zu einer Sauce rühren.", "Kichererbsen und Sauce über dem Ofengemüse verteilen."],
+      "note": "Die Sauce lässt sich gut auf Vorrat vorbereiten.",
+      "createdAt": "2026-10-25T12:30:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "starter-cucumber-salad",
+      "title": "Sesam-Gurken-Salat",
+      "categoryId": "schnell-einfach",
+      "source": "https://www.instagram.com/",
+      "sourceType": "Instagram",
+      "time": 10,
+      "ingredients": ["2 Salatgurken", "1 EL Reisessig", "1 TL Sesamöl", "1 TL Chiliöl", "Gerösteter Sesam"],
+      "steps": ["Gurken leicht andrücken und in mundgerechte Stücke schneiden.", "Mit Reisessig, Sesamöl und Chiliöl marinieren.", "Mit Sesam bestreuen und direkt servieren."],
+      "note": "Knackig, frisch und in zehn Minuten fertig.",
+      "createdAt": "2026-10-23T18:45:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "starter-lemon-loaf",
+      "title": "Blueberry Lemon Loaf",
+      "categoryId": "suesses",
+      "source": "https://www.instagram.com/",
+      "sourceType": "Instagram",
+      "time": 65,
+      "ingredients": ["180 g Mehl", "120 g Zucker", "2 Eier", "1 Bio-Zitrone", "120 g Blaubeeren"],
+      "steps": ["Ofen auf 175 °C vorheizen und eine Kastenform auslegen.", "Butter, Zucker, Eier und Zitronenabrieb cremig rühren.", "Mehl unterheben, Blaubeeren vorsichtig einarbeiten.", "Im Ofen backen und vollständig auskühlen lassen."],
+      "note": "Mit Zitronenglasur wird er besonders frisch.",
+      "createdAt": "2026-10-20T08:10:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "starter-berry-spritz",
+      "title": "Rosmarin-Beeren-Spritz",
+      "categoryId": "drinks",
+      "source": "https://www.instagram.com/",
+      "sourceType": "Instagram",
+      "time": 8,
+      "ingredients": ["Eine Handvoll Beeren", "1 Zweig Rosmarin", "100 ml Tonic Water", "100 ml alkoholfreier Sekt", "Eiswürfel"],
+      "steps": ["Beeren und Rosmarin in ein Glas geben und leicht andrücken.", "Mit Eis auffüllen.", "Tonic Water und Sekt langsam dazugeben."],
+      "note": "Für die alkoholfreie Variante genauso gedacht.",
+      "createdAt": "2026-10-18T15:20:00.000Z",
+      "isFavorite": false
+    }
+  ]
+}
+
