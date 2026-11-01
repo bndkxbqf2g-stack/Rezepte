@@ -1,0 +1,26 @@
+{
+  "name": "Steffi’s Rezeptewelt",
+  "short_name": "Rezeptewelt",
+  "description": "Steffis persönliche Rezeptbibliothek für Lieblingsrezepte, Instagram-Links und GitHub-Importe.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f3ed",
+  "theme_color": "#18382f",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Neues Rezept", "short_name": "Hinzufügen", "url": "./?new=recipe", "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }] },
+    { "name": "Link importieren", "short_name": "Link", "url": "./?new=link", "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }] }
+  ],
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": { "title": "title", "text": "text", "url": "url" }
+  }
+}
+
