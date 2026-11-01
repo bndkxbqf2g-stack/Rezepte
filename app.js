@@ -330,7 +330,7 @@ function parseInstagramCaption(caption, source, authorName) {
 
 async function fetchInstagramRecipe(source) {
   const endpoint = 'https://www.instagram.com/api/v1/oembed/?url=' + encodeURIComponent(source);
-  const endpoints = [endpoint, 'https://proxy.cors.dev/' + endpoint];
+  const endpoints = [endpoint, 'https://proxy.cors.dev/?url=' + encodeURIComponent(endpoint), 'https://proxy.cors.dev/' + endpoint];
   let lastError = null;
   for (const requestUrl of endpoints) {
     try {
