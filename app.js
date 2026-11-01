@@ -328,8 +328,18 @@ function parseInstagramCaption(caption, source, authorName) {
   };
 }
 
+function instagramRequestSource(source) {
+  try {
+    const url = new URL(String(source || '').trim());
+    return isInstagramSource(url.href) ? url.origin + url.pathname : source;
+  } catch (error) {
+    return source;
+  }
+}
+
 async function fetchInstagramRecipe(source) {
-  const endpoint = 'https://www.instagram.com/api/v1/oembed/?url=' + encodeURIComponent(source);
+  const requestSource = instagramRequestSource(source);
+  const endpoint = 'https://www.instagram.com/api/v1/oembed/?url=' + encodeURIComponent(requestSource);
   const endpoints = [endpoint, 'https://proxy.cors.dev/?url=' + encodeURIComponent(endpoint), 'https://proxy.cors.dev/' + endpoint];
   let lastError = null;
   for (const requestUrl of endpoints) {
@@ -562,13 +572,14 @@ async function saveRecipeFromForm() {
   const steps = splitLines($('#recipeSteps').value);
   const shouldReadInstagram = isInstagramSource(source) && (isPlaceholderTitle(title) || !ingredients.length || !steps.length);
   const submitButton = $('#recipeSubmitButton');
+  let readError = null;
   if (shouldReadInstagram) {
     submitButton.disabled = true;
     submitButton.textContent = 'Instagram-Link wird gelesen …';
     try {
       parsed = await fetchInstagramRecipe(source);
     } catch (error) {
-      // The link is still saved when Instagram blocks automated access or has no readable caption.
+      readError = error;
     } finally {
       submitButton.disabled = false;
       setDialogMode(state.mode);
@@ -593,7 +604,7 @@ async function saveRecipeFromForm() {
   render();
   closeDialog('recipeDialog');
   if (parsed) showToast('Instagram-Rezept ausgelesen und gespeichert.');
-  else if (shouldReadInstagram) showToast('Link gespeichert — Instagram-Text konnte nicht automatisch gelesen werden.');
+  else if (shouldReadInstagram) showToast(readError ? 'Link gespeichert — Instagram-Text konnte nicht gelesen werden. Im Reader ↻ erneut versuchen.' : 'Link gespeichert. Im Reader ↻ erneut auslesen.');
   else showToast(state.editingId ? 'Rezept aktualisiert.' : 'Rezept gespeichert.');
 }
 
@@ -614,6 +625,7 @@ async function importBulkLinks() {
   const submitButton = $('#recipeSubmitButton');
   const newRecipes = [];
   let extractedCount = 0;
+  let failedCount = 0;
   submitButton.disabled = true;
   submitButton.textContent = 'Links werden gelesen …';
   for (let index = 0; index < newLinks.length; index += 1) {
@@ -624,7 +636,7 @@ async function importBulkLinks() {
         parsed = await fetchInstagramRecipe(link);
         extractedCount += 1;
       } catch (error) {
-        // Keep the source link even when Instagram blocks automated access.
+        failedCount += 1;
       }
     }
     newRecipes.push({
@@ -648,7 +660,11 @@ async function importBulkLinks() {
   render();
   closeDialog('recipeDialog');
   const importedLabel = newRecipes.length + (newRecipes.length === 1 ? ' Link wurde' : ' Links wurden') + ' importiert';
-  showToast(extractedCount ? importedLabel + ' und ' + extractedCount + ' Rezept' + (extractedCount === 1 ? ' wurde' : 'e wurden') + ' ausgelesen.' : importedLabel + '.');
+  if (failedCount) {
+    showToast(importedLabel + ', ' + extractedCount + ' ausgelesen. ' + failedCount + ' bitte im Reader mit ↻ erneut versuchen.');
+  } else {
+    showToast(extractedCount ? importedLabel + ' und ' + extractedCount + ' Rezept' + (extractedCount === 1 ? ' wurde' : 'e wurden') + ' ausgelesen.' : importedLabel + '.');
+  }
 }
 
 async function enrichPendingInstagramRecipes() {
@@ -694,6 +710,7 @@ function renderReader(recipe) {
   const steps = recipe.steps || [];
   $('#readerFavorite').textContent = recipe.isFavorite ? '♥' : '♡';
   $('#readerFavorite').classList.toggle('is-favorite', Boolean(recipe.isFavorite));
+  $('#readerImport').classList.toggle('is-hidden', !isInstagramSource(recipe.source));
   $('#recipePaper').innerHTML =
     '<div class="paper-kicker"><span class="paper-kicker-dot"></span>' + escapeHtml(categoryName(recipe.categoryId)) + ' · ' + escapeHtml(sourceLabel(recipe)) + '</div>' +
     '<h1 class="paper-title">' + escapeHtml(recipe.title) + '</h1>' +
@@ -713,6 +730,44 @@ function renderReader(recipe) {
     '</div>' +
     (recipe.note && ingredients.length && steps.length ? '<div class="paper-note">' + escapeHtml(recipe.note) + '</div>' : '') +
     (source ? '<a class="paper-source" href="' + escapeHtml(source) + '" target="_blank" rel="noreferrer">Quelle öffnen <span aria-hidden="true">↗</span></a>' : '');
+}
+
+async function retryInstagramRecipe() {
+  const recipe = recipes.find((item) => item.id === state.readerId);
+  if (!recipe || !isInstagramSource(recipe.source)) return;
+  const button = $('#readerImport');
+  button.disabled = true;
+  button.textContent = '…';
+  try {
+    const parsed = await fetchInstagramRecipe(recipe.source);
+    if (isPlaceholderTitle(recipe.title)) recipe.title = parsed.title;
+    if (!(Array.isArray(recipe.ingredients) && recipe.ingredients.length)) recipe.ingredients = parsed.ingredients;
+    if (!(Array.isArray(recipe.steps) && recipe.steps.length)) recipe.steps = parsed.steps;
+    if (!Number(recipe.time)) recipe.time = parsed.time;
+    if (!recipe.note || /Aus Link importiert|noch nicht automatisch|speichert!?\s*euch das rezept/i.test(recipe.note)) recipe.note = parsed.note;
+    recipe.updatedAt = new Date().toISOString();
+    writeStorage();
+    render();
+    renderReader(recipe);
+    showToast('Instagram-Rezept ausgelesen und aktualisiert.');
+  } catch (error) {
+    showToast('Instagram konnte nicht ausgelesen werden. Prüfe, ob das Reel öffentlich ist und die Caption ein Rezept enthält.');
+  } finally {
+    button.disabled = false;
+    button.textContent = '↻';
+  }
+}
+
+function deleteRecipe(recipeId) {
+  const recipe = recipes.find((item) => item.id === recipeId);
+  if (!recipe) return;
+  if (!window.confirm('„' + recipe.title + '“ wirklich löschen?')) return;
+  recipes = recipes.filter((item) => item.id !== recipeId);
+  writeStorage();
+  state.readerId = '';
+  closeDialog('readerDialog');
+  render();
+  showToast('Rezept gelöscht.');
 }
 
 function toggleFavorite(recipeId) {
@@ -986,11 +1041,13 @@ function registerInteractions() {
   $('#readerBack').addEventListener('click', () => closeDialog('readerDialog'));
   $('#readerPrint').addEventListener('click', () => window.print());
   $('#readerFavorite').addEventListener('click', () => toggleFavorite(state.readerId));
+  $('#readerImport').addEventListener('click', retryInstagramRecipe);
   $('#readerEdit').addEventListener('click', () => {
     const recipe = recipes.find((item) => item.id === state.readerId);
     closeDialog('readerDialog');
     if (recipe) openRecipeDialog('recipe', recipe);
   });
+  $('#readerDelete').addEventListener('click', () => deleteRecipe(state.readerId));
   $('#recipeDialog').addEventListener('click', (event) => {
     if (event.target === $('#recipeDialog')) closeDialog('recipeDialog');
   });
@@ -1014,7 +1071,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=9', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=10', { updateViaCache: 'none' }).catch(() => {});
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
