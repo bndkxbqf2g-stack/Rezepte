@@ -378,6 +378,7 @@ function setDialogMode(mode) {
   $$('.mode-tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.mode === mode));
   $$('[data-mode-panel]').forEach((panel) => panel.classList.toggle('is-hidden', panel.dataset.modePanel !== mode));
   const isRecipe = mode === 'recipe';
+  $('#recipeTitle').required = isRecipe;
   $('#dialogEyebrow').textContent = mode === 'github' ? 'REZEPTE VERBINDEN' : mode === 'links' ? 'SCHNELL IMPORTIEREN' : 'REZEPT SAMMELN';
   $('#dialogTitle').textContent = mode === 'github' ? 'GitHub importieren' : mode === 'links' ? 'Links speichern' : (state.editingId ? 'Rezept bearbeiten' : 'Neues Rezept');
   $('#recipeSubmitButton').textContent = mode === 'recipe' ? (state.editingId ? 'Änderungen speichern ↗' : 'Rezept speichern ↗') : mode === 'links' ? 'Links speichern ↗' : 'Fertig';
