@@ -1013,7 +1013,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=7', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=8', { updateViaCache: 'none' }).catch(() => {});
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
