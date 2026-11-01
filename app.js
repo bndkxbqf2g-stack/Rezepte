@@ -229,6 +229,130 @@ function sourceTypeFor(source) {
   return 'Eigenes Rezept';
 }
 
+function isInstagramSource(source) {
+  return /(?:^|\/\/)(?:www\.)?instagram\.com\/(?:p|reel|tv)\//i.test(String(source || '').trim());
+}
+
+function sourceKey(source) {
+  const value = String(source || '').trim();
+  try {
+    const url = new URL(value);
+    const path = url.pathname.replace(/\/+$/, '');
+    if (isInstagramSource(value)) return url.hostname.toLowerCase().replace(/^www\./, '') + path;
+    return url.href.replace(/\/+$/, '');
+  } catch (error) {
+    return value.toLowerCase().replace(/\/+$/, '');
+  }
+}
+
+function cleanInstagramLine(value) {
+  return String(value || '').replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function isInstagramBullet(line) {
+  return /^(?:[•●▪◦·]|[-*+]\s+|\d+[.)]\s*)/.test(String(line || '').trim());
+}
+
+function stripInstagramBullet(line) {
+  return cleanInstagramLine(String(line || '').replace(/^\s*(?:[•●▪◦·]|[-*+]\s*|\d+[.)]\s*)/, ''));
+}
+
+function splitInstagramSentences(value) {
+  const text = cleanInstagramLine(value);
+  if (!text) return [];
+  const matches = text.match(/[^.!?]+(?:[.!?]+|$)/g) || [text];
+  return matches.map((item) => cleanInstagramLine(item)).filter(Boolean);
+}
+
+function instagramTitleFromCaption(caption, ingredients, source) {
+  const recipeMarker = String(caption || '').search(/(?:^|\n)\s*(?:rezept|zutaten|ingredients)\s*:?\s*(?:\n|$)/i);
+  const beforeRecipe = recipeMarker >= 0 ? String(caption).slice(0, recipeMarker) : String(caption || '');
+  let candidate = cleanInstagramLine(beforeRecipe.split(/\r?\n/).filter(Boolean)[0] || '');
+  candidate = candidate.split(/[.!?]/)[0].replace(/[✨😍🥰😘❤️💕💛💚💙💜🧡🤍🖤🌟🔥]+/gu, '').trim();
+  candidate = candidate.replace(/^(?:der|die|das|mein|meine|unser|unsere)\s+/i, '');
+  candidate = candidate.replace(/\s+(?:den|der|die|das)\s+(?:du|deine|eure|unsere|kids|kinder)\b.*$/i, '').trim();
+
+  const ingredientText = (ingredients || []).join(' ').toLowerCase();
+  if (/one\s*-?\s*pot/i.test(candidate) && /kartoffel/.test(ingredientText) && /m[oö]hr/.test(ingredientText)) {
+    return 'One-Pot Kartoffel-Möhren-Topf';
+  }
+  if (candidate.length > 72) candidate = candidate.slice(0, 72).replace(/\s+\S*$/, '').trim();
+  return candidate || recipeTitleFromUrl(source);
+}
+
+function instagramNoteFromCaption(caption, authorName) {
+  const author = cleanInstagramLine(authorName).replace(/^@/, '');
+  const prefix = author ? 'Aus Instagram von @' + author + ' importiert.' : 'Aus Instagram importiert.';
+  const lines = String(caption || '').split(/\r?\n/).map(cleanInstagramLine).filter(Boolean);
+  const noteLine = lines.find((line) => /^(?:lasst es euch schmecken|speichert|tipp|hinweis|bei bedarf)/i.test(line));
+  return noteLine && !/^lasst es euch schmecken/i.test(noteLine) ? prefix + ' ' + noteLine : prefix;
+}
+
+function parseInstagramCaption(caption, source, authorName) {
+  const normalized = String(caption || '')
+    .replace(/\r/g, '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s*([•●▪◦·])\s*/g, '\n$1 ')
+    .replace(/\n{2,}/g, '\n');
+  const lines = normalized.split('\n').map((line) => line.trim()).filter(Boolean);
+  const markerIndex = lines.findIndex((line) => /^(?:rezept|zutaten|ingredients)\s*:?[\s]*$/i.test(line));
+  const firstBulletIndex = lines.findIndex((line) => isInstagramBullet(line));
+  const ingredientsStart = markerIndex >= 0 ? markerIndex + 1 : firstBulletIndex;
+  const ingredients = [];
+  let cursor = ingredientsStart >= 0 ? ingredientsStart : lines.length;
+  if (ingredientsStart >= 0) {
+    while (cursor < lines.length && isInstagramBullet(lines[cursor])) {
+      const ingredient = stripInstagramBullet(lines[cursor]);
+      if (ingredient) ingredients.push(ingredient);
+      cursor += 1;
+    }
+  }
+
+  const instructionLines = lines.slice(cursor).filter((line) => {
+    if (/^(?:lasst es euch schmecken|folgt mir|folgt uns|speichert!?\s*(?:euch)?\s*das rezept)/i.test(line)) return false;
+    if (/^(?:werbung|anzeige|ad)\b/i.test(line)) return false;
+    return !/^(?:rezept|zutaten|ingredients)\s*:?[\s]*$/i.test(line);
+  });
+  const steps = splitInstagramSentences(instructionLines.join(' ')).filter((step) => step.length > 8);
+  const minutes = steps.join(' ').match(/\b(\d{1,3})\s*(?:minuten?|min)\b/gi) || [];
+  const time = minutes.reduce((total, value) => total + (Number(value.match(/\d+/)[0]) || 0), 0);
+  const title = instagramTitleFromCaption(caption, ingredients, source);
+
+  if (!ingredients.length && !steps.length) throw new Error('Instagram-Caption enthält kein erkennbares Rezept.');
+  return {
+    title,
+    time,
+    ingredients,
+    steps,
+    note: instagramNoteFromCaption(caption, authorName)
+  };
+}
+
+async function fetchInstagramRecipe(source) {
+  const endpoint = 'https://www.instagram.com/api/v1/oembed/?url=' + encodeURIComponent(source);
+  const response = await fetch(endpoint, {
+    cache: 'no-store',
+    headers: { Accept: 'application/json' }
+  });
+  if (!response.ok) throw new Error('Instagram antwortete mit ' + response.status);
+  const payload = await response.json();
+  const caption = String(payload.title || payload.caption || '').trim();
+  if (!caption) throw new Error('Instagram hat keinen auslesbaren Text geliefert.');
+  return parseInstagramCaption(caption, source, payload.author_name || '');
+}
+
+function isPlaceholderTitle(title) {
+  return /^(?:instagram-rezept|neues rezept)\s*[·-]/i.test(String(title || '').trim());
+}
+
+function instagramNeedsEnrichment(recipe) {
+  return isInstagramSource(recipe && recipe.source) && (
+    isPlaceholderTitle(recipe.title) ||
+    !(Array.isArray(recipe.ingredients) && recipe.ingredients.length) ||
+    !(Array.isArray(recipe.steps) && recipe.steps.length)
+  );
+}
+
 function paletteFor(recipe, index) {
   if (recipe && recipe.accent && recipe.soft) return { accent: recipe.accent, soft: recipe.soft };
   return palette[index % palette.length];
@@ -411,25 +535,43 @@ async function releaseWakeLock() {
   wakeLock = null;
 }
 
-function saveRecipeFromForm() {
-  const title = $('#recipeTitle').value.trim();
+async function saveRecipeFromForm() {
+  const source = $('#recipeSource').value.trim();
+  let title = $('#recipeTitle').value.trim();
+  if (!title && source) title = recipeTitleFromUrl(source);
   if (!title) {
     $('#recipeTitle').focus();
     showToast('Gib deinem Rezept bitte einen Titel.');
     return;
   }
-  const source = $('#recipeSource').value.trim();
   const existing = recipes.find((recipe) => recipe.id === state.editingId);
+  let parsed = null;
+  const ingredients = splitLines($('#recipeIngredients').value);
+  const steps = splitLines($('#recipeSteps').value);
+  const shouldReadInstagram = isInstagramSource(source) && (isPlaceholderTitle(title) || !ingredients.length || !steps.length);
+  const submitButton = $('#recipeSubmitButton');
+  if (shouldReadInstagram) {
+    submitButton.disabled = true;
+    submitButton.textContent = 'Instagram-Link wird gelesen …';
+    try {
+      parsed = await fetchInstagramRecipe(source);
+    } catch (error) {
+      // The link is still saved when Instagram blocks automated access or has no readable caption.
+    } finally {
+      submitButton.disabled = false;
+      setDialogMode(state.mode);
+    }
+  }
   const recipe = {
     id: state.editingId || uid('recipe'),
-    title,
+    title: parsed && isPlaceholderTitle(title) ? parsed.title : title,
     categoryId: $('#recipeCategory').value || (categories[0] || {}).id,
     source,
     sourceType: sourceTypeFor(source),
     time: Number($('#recipeTime').value) || 0,
-    ingredients: splitLines($('#recipeIngredients').value),
-    steps: splitLines($('#recipeSteps').value),
-    note: $('#recipeNote').value.trim(),
+    ingredients: ingredients.length ? ingredients : (parsed ? parsed.ingredients : []),
+    steps: steps.length ? steps : (parsed ? parsed.steps : []),
+    note: $('#recipeNote').value.trim() || (parsed ? parsed.note : (isInstagramSource(source) ? 'Aus Link importiert — Instagram konnte den Rezepttext noch nicht automatisch liefern.' : '')),
     createdAt: existing ? existing.createdAt : new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     isFavorite: existing ? Boolean(existing.isFavorite) : false
@@ -438,36 +580,91 @@ function saveRecipeFromForm() {
   writeStorage();
   render();
   closeDialog('recipeDialog');
-  showToast(state.editingId ? 'Rezept aktualisiert.' : 'Rezept gespeichert.');
+  if (parsed) showToast('Instagram-Rezept ausgelesen und gespeichert.');
+  else if (shouldReadInstagram) showToast('Link gespeichert — Instagram-Text konnte nicht automatisch gelesen werden.');
+  else showToast(state.editingId ? 'Rezept aktualisiert.' : 'Rezept gespeichert.');
 }
 
-function importBulkLinks() {
-  const links = splitLines($('#bulkLinks').value).filter((link) => /^https?:\/\//i.test(link));
+async function importBulkLinks() {
+  const links = Array.from(new Set(splitLines($('#bulkLinks').value).filter((link) => /^https?:\/\//i.test(link))));
   if (!links.length) {
     showToast('Füge mindestens einen gültigen Link ein.');
     $('#bulkLinks').focus();
     return;
   }
-  const existingSources = new Set(recipes.map((recipe) => recipe.source).filter(Boolean));
+  const existingSources = new Set(recipes.map((recipe) => sourceKey(recipe.source)).filter(Boolean));
   const categoryId = (categories[0] || {}).id;
-  const newRecipes = links.filter((link) => !existingSources.has(link)).map((link, index) => ({
-    id: uid('link'),
-    title: recipeTitleFromUrl(link),
-    categoryId,
-    source: link,
-    sourceType: sourceTypeFor(link),
-    time: 0,
-    ingredients: [],
-    steps: [],
-    note: 'Aus Link importiert — Zutaten und Zubereitung später ergänzen.',
-    createdAt: new Date(Date.now() + index).toISOString(),
-    isFavorite: false
-  }));
+  const newLinks = links.filter((link) => !existingSources.has(sourceKey(link)));
+  if (!newLinks.length) {
+    showToast('Diese Links sind bereits in deiner Sammlung.');
+    return;
+  }
+  const submitButton = $('#recipeSubmitButton');
+  const newRecipes = [];
+  let extractedCount = 0;
+  submitButton.disabled = true;
+  submitButton.textContent = 'Links werden gelesen …';
+  for (let index = 0; index < newLinks.length; index += 1) {
+    const link = newLinks[index];
+    let parsed = null;
+    if (isInstagramSource(link)) {
+      try {
+        parsed = await fetchInstagramRecipe(link);
+        extractedCount += 1;
+      } catch (error) {
+        // Keep the source link even when Instagram blocks automated access.
+      }
+    }
+    newRecipes.push({
+      id: uid('link'),
+      title: parsed ? parsed.title : recipeTitleFromUrl(link),
+      categoryId,
+      source: link,
+      sourceType: sourceTypeFor(link),
+      time: parsed ? parsed.time : 0,
+      ingredients: parsed ? parsed.ingredients : [],
+      steps: parsed ? parsed.steps : [],
+      note: parsed ? parsed.note : (isInstagramSource(link) ? 'Aus Link importiert — Instagram konnte den Rezepttext noch nicht automatisch liefern.' : 'Aus Link importiert — Zutaten und Zubereitung später ergänzen.'),
+      createdAt: new Date(Date.now() + index).toISOString(),
+      isFavorite: false
+    });
+  }
+  submitButton.disabled = false;
+  setDialogMode(state.mode);
   recipes = newRecipes.concat(recipes);
   writeStorage();
   render();
   closeDialog('recipeDialog');
-  showToast(newRecipes.length + (newRecipes.length === 1 ? ' Link wurde' : ' Links wurden') + ' importiert.');
+  const importedLabel = newRecipes.length + (newRecipes.length === 1 ? ' Link wurde' : ' Links wurden') + ' importiert';
+  showToast(extractedCount ? importedLabel + ' und ' + extractedCount + ' Rezept' + (extractedCount === 1 ? ' wurde' : 'e wurden') + ' ausgelesen.' : importedLabel + '.');
+}
+
+async function enrichPendingInstagramRecipes() {
+  const pending = recipes.filter(instagramNeedsEnrichment);
+  if (!pending.length) return;
+  let updatedCount = 0;
+  for (const recipe of pending) {
+    try {
+      const parsed = await fetchInstagramRecipe(recipe.source);
+      if (isPlaceholderTitle(recipe.title)) recipe.title = parsed.title;
+      if (!(Array.isArray(recipe.ingredients) && recipe.ingredients.length)) recipe.ingredients = parsed.ingredients;
+      if (!(Array.isArray(recipe.steps) && recipe.steps.length)) recipe.steps = parsed.steps;
+      if (!Number(recipe.time)) recipe.time = parsed.time;
+      if (!recipe.note || /später ergänzen|noch nicht automatisch/i.test(recipe.note)) recipe.note = parsed.note;
+      recipe.updatedAt = new Date().toISOString();
+      updatedCount += 1;
+    } catch (error) {
+      // A public Instagram page can still reject automated requests; keep the saved source intact.
+    }
+  }
+  if (!updatedCount) return;
+  writeStorage();
+  render();
+  if (state.readerId) {
+    const readerRecipe = recipes.find((recipe) => recipe.id === state.readerId);
+    if (readerRecipe) renderReader(readerRecipe);
+  }
+  showToast(updatedCount + (updatedCount === 1 ? ' Instagram-Rezept wurde' : ' Instagram-Rezepte wurden') + ' automatisch ausgelesen.');
 }
 
 function openReader(recipeId) {
@@ -842,6 +1039,6 @@ function importSharedLink() {
 render();
 registerInteractions();
 registerPwa();
-hydrateRepositoryRecipes();
+hydrateRepositoryRecipes().then(() => enrichPendingInstagramRecipes()).catch(() => {});
 importSharedLink();
 
