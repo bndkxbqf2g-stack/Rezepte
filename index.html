@@ -7,7 +7,7 @@
     <meta name="description" content="Steffis persönliche Rezeptbibliothek für Lieblingsrezepte, Instagram-Links und versionierte GitHub-Rezepte." />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
-    <link rel="stylesheet" href="./styles.css?v=10" />
+    <link rel="stylesheet" href="./styles.css?v=11" />
     <title>Steffi’s Rezeptewelt</title>
   </head>
   <body>
@@ -247,9 +247,9 @@
 
     <dialog class="app-dialog category-dialog" id="categoryDialog">
       <form class="dialog-card compact-dialog" id="categoryForm" method="dialog">
-        <div class="dialog-head"><div><p class="eyebrow">DEINE ORDNUNG</p><h2>Kategorie anlegen</h2></div><button type="button" class="close-button" data-close-dialog="categoryDialog" aria-label="Dialog schließen">×</button></div>
+        <div class="dialog-head"><div><p class="eyebrow">DEINE ORDNUNG</p><h2 id="categoryDialogTitle">Kategorie anlegen</h2></div><button type="button" class="close-button" data-close-dialog="categoryDialog" aria-label="Dialog schließen">×</button></div>
         <label class="field"><span>Name der Kategorie</span><input id="categoryName" type="text" placeholder="z. B. Sonntagsbrunch" required /></label>
-        <div class="dialog-actions"><button type="button" class="button button-ghost" data-close-dialog="categoryDialog">Abbrechen</button><button type="submit" class="button button-primary">Kategorie speichern <span aria-hidden="true">↗</span></button></div>
+        <div class="dialog-actions"><button type="button" class="button button-ghost" data-close-dialog="categoryDialog">Abbrechen</button><button type="submit" class="button button-primary" id="categorySubmitButton">Kategorie speichern <span aria-hidden="true">↗</span></button></div>
       </form>
     </dialog>
 
@@ -271,7 +271,7 @@
       </div>
     </dialog>
 
-    <script src="./app.js?v=10" defer></script>
+    <script src="./app.js?v=11" defer></script>
   </body>
 </html>
 
