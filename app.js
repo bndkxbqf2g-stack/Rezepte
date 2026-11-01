@@ -143,6 +143,102 @@ function writeStorage() {
   localStorage.setItem(STORAGE_KEYS.recipes, JSON.stringify(recipes));
 }
 
+function recipeCompleteness(recipe) {
+  return (recipe && recipe.title && !isPlaceholderTitle(recipe.title) ? 1 : 0) +
+    (Array.isArray(recipe && recipe.ingredients) ? recipe.ingredients.length : 0) +
+    (Array.isArray(recipe && recipe.steps) ? recipe.steps.length : 0);
+}
+
+function recipeTimestamp(recipe) {
+  const value = Date.parse(String((recipe && (recipe.updatedAt || recipe.createdAt)) || ''));
+  return Number.isFinite(value) ? value : 0;
+}
+
+function mergeRepositoryData(payload) {
+  const repositoryCategories = Array.isArray(payload && payload.categories) ? payload.categories : [];
+  const repositoryRecipes = Array.isArray(payload && payload.recipes) ? payload.recipes : [];
+  let added = 0;
+  let updated = 0;
+  let categoriesChanged = false;
+
+  repositoryCategories.forEach((remoteCategory) => {
+    if (!remoteCategory || !remoteCategory.id || !remoteCategory.name) return;
+    const localCategory = categories.find((category) => category.id === remoteCategory.id);
+    if (!localCategory) {
+      categories.push({ id: remoteCategory.id, name: remoteCategory.name });
+      categoriesChanged = true;
+    } else if (localCategory.name !== remoteCategory.name) {
+      localCategory.name = remoteCategory.name;
+      categoriesChanged = true;
+    }
+  });
+
+  const mergedRecipes = recipes.slice();
+  repositoryRecipes.forEach((remoteRecipe) => {
+    if (!remoteRecipe || !remoteRecipe.title) return;
+    const remoteSource = sourceKey(remoteRecipe.source);
+    const index = mergedRecipes.findIndex((localRecipe) => localRecipe.id === remoteRecipe.id || (
+      remoteSource && sourceKey(localRecipe.source) === remoteSource
+    ));
+    const normalizedRemote = {
+      ...remoteRecipe,
+      ingredients: Array.isArray(remoteRecipe.ingredients) ? remoteRecipe.ingredients : [],
+      steps: Array.isArray(remoteRecipe.steps) ? remoteRecipe.steps : [],
+      isFavorite: Boolean(remoteRecipe.isFavorite)
+    };
+    if (index < 0) {
+      mergedRecipes.push(normalizedRemote);
+      added += 1;
+      return;
+    }
+    const localRecipe = mergedRecipes[index];
+    const remoteIsBetter = recipeCompleteness(normalizedRemote) > recipeCompleteness(localRecipe) || (
+      recipeTimestamp(normalizedRemote) > recipeTimestamp(localRecipe) &&
+      recipeCompleteness(normalizedRemote) >= recipeCompleteness(localRecipe)
+    );
+    if (remoteIsBetter) {
+      mergedRecipes[index] = { ...normalizedRemote, isFavorite: Boolean(localRecipe.isFavorite || normalizedRemote.isFavorite) };
+      updated += 1;
+    }
+  });
+
+  recipes = mergedRecipes;
+  return { added, updated, categoriesChanged, changed: added > 0 || updated > 0 || categoriesChanged };
+}
+
+async function refreshRepositoryRecipes() {
+  const button = $('#githubRefreshButton');
+  if (!button) return;
+  const label = button.querySelector('strong');
+  const originalLabel = label ? label.textContent : 'Aktualisieren';
+  button.disabled = true;
+  if (label) label.textContent = 'Aktualisiere …';
+  try {
+    const response = await fetch(REPOSITORY_RECIPES_URL + '?refresh=' + Date.now(), { cache: 'no-store' });
+    if (!response.ok) throw new Error('GitHub antwortete mit ' + response.status);
+    const payload = await response.json();
+    const repositoryRecipes = Array.isArray(payload.recipes) ? payload.recipes : [];
+    if (!repositoryRecipes.length) throw new Error('Keine Rezepte in data/recipes.json gefunden.');
+    const result = mergeRepositoryData(payload);
+    if (result.changed) {
+      writeStorage();
+      render();
+    }
+    if (result.added || result.updated) {
+      showToast(result.added + ' neue und ' + result.updated + ' aktualisierte GitHub-Rezepte geladen.');
+    } else if (result.categoriesChanged) {
+      showToast('Kategorien aus GitHub aktualisiert.');
+    } else {
+      showToast('GitHub ist bereits aktuell.');
+    }
+  } catch (error) {
+    showToast('GitHub konnte nicht aktualisiert werden. Prüfe data/recipes.json.');
+  } finally {
+    button.disabled = false;
+    if (label) label.textContent = originalLabel;
+  }
+}
+
 async function hydrateRepositoryRecipes() {
   if (localStorage.getItem(STORAGE_KEYS.recipes)) return;
   try {
@@ -266,8 +362,9 @@ function splitInstagramSentences(value) {
 }
 
 function instagramTitleFromCaption(caption, ingredients, source) {
-  const recipeMarker = String(caption || '').search(/(?:^|\n)\s*(?:rezept|zutaten|ingredients)\s*:?\s*(?:\n|$)/i);
-  const beforeRecipe = recipeMarker >= 0 ? String(caption).slice(0, recipeMarker) : String(caption || '');
+  const captionLines = String(caption || '').split(/\r?\n/).map(cleanInstagramLine).filter(Boolean);
+  const recipeMarker = captionLines.findIndex((line) => /^(?:rezept|zutaten|ingredients)\b/i.test(line));
+  const beforeRecipe = recipeMarker >= 0 ? captionLines.slice(0, recipeMarker).join('\n') : String(caption || '');
   let candidate = cleanInstagramLine(beforeRecipe.split(/\r?\n/).filter(Boolean)[0] || '');
   candidate = candidate.split(/[.!?]/)[0].replace(/[✨😍🥰😘❤️💕💛💚💙💜🧡🤍🖤🌟🔥]+/gu, '').trim();
   candidate = candidate.replace(/^(?:der|die|das|mein|meine|unser|unsere)\s+/i, '');
@@ -276,6 +373,16 @@ function instagramTitleFromCaption(caption, ingredients, source) {
   const ingredientText = (ingredients || []).join(' ').toLowerCase();
   if (/one\s*-?\s*pot/i.test(candidate) && /kartoffel/.test(ingredientText) && /m[oö]hr/.test(ingredientText)) {
     return 'One-Pot Kartoffel-Möhren-Topf';
+  }
+  const hashtags = Array.from(String(caption || '').matchAll(/#([A-Za-zÄÖÜäöüß0-9_-]+)/g)).map((match) => match[1]);
+  const ignoredHashtags = /^(?:rezept|rezepte|einfacherezepte|einfache|hausmannskost|food|foodie|famila)$/i;
+  const usefulHashtag = hashtags.find((hashtag) => !ignoredHashtags.test(hashtag));
+  const looksLikePromotion = !candidate || candidate.length > 55 || /(?:anschließend|markt|ich kaufe|riesige auswahl|gespeichert|rezept für|unseren|unser absoluter favorit)/i.test(candidate);
+  if (looksLikePromotion && usefulHashtag) {
+    return usefulHashtag.replace(/[-_]+/g, ' ').replace(/^./, (letter) => letter.toUpperCase());
+  }
+  if (looksLikePromotion && /hackfleisch|hackbällchen/i.test(ingredientText) && /karott|erbs/i.test(ingredientText)) {
+    return 'Hackbällchen mit Gemüse';
   }
   if (candidate.length > 72) candidate = candidate.slice(0, 72).replace(/\s+\S*$/, '').trim();
   return candidate || recipeTitleFromUrl(source);
@@ -296,23 +403,25 @@ function parseInstagramCaption(caption, source, authorName) {
     .replace(/\s*([•●▪◦·])\s*/g, '\n$1 ')
     .replace(/\n{2,}/g, '\n');
   const lines = normalized.split('\n').map((line) => line.trim()).filter(Boolean);
-  const markerIndex = lines.findIndex((line) => /^(?:rezept|zutaten|ingredients)\s*:?[\s]*$/i.test(line));
+  const markerIndex = lines.findIndex((line) => /^(?:rezept|zutaten|ingredients)\b/i.test(line));
   const firstBulletIndex = lines.findIndex((line) => isInstagramBullet(line));
   const ingredientsStart = markerIndex >= 0 ? markerIndex + 1 : firstBulletIndex;
-  const ingredients = [];
-  let cursor = ingredientsStart >= 0 ? ingredientsStart : lines.length;
-  if (ingredientsStart >= 0) {
-    while (cursor < lines.length && isInstagramBullet(lines[cursor])) {
-      const ingredient = stripInstagramBullet(lines[cursor]);
-      if (ingredient) ingredients.push(ingredient);
-      cursor += 1;
-    }
+  const preparationIndex = lines.findIndex((line, index) => index > ingredientsStart && /^(?:zubereitung|anleitung|instructions?|steps?|method)\b/i.test(line));
+  const ingredientEnd = preparationIndex >= 0 ? preparationIndex : lines.length;
+  const ingredients = lines.slice(ingredientsStart >= 0 ? ingredientsStart : lines.length, ingredientEnd)
+    .filter(isInstagramBullet)
+    .map(stripInstagramBullet)
+    .filter(Boolean);
+  let lastIngredientIndex = -1;
+  for (let index = ingredientsStart; index < ingredientEnd; index += 1) {
+    if (isInstagramBullet(lines[index])) lastIngredientIndex = index;
   }
-
-  const instructionLines = lines.slice(cursor).filter((line) => {
+  const instructionStart = preparationIndex >= 0 ? preparationIndex + 1 : lastIngredientIndex >= 0 ? lastIngredientIndex + 1 : lines.length;
+  const instructionLines = lines.slice(instructionStart).filter((line) => {
     if (/^(?:lasst es euch schmecken|folgt mir|folgt uns|speichert!?\s*(?:euch)?\s*das rezept)/i.test(line)) return false;
     if (/^(?:werbung|anzeige|ad)\b/i.test(line)) return false;
-    return !/^(?:rezept|zutaten|ingredients)\s*:?[\s]*$/i.test(line);
+    if (/^#/i.test(line) || /^\d{1,2}\.\s+[A-Za-zÄÖÜäöüß]+$/i.test(line)) return false;
+    return !/^(?:rezept|zutaten|ingredients|zubereitung|anleitung)\b\s*:?[\s]*$/i.test(line);
   });
   const steps = splitInstagramSentences(instructionLines.join(' ')).filter((step) => step.length > 8);
   const minutes = steps.join(' ').match(/\b(\d{1,3})\s*(?:minuten?|min)\b/gi) || [];
@@ -1022,6 +1131,7 @@ function registerInteractions() {
   $('#quickLinkButton').addEventListener('click', () => openRecipeDialog('links'));
   $('#githubImportButton').addEventListener('click', () => openRecipeDialog('github'));
   $('#githubExportButton').addEventListener('click', exportGithubData);
+  $('#githubRefreshButton').addEventListener('click', refreshRepositoryRecipes);
   $('#githubExportDialogButton').addEventListener('click', exportGithubData);
   $('#addCategoryButton').addEventListener('click', openCategoryDialog);
   $('#menuButton').addEventListener('click', openSidebar);
@@ -1097,7 +1207,13 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=11', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=12', { updateViaCache: 'none' }).catch(() => {});
+  document.addEventListener('gesturestart', (event) => event.preventDefault(), { passive: false });
+  document.addEventListener('gesturechange', (event) => event.preventDefault(), { passive: false });
+  document.addEventListener('gestureend', (event) => event.preventDefault(), { passive: false });
+  document.addEventListener('wheel', (event) => {
+    if (event.ctrlKey) event.preventDefault();
+  }, { passive: false });
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
