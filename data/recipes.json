@@ -90,14 +90,27 @@
     },
     {
       "id": "instagram-damgkx-tpfv",
-      "title": "Instagram-Rezept · DAMGkx_tPfv",
+      "title": "One-Pot Kartoffel-Möhren-Topf",
       "categoryId": "schnell-einfach",
       "source": "https://www.instagram.com/reel/DAMGkx_tPfv/?exln=ZG4xb25wcWtkeXA=",
       "sourceType": "Instagram",
-      "time": 0,
-      "ingredients": [],
-      "steps": [],
-      "note": "Aus einem Instagram-Reel importiert — Zutaten und Zubereitung später ergänzen.",
+      "time": 15,
+      "ingredients": [
+        "1 kg festkochende Kartoffeln",
+        "3–4 Möhren",
+        "1 l Gemüsebrühe",
+        "2 EL Frischkäse natur",
+        "3–4 Wiener (optional, auch vegetarisch möglich oder weglassen)",
+        "Frische Kräuter"
+      ],
+      "steps": [
+        "Kartoffeln in ca. 1 cm große Würfel und Karotten in Scheiben schneiden.",
+        "Mit Gemüsebrühe übergießen und abgedeckt ca. 12 Minuten kochen.",
+        "Frischkäse und die kleingeschnittenen Würstchen dazugeben und weitere 3 Minuten köcheln lassen.",
+        "Mit frischen Kräutern garnieren und direkt genießen.",
+        "Bei Bedarf mit Speisestärke oder Soßenbinder andicken."
+      ],
+      "note": "Ein schneller One-Pot-Liebling von @eileenundkids. Wiener können weggelassen oder vegetarisch ersetzt werden.",
       "createdAt": "2026-11-01T00:00:00.000Z",
       "isFavorite": false
     }
