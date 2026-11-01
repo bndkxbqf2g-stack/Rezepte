@@ -1,4 +1,4 @@
-const CACHE_NAME = 'steffi-rezeptewelt-v5';
+const CACHE_NAME = 'steffi-rezeptewelt-v6';
 const APP_SHELL = ['./', './index.html', './styles.css', './app.js', './manifest.webmanifest', './icon.svg', './data/recipes.json'];
 
 self.addEventListener('install', (event) => {
