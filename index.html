@@ -7,7 +7,7 @@
     <meta name="description" content="Steffis persönliche Rezeptbibliothek für Lieblingsrezepte, Instagram-Links und versionierte GitHub-Rezepte." />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
-    <link rel="stylesheet" href="./styles.css?v=12" />
+    <link rel="stylesheet" href="./styles.css?v=13" />
     <title>Steffi’s Rezeptewelt</title>
   </head>
   <body>
@@ -76,6 +76,13 @@
               <span>
                 <strong>Aktualisieren</strong>
                 <small>GitHub-Rezepte laden</small>
+              </span>
+            </button>
+            <button class="github-sync-button is-hidden" id="githubSyncButton" type="button">
+              <span class="github-sync-icon" aria-hidden="true">↑</span>
+              <span>
+                <strong>Jetzt speichern</strong>
+                <small>Bestand direkt auf GitHub sichern</small>
               </span>
             </button>
           </div>
@@ -232,7 +239,14 @@
           <section class="form-mode is-hidden" id="githubMode" data-mode-panel="github">
             <div class="quick-import-panel github-import-panel">
               <div class="quick-import-heading"><span class="quick-import-badge github-badge">GH</span><div><h3>Öffentliches Repository verbinden</h3><p>Markdown-Rezepte werden erkannt und als eigene Karten übernommen.</p></div></div>
-              <div class="import-note github-sync-note"><span aria-hidden="true">↕</span><span>Neue Rezepte liegen zuerst nur im Browser. Mit „Exportieren“ erzeugst du <code>recipes.json</code>; lade diese Datei im GitHub-Repo nach <code>data/recipes.json</code>. Auf dem anderen Handy lädt „Aktualisieren“ den gemeinsamen Bestand.</span></div>
+              <div class="import-note github-sync-note"><span aria-hidden="true">↕</span><span>Einmal verbinden, danach werden neue oder geänderte Rezepte direkt in dein GitHub-Repository gespeichert. Auf dem anderen Handy reicht „Aktualisieren“.</span></div>
+              <div class="github-token-note"><strong>Einmalige Einrichtung</strong><span>Verwende einen fein-granularen GitHub-Schlüssel nur für dieses Repository mit <em>Contents: Read and write</em>. Er bleibt ausschließlich auf diesem Gerät gespeichert.</span></div>
+              <div class="form-grid two-columns">
+                <label class="field field-wide"><span>GitHub-Schlüssel</span><input id="githubToken" type="password" autocomplete="off" placeholder="github_pat_…" /></label>
+                <label class="field"><span>Branch</span><input id="githubBranch" type="text" value="main" placeholder="main" /></label>
+              </div>
+              <button type="button" class="button button-primary button-full" id="githubConnectButton">GitHub verbinden &amp; speichern</button>
+              <button type="button" class="button button-secondary button-full" id="githubSyncDialogButton"><span aria-hidden="true">↑</span> Jetzt synchronisieren</button>
               <button type="button" class="button button-secondary button-full" id="githubExportDialogButton"><span aria-hidden="true">↓</span> Aktuellen Bestand exportieren</button>
               <div class="form-grid two-columns">
                 <label class="field field-wide"><span>GitHub-Repository</span><input id="githubRepo" type="text" placeholder="owner/repository oder https://github.com/owner/repository" /></label>
@@ -278,7 +292,7 @@
       </div>
     </dialog>
 
-    <script src="./app.js?v=12" defer></script>
+    <script src="./app.js?v=13" defer></script>
   </body>
 </html>
 
