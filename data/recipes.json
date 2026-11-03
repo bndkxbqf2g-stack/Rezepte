@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "app": "Steffi’s Rezeptewelt",
-  "updatedAt": "2026-11-01T00:00:00.000Z",
+  "updatedAt": "2026-11-03T00:00:00.000Z",
   "categories": [
     { "id": "schnell-einfach", "name": "Schnell & einfach" },
     { "id": "pasta", "name": "Pasta" },
@@ -112,6 +112,40 @@
       ],
       "note": "Ein schneller One-Pot-Liebling von @eileenundkids. Wiener können weggelassen oder vegetarisch ersetzt werden.",
       "createdAt": "2026-11-01T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "web-gnocchi-kuerbis-auflauf-gaumenfreundin",
+      "title": "Gnocchi-Kürbis-Auflauf – bester Kürbisauflauf",
+      "categoryId": "ofengerichte",
+      "source": "https://www.gaumenfreundin.de/gnocchi-kuerbis-auflauf-mit-lauch-vegetarisch/",
+      "sourceType": "Web-Link",
+      "time": 55,
+      "ingredients": [
+        "500 g Hokkaido-Kürbis",
+        "1 rote Zwiebel",
+        "1 Knoblauchzehe",
+        "1 Stange Lauch",
+        "1 EL Olivenöl",
+        "2 EL Tomatenmark",
+        "300 ml Gemüsebrühe",
+        "200 g Frischkäse",
+        "500 g Gnocchi Kühltheke",
+        "Salz und Pfeffer",
+        "Curry",
+        "Muskat",
+        "80 g geriebener Mozzarella"
+      ],
+      "steps": [
+        "Kürbis in kleine Würfel schneiden. Zwiebel und Knoblauch hacken und den Lauch in Ringe schneiden.",
+        "Backofen auf 200 °C Ober- und Unterhitze vorheizen. Olivenöl erhitzen, Zwiebeln und Knoblauch anbraten, Tomatenmark kurz mitrösten und Gemüsebrühe einrühren. Kürbis und Lauch zugeben und zugedeckt 10 Minuten köcheln lassen.",
+        "Frischkäse unterheben und mit Salz, Pfeffer, Muskat und Curry würzen.",
+        "Gnocchi in eine Auflaufform geben, mit dem Kürbis-Gemüse bedecken und mit Mozzarella bestreuen.",
+        "Den Auflauf 30 Minuten backen."
+      ],
+      "note": "Aus Gaumenfreundin importiert.",
+      "createdAt": "2026-11-03T00:00:00.000Z",
+      "updatedAt": "2026-11-03T00:00:00.000Z",
       "isFavorite": false
     }
   ]
