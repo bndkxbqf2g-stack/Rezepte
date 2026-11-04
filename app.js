@@ -453,6 +453,29 @@ async function hydrateRepositoryRecipes() {
   }
 }
 
+const tortelliniAdditionalIngredients = [
+  '1 EL Butter',
+  '150 g Prosciutto',
+  '1 Schalotte',
+  '1 Knoblauchzehe',
+  '50 ml Weißwein',
+  '1 Becher Sahne',
+  '1 Handvoll Parmesan',
+  '1 Eigelb'
+];
+
+function applyTortelliniIngredientUpdate() {
+  const recipe = recipes.find((item) => /tortellini/i.test(String(item && item.title || '')));
+  if (!recipe) return false;
+  const current = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
+  const existing = new Set(current.map((item) => String(item || '').replace(/\s+/g, ' ').trim().toLocaleLowerCase('de-DE')));
+  const additions = tortelliniAdditionalIngredients.filter((item) => !existing.has(item.toLocaleLowerCase('de-DE')));
+  if (!additions.length) return false;
+  recipe.ingredients = current.concat(additions);
+  recipe.updatedAt = new Date().toISOString();
+  return true;
+}
+
 function exportGithubData() {
   const payload = buildRepositoryPayload();
   const blob = new Blob([JSON.stringify(payload, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
@@ -1640,7 +1663,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=19', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=20', { updateViaCache: 'none' }).catch(() => {});
   document.addEventListener('gesturestart', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gesturechange', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gestureend', (event) => event.preventDefault(), { passive: false });
@@ -1684,6 +1707,14 @@ render();
 updateGithubConnectionUi();
 registerInteractions();
 registerPwa();
-hydrateRepositoryRecipes().then(() => enrichPendingRecipes()).catch(() => {});
+hydrateRepositoryRecipes().then(() => {
+  if (applyTortelliniIngredientUpdate()) {
+    writeStorage();
+    render();
+    queueGithubSync({ silent: true, message: 'Tortellini-Zutaten ergänzt' });
+    showToast('Tortellini-Zutaten wurden ergänzt.');
+  }
+  return enrichPendingRecipes();
+}).catch(() => {});
 importSharedLink();
 
