@@ -534,7 +534,7 @@ function sourceKey(source) {
 function cleanInstagramLine(value) {
   return String(value || '')
     .replace(/\u00a0/g, ' ')
-    .replace(/(\d+(?:[.,]\d+)?)\s*(kg|ml|el|tl|g|l)(?=[A-Za-zÄÖÜäöüß])/gi, '$1 $2 ')
+    .replace(/(\d+(?:[.,]\d+)?)\s*(kg|ml|el|tl|g|l)(?=\s*[A-Za-zÄÖÜäöüß])/gi, '$1 $2 ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -595,7 +595,7 @@ function parseInstagramCaption(caption, source, authorName) {
     .replace(/\u00a0/g, ' ')
     .replace(/\s*([•●▪◦·])\s*/g, '\n$1 ')
     .replace(/\n{2,}/g, '\n');
-  const lines = normalized.split('\n').map((line) => line.trim()).filter(Boolean);
+  const lines = normalized.split('\n').map(cleanInstagramLine).filter(Boolean);
   const markerIndex = lines.findIndex((line) => /^(?:rezept|zutaten|ingredients)\b/i.test(line));
   const firstBulletIndex = lines.findIndex((line) => isInstagramBullet(line));
   const ingredientsStart = markerIndex >= 0 ? markerIndex + 1 : firstBulletIndex;
@@ -1640,7 +1640,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=16', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=19', { updateViaCache: 'none' }).catch(() => {});
   document.addEventListener('gesturestart', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gesturechange', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gestureend', (event) => event.preventDefault(), { passive: false });
