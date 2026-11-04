@@ -532,7 +532,11 @@ function sourceKey(source) {
 }
 
 function cleanInstagramLine(value) {
-  return String(value || '').replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+  return String(value || '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/(\d+(?:[.,]\d+)?)\s*(kg|ml|el|tl|g|l)(?=[A-Za-zÄÖÜäöüß])/gi, '$1 $2 ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function isInstagramBullet(line) {
@@ -636,24 +640,69 @@ function instagramRequestSource(source) {
   }
 }
 
+function parseInstagramReaderText(content, source) {
+  const text = String(content || '').replace(/\r/g, '');
+  const match = text.match(/^Title:\s*(.*?)\s+on Instagram:\s*"([\s\S]*?)"\s*\nURL Source:/im);
+  if (!match) return null;
+  return parseInstagramCaption(match[2], source, match[1]);
+}
+
 async function fetchInstagramRecipe(source) {
   const requestSource = instagramRequestSource(source);
   const endpoint = 'https://www.instagram.com/api/v1/oembed/?url=' + encodeURIComponent(requestSource);
-  const endpoints = [endpoint, 'https://proxy.cors.dev/?url=' + encodeURIComponent(endpoint), 'https://proxy.cors.dev/' + endpoint];
+  const readerEndpoint = 'https://r.jina.ai/http://' + requestSource.replace(/^https?:\/\//i, '');
+  const endpoints = [
+    {
+      url: endpoint,
+      headers: { Accept: 'application/json' },
+      parse: async (response) => {
+        const payload = await response.json();
+        const caption = String(payload.title || payload.caption || '').trim();
+        if (!caption) throw new Error('Instagram hat keinen auslesbaren Text geliefert.');
+        return parseInstagramCaption(caption, source, payload.author_name || '');
+      }
+    },
+    {
+      url: 'https://proxy.cors.dev/?url=' + encodeURIComponent(endpoint),
+      headers: { Accept: 'application/json' },
+      parse: async (response) => {
+        const payload = await response.json();
+        const caption = String(payload.title || payload.caption || '').trim();
+        if (!caption) throw new Error('Instagram hat keinen auslesbaren Text geliefert.');
+        return parseInstagramCaption(caption, source, payload.author_name || '');
+      }
+    },
+    {
+      url: 'https://proxy.cors.dev/' + endpoint,
+      headers: { Accept: 'application/json' },
+      parse: async (response) => {
+        const payload = await response.json();
+        const caption = String(payload.title || payload.caption || '').trim();
+        if (!caption) throw new Error('Instagram hat keinen auslesbaren Text geliefert.');
+        return parseInstagramCaption(caption, source, payload.author_name || '');
+      }
+    },
+    {
+      url: readerEndpoint,
+      headers: { Accept: 'text/plain' },
+      parse: async (response) => {
+        const parsed = parseInstagramReaderText(await response.text(), source);
+        if (!parsed) throw new Error('Instagram-Reader enthält keinen auslesbaren Rezepttext.');
+        return parsed;
+      }
+    }
+  ];
   let lastError = null;
-  for (const requestUrl of endpoints) {
+  for (const endpointConfig of endpoints) {
     try {
-      const response = await fetch(requestUrl, {
+      const response = await fetch(endpointConfig.url, {
         cache: 'no-store',
         credentials: 'omit',
-        headers: { Accept: 'application/json' },
+        headers: endpointConfig.headers,
         referrerPolicy: 'no-referrer'
       });
       if (!response.ok) throw new Error('Instagram antwortete mit ' + response.status);
-      const payload = await response.json();
-      const caption = String(payload.title || payload.caption || '').trim();
-      if (!caption) throw new Error('Instagram hat keinen auslesbaren Text geliefert.');
-      return parseInstagramCaption(caption, source, payload.author_name || '');
+      return await endpointConfig.parse(response);
     } catch (error) {
       lastError = error;
     }
