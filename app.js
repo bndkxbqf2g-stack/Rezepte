@@ -989,7 +989,8 @@ function filteredRecipes() {
   const query = state.search.trim().toLowerCase();
   if (query) {
     result = result.filter((recipe) => {
-      const searchable = [recipe.title, categoryName(recipe.categoryId), recipe.sourceType, recipe.source, recipe.note]
+      const searchable = [recipe.title, categoryName(recipe.categoryId), recipe.sourceType, recipe.source, recipe.note, recipe.description, recipe.difficulty]
+        .concat(recipe.tags || [])
         .concat(recipe.ingredients || [], recipe.steps || [])
         .join(' ')
         .toLowerCase();
@@ -1274,7 +1275,7 @@ function renderReader(recipe) {
   $('#recipePaper').innerHTML =
     '<div class="paper-kicker"><span class="paper-kicker-dot"></span>' + escapeHtml(categoryName(recipe.categoryId)) + ' · ' + escapeHtml(sourceLabel(recipe)) + '</div>' +
     '<h1 class="paper-title">' + escapeHtml(recipe.title) + '</h1>' +
-    '<p class="paper-intro">' + escapeHtml(recipe.note || 'Ein Lieblingsrezept aus Steffis Rezeptewelt — gesammelt, sortiert und bereit zum Nachkochen.') + '</p>' +
+    '<p class="paper-intro">' + escapeHtml(recipe.description || recipe.note || 'Ein Lieblingsrezept aus Steffis Rezeptewelt — gesammelt, sortiert und bereit zum Nachkochen.') + '</p>' +
     '<div class="paper-meta">' +
       '<span><strong>⏱</strong> ' + (recipe.time ? escapeHtml(recipe.time + ' Minuten') : 'Zeit nach Gefühl') + '</span>' +
       '<span><strong>✦</strong> ' + ingredients.length + ' Zutaten</span>' +
@@ -1663,7 +1664,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=20', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=21', { updateViaCache: 'none' }).catch(() => {});
   document.addEventListener('gesturestart', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gesturechange', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gestureend', (event) => event.preventDefault(), { passive: false });
