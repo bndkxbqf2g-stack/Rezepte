@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "app": "Steffi’s Rezeptewelt",
-  "updatedAt": "2026-11-03T00:00:00.000Z",
+  "updatedAt": "2026-11-13T00:00:00.000Z",
   "categories": [
     { "id": "schnell-einfach", "name": "Schnell & einfach" },
     { "id": "pasta", "name": "Pasta" },
@@ -229,6 +229,47 @@
       "note": "Zusätzliche Kochtipps: Hokkaido-Kürbis muss nicht geschält werden. Das kräftige Anrösten des Kürbisses sorgt für besonders intensive Röstaromen. Die Nudeln werden ungekocht verwendet und garen direkt in der Sauce. Die Flüssigkeitsmenge gegebenenfalls an Nudelsorte und Auflaufform anpassen. Für eine mildere Variante die Chiliflocken reduzieren. Der Auflauf schmeckt auch am nächsten Tag aufgewärmt sehr gut.",
       "createdAt": "2026-11-09T00:00:00.000Z",
       "updatedAt": "2026-11-09T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "saftige-schoko-muffins",
+      "title": "Saftige Schoko-Muffins",
+      "categoryId": "suesses",
+      "source": "",
+      "sourceType": "Eigenes Rezept",
+      "time": 35,
+      "prepTime": 15,
+      "bakeTime": "18–22 Minuten",
+      "temperature": "180 °C Ober-/Unterhitze",
+      "servings": 12,
+      "servingLabel": "Muffins",
+      "description": "Saftige Schoko-Muffins mit weicher Krume und reichlich Schokostückchen.",
+      "tags": ["Muffins", "Schokolade", "Backen", "Süßes"],
+      "ingredients": [
+        "2 Eier (Größe M)",
+        "150 g Zucker",
+        "1 Päckchen Vanillezucker",
+        "100 g weiche Butter",
+        "60 ml neutrales Öl (z. B. Rapsöl)",
+        "150 g Naturjoghurt oder griechischer Joghurt",
+        "80 ml Milch",
+        "300 g Mehl",
+        "2 gestrichene TL Backpulver",
+        "1 Prise Salz",
+        "180 g Schokostückchen"
+      ],
+      "steps": [
+        "Backofen auf 180 °C Ober-/Unterhitze vorheizen. Ein Muffinblech mit 12 Papierförmchen auslegen.",
+        "Butter, Öl, Zucker und Vanillezucker kurz cremig rühren. Die Eier einzeln unterrühren.",
+        "Joghurt und Milch dazugeben und kurz verrühren.",
+        "Mehl, Backpulver und Salz in einer zweiten Schüssel vermischen. Zur Eiermasse geben und nur so lange rühren, bis gerade kein trockenes Mehl mehr zu sehen ist.",
+        "Schokostückchen vorsichtig unterheben. Den Teig auf die Förmchen verteilen.",
+        "Muffins 18–22 Minuten backen. Gegen Ende mit einem Holzstäbchen prüfen: Ein paar feuchte Krümel dürfen daran kleben, aber kein flüssiger Teig.",
+        "Muffins 5 Minuten im Blech ruhen lassen, anschließend herausnehmen und abkühlen lassen."
+      ],
+      "note": "Tipp: Den Teig nicht lange rühren und die Muffins nicht zu lange backen – so bleiben sie besonders saftig.",
+      "createdAt": "2026-11-13T00:00:00.000Z",
+      "updatedAt": "2026-11-13T00:00:00.000Z",
       "isFavorite": false
     }
   ]
