@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "app": "Steffi’s Rezeptewelt",
-  "updatedAt": "2026-11-13T00:00:00.000Z",
+  "updatedAt": "2026-11-15T00:00:00.000Z",
   "categories": [
     { "id": "schnell-einfach", "name": "Schnell & einfach" },
     { "id": "pasta", "name": "Pasta" },
@@ -270,6 +270,50 @@
       "note": "Tipp: Den Teig nicht lange rühren und die Muffins nicht zu lange backen – so bleiben sie besonders saftig.",
       "createdAt": "2026-11-13T00:00:00.000Z",
       "updatedAt": "2026-11-13T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "cremige-schinken-brokkoli-erbsen-nudelpfanne",
+      "title": "Cremige Schinken-Brokkoli-Erbsen-Nudelpfanne",
+      "categoryId": "pasta",
+      "source": "",
+      "sourceType": "Eigenes Rezept",
+      "time": 30,
+      "prepTime": 30,
+      "servings": 4,
+      "description": "Cremige Nudelpfanne mit Kochschinken, Brokkoli, Erbsen und einer herzhaften Käsesoße.",
+      "tags": ["Nudeln", "Pasta", "Brokkoli", "Erbsen", "Schinken", "Schnell", "Cremig", "Familienessen"],
+      "ingredients": [
+        "400 g Nudeln",
+        "400 g TK-Brokkoli",
+        "200 g TK-Erbsen",
+        "150 g Kochschinken",
+        "5–6 Scheiben Schmelzkäse",
+        "150 g Frischkäse",
+        "200 ml Sahne",
+        "150 ml Milch",
+        "1 Zwiebel",
+        "1 Knoblauchzehe",
+        "30 g Parmesan",
+        "50 g Streukäse",
+        "1 EL Butter oder Öl",
+        "Salz",
+        "Pfeffer",
+        "Muskat",
+        "Paprikapulver edelsüß"
+      ],
+      "steps": [
+        "Nudeln kochen: Die Nudeln in reichlich Salzwasser bissfest kochen. Etwas Nudelwasser auffangen und anschließend die Nudeln abgießen.",
+        "Gemüse garen: Den TK-Brokkoli etwa 5–7 Minuten in kochendem Salzwasser garen. Die TK-Erbsen in den letzten 2–3 Minuten dazugeben. Anschließend abgießen.",
+        "Schinken anbraten: Die Zwiebel fein würfeln und den Kochschinken in Streifen schneiden. Beides in einer großen, tiefen Pfanne mit etwas Butter oder Öl anbraten. Den Knoblauch fein hacken und kurz mitbraten.",
+        "Cremige Käsesoße zubereiten: Sahne, Milch und Frischkäse in die Pfanne geben und verrühren. Anschließend die Schmelzkäsescheiben nach und nach darin auflösen. Bei niedriger Hitze erwärmen.",
+        "Soße abschmecken: Den Parmesan unterrühren und mit Muskat, wenig Pfeffer und etwas Paprikapulver würzen. Salz erst zum Schluss nach Bedarf ergänzen.",
+        "Alles vermengen: Die gekochten Nudeln, den Brokkoli und die Erbsen zur Soße geben und alles gut vermengen.",
+        "Käse-Finish: Den Streukäse darübergeben und bei geschlossenem Deckel kurz schmelzen lassen."
+      ],
+      "note": "Mein Tipp: Die Soße sollte zunächst etwas flüssiger sein, da die Nudeln noch Flüssigkeit aufnehmen. Falls sie zu dick wird, einfach 50–100 ml Milch oder etwas Nudelwasser ergänzen. So wird die Nudelpfanne besonders cremig, käsig und schön saftig. Guten Appetit!",
+      "createdAt": "2026-11-15T00:00:00.000Z",
+      "updatedAt": "2026-11-15T00:00:00.000Z",
       "isFavorite": false
     }
   ]
