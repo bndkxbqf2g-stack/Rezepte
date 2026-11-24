@@ -1,13 +1,28 @@
 {
   "schemaVersion": 1,
   "app": "Steffi’s Rezeptewelt",
-  "updatedAt": "2026-11-15T00:00:00.000Z",
+  "updatedAt": "2026-11-24T07:52:00.000Z",
   "categories": [
-    { "id": "schnell-einfach", "name": "Schnell & einfach" },
-    { "id": "pasta", "name": "Pasta" },
-    { "id": "ofengerichte", "name": "Ofengerichte" },
-    { "id": "suesses", "name": "Süßes" },
-    { "id": "drinks", "name": "Drinks" }
+    {
+      "id": "schnell-einfach",
+      "name": "Schnell & einfach"
+    },
+    {
+      "id": "pasta",
+      "name": "Pasta"
+    },
+    {
+      "id": "ofengerichte",
+      "name": "Ofengerichte"
+    },
+    {
+      "id": "suesses",
+      "name": "Süßes"
+    },
+    {
+      "id": "drinks",
+      "name": "Drinks"
+    }
   ],
   "recipes": [
     {
@@ -17,8 +32,19 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 25,
-      "ingredients": ["300 g Linguine", "1 Bio-Zitrone", "2 EL Olivenöl", "40 g Parmesan", "Salz & schwarzer Pfeffer"],
-      "steps": ["Pasta in Salzwasser al dente kochen und eine Tasse Kochwasser auffangen.", "Zitronenschale abreiben und den Saft mit Olivenöl verrühren.", "Pasta mit Zitronenöl, Parmesan und etwas Kochwasser cremig schwenken.", "Mit Pfeffer und Zitronenzeste servieren."],
+      "ingredients": [
+        "300 g Linguine",
+        "1 Bio-Zitrone",
+        "2 EL Olivenöl",
+        "40 g Parmesan",
+        "Salz & schwarzer Pfeffer"
+      ],
+      "steps": [
+        "Pasta in Salzwasser al dente kochen und eine Tasse Kochwasser auffangen.",
+        "Zitronenschale abreiben und den Saft mit Olivenöl verrühren.",
+        "Pasta mit Zitronenöl, Parmesan und etwas Kochwasser cremig schwenken.",
+        "Mit Pfeffer und Zitronenzeste servieren."
+      ],
       "note": "Am liebsten mit extra viel schwarzem Pfeffer.",
       "createdAt": "2026-10-28T09:00:00.000Z",
       "isFavorite": true
@@ -30,8 +56,19 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 20,
-      "ingredients": ["500 g Gnocchi", "2 EL Butter", "1 EL helles Miso", "1 Knoblauchzehe", "Frühlingszwiebeln"],
-      "steps": ["Gnocchi in einer großen Pfanne goldbraun anbraten.", "Butter und fein gehackten Knoblauch dazugeben.", "Miso mit einem Schuss Wasser glatt rühren und unterheben.", "Mit Frühlingszwiebeln und Sesam toppen."],
+      "ingredients": [
+        "500 g Gnocchi",
+        "2 EL Butter",
+        "1 EL helles Miso",
+        "1 Knoblauchzehe",
+        "Frühlingszwiebeln"
+      ],
+      "steps": [
+        "Gnocchi in einer großen Pfanne goldbraun anbraten.",
+        "Butter und fein gehackten Knoblauch dazugeben.",
+        "Miso mit einem Schuss Wasser glatt rühren und unterheben.",
+        "Mit Frühlingszwiebeln und Sesam toppen."
+      ],
       "note": "Funktioniert auch mit gebratenem Brokkoli.",
       "createdAt": "2026-10-27T16:10:00.000Z",
       "isFavorite": true
@@ -43,8 +80,19 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 40,
-      "ingredients": ["1 Süßkartoffel", "2 Möhren", "1 rote Zwiebel", "1 Dose Kichererbsen", "2 EL Tahini"],
-      "steps": ["Gemüse würfeln, mit Öl und Gewürzen mischen.", "Bei 200 °C ca. 30 Minuten rösten.", "Tahini mit Zitronensaft, Wasser und Salz zu einer Sauce rühren.", "Kichererbsen und Sauce über dem Ofengemüse verteilen."],
+      "ingredients": [
+        "1 Süßkartoffel",
+        "2 Möhren",
+        "1 rote Zwiebel",
+        "1 Dose Kichererbsen",
+        "2 EL Tahini"
+      ],
+      "steps": [
+        "Gemüse würfeln, mit Öl und Gewürzen mischen.",
+        "Bei 200 °C ca. 30 Minuten rösten.",
+        "Tahini mit Zitronensaft, Wasser und Salz zu einer Sauce rühren.",
+        "Kichererbsen und Sauce über dem Ofengemüse verteilen."
+      ],
       "note": "Die Sauce lässt sich gut auf Vorrat vorbereiten.",
       "createdAt": "2026-10-25T12:30:00.000Z",
       "isFavorite": false
@@ -56,8 +104,18 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 10,
-      "ingredients": ["2 Salatgurken", "1 EL Reisessig", "1 TL Sesamöl", "1 TL Chiliöl", "Gerösteter Sesam"],
-      "steps": ["Gurken leicht andrücken und in mundgerechte Stücke schneiden.", "Mit Reisessig, Sesamöl und Chiliöl marinieren.", "Mit Sesam bestreuen und direkt servieren."],
+      "ingredients": [
+        "2 Salatgurken",
+        "1 EL Reisessig",
+        "1 TL Sesamöl",
+        "1 TL Chiliöl",
+        "Gerösteter Sesam"
+      ],
+      "steps": [
+        "Gurken leicht andrücken und in mundgerechte Stücke schneiden.",
+        "Mit Reisessig, Sesamöl und Chiliöl marinieren.",
+        "Mit Sesam bestreuen und direkt servieren."
+      ],
       "note": "Knackig, frisch und in zehn Minuten fertig.",
       "createdAt": "2026-10-23T18:45:00.000Z",
       "isFavorite": false
@@ -69,8 +127,19 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 65,
-      "ingredients": ["180 g Mehl", "120 g Zucker", "2 Eier", "1 Bio-Zitrone", "120 g Blaubeeren"],
-      "steps": ["Ofen auf 175 °C vorheizen und eine Kastenform auslegen.", "Butter, Zucker, Eier und Zitronenabrieb cremig rühren.", "Mehl unterheben, Blaubeeren vorsichtig einarbeiten.", "Im Ofen backen und vollständig auskühlen lassen."],
+      "ingredients": [
+        "180 g Mehl",
+        "120 g Zucker",
+        "2 Eier",
+        "1 Bio-Zitrone",
+        "120 g Blaubeeren"
+      ],
+      "steps": [
+        "Ofen auf 175 °C vorheizen und eine Kastenform auslegen.",
+        "Butter, Zucker, Eier und Zitronenabrieb cremig rühren.",
+        "Mehl unterheben, Blaubeeren vorsichtig einarbeiten.",
+        "Im Ofen backen und vollständig auskühlen lassen."
+      ],
       "note": "Mit Zitronenglasur wird er besonders frisch.",
       "createdAt": "2026-10-20T08:10:00.000Z",
       "isFavorite": false
@@ -82,8 +151,18 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 8,
-      "ingredients": ["Eine Handvoll Beeren", "1 Zweig Rosmarin", "100 ml Tonic Water", "100 ml alkoholfreier Sekt", "Eiswürfel"],
-      "steps": ["Beeren und Rosmarin in ein Glas geben und leicht andrücken.", "Mit Eis auffüllen.", "Tonic Water und Sekt langsam dazugeben."],
+      "ingredients": [
+        "Eine Handvoll Beeren",
+        "1 Zweig Rosmarin",
+        "100 ml Tonic Water",
+        "100 ml alkoholfreier Sekt",
+        "Eiswürfel"
+      ],
+      "steps": [
+        "Beeren und Rosmarin in ein Glas geben und leicht andrücken.",
+        "Mit Eis auffüllen.",
+        "Tonic Water und Sekt langsam dazugeben."
+      ],
       "note": "Für die alkoholfreie Variante genauso gedacht.",
       "createdAt": "2026-10-18T15:20:00.000Z",
       "isFavorite": false
@@ -160,7 +239,17 @@
       "servings": 4,
       "difficulty": "Mittel",
       "description": "Ein wunderbar cremiger und herzhafter Nudelauflauf mit aromatisch geröstetem Hokkaido-Kürbis, würzig angebratenem Hackfleisch, einer cremigen Parmesan-Frischkäse-Sauce und goldbrauner Käsekruste. Geröstete Kürbiskerne, frische Petersilie und ein Hauch Zitrone sorgen für das perfekte Finish.",
-      "tags": ["Kürbis", "Hackfleisch", "Auflauf", "Pasta", "Herbst", "Ofengericht", "Familienessen", "herzhaft", "cremig"],
+      "tags": [
+        "Kürbis",
+        "Hackfleisch",
+        "Auflauf",
+        "Pasta",
+        "Herbst",
+        "Ofengericht",
+        "Familienessen",
+        "herzhaft",
+        "cremig"
+      ],
       "ingredients": [
         "500 g Hokkaido-Kürbis",
         "500 g gemischtes Hackfleisch",
@@ -244,7 +333,12 @@
       "servings": 12,
       "servingLabel": "Muffins",
       "description": "Saftige Schoko-Muffins mit weicher Krume und reichlich Schokostückchen.",
-      "tags": ["Muffins", "Schokolade", "Backen", "Süßes"],
+      "tags": [
+        "Muffins",
+        "Schokolade",
+        "Backen",
+        "Süßes"
+      ],
       "ingredients": [
         "2 Eier (Größe M)",
         "150 g Zucker",
@@ -282,7 +376,16 @@
       "prepTime": 30,
       "servings": 4,
       "description": "Cremige Nudelpfanne mit Kochschinken, Brokkoli, Erbsen und einer herzhaften Käsesoße.",
-      "tags": ["Nudeln", "Pasta", "Brokkoli", "Erbsen", "Schinken", "Schnell", "Cremig", "Familienessen"],
+      "tags": [
+        "Nudeln",
+        "Pasta",
+        "Brokkoli",
+        "Erbsen",
+        "Schinken",
+        "Schnell",
+        "Cremig",
+        "Familienessen"
+      ],
       "ingredients": [
         "400 g Nudeln",
         "400 g TK-Brokkoli",
@@ -315,7 +418,130 @@
       "createdAt": "2026-11-15T00:00:00.000Z",
       "updatedAt": "2026-11-15T00:00:00.000Z",
       "isFavorite": false
+    },
+    {
+      "id": "chatgpt-paprika-balsamico-haehnchen",
+      "title": "Italienisches Hähnchen in gerösteter Paprika-Balsamico-Sauce mit Kräuterreis",
+      "categoryId": "schnell-einfach",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "time": 40,
+      "ingredients": [
+        "400 g Hähncheninnenbrustfilet",
+        "500 g rote Paprika",
+        "150 g Reis",
+        "40 g getrocknete Tomaten",
+        "80 g Joghurt",
+        "1 Zwiebel",
+        "2 Knoblauchzehen",
+        "1 EL Balsamico",
+        "1 TL Ahornsirup",
+        "1 EL Zitronensaft",
+        "3 EL Olivenöl",
+        "Oregano, Kräuter, Paprikapulver, Chili, Salz, Pfeffer"
+      ],
+      "steps": [
+        "Paprika schneiden, mit Öl vermengen und bei 220 °C 20 Minuten rösten.",
+        "Reis kochen und mit Zitronensaft und Kräutern verfeinern.",
+        "Hähnchen würzen, goldbraun anbraten, vollständig durchgaren und herausnehmen.",
+        "Zwiebel, Knoblauch und getrocknete Tomaten im Bratensatz anschwitzen. Zwei Drittel der Paprika und 100 ml Wasser hinzufügen.",
+        "Pürieren, mit Balsamico, Ahornsirup und Chili abschmecken. Restliche Paprika und Hähnchen hinzufügen.",
+        "Mit Kräuterreis und gewürztem Joghurt servieren."
+      ],
+      "note": "Für 2 Portionen.",
+      "createdAt": "2026-11-24T07:52:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-lachs-parmesan-stampf",
+      "title": "Goldbrauner Lachs auf Parmesan-Kartoffelstampf mit Erbsen und brauner Butter",
+      "categoryId": "schnell-einfach",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "time": 35,
+      "ingredients": [
+        "250 g Lachsfilet",
+        "500 g Kartoffeln",
+        "200 g Erbsen",
+        "25 g Parmesan",
+        "35 g Butter",
+        "80 ml Milch",
+        "1 EL Zitronensaft",
+        "1 EL Mehl",
+        "Kräuter, Muskat, Salz, Pfeffer",
+        "Etwas Bratöl"
+      ],
+      "steps": [
+        "Lachs im Kühlschrank auftauen.",
+        "Kartoffeln weich kochen und mit warmer Milch, 15 g Butter und Parmesan stampfen. Mit Muskat abschmecken.",
+        "Lachs trocken tupfen, würzen und leicht mit Mehl bestäuben.",
+        "In Öl goldbraun braten und vollständig durchgaren.",
+        "Restliche Butter vorsichtig bräunen, Erbsen darin erhitzen und mit Zitronensaft und Kräutern abschmecken.",
+        "Auf dem Stampf mit Buttererbsen servieren."
+      ],
+      "note": "Für 2 Portionen. Auftauzeit zusätzlich.",
+      "createdAt": "2026-11-24T07:52:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-sizilianische-auberginen-pasta",
+      "title": "Sizilianische Pasta mit geschmorter Aubergine, Tomaten und knusprigem Kräuter-Panko",
+      "categoryId": "pasta",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "time": 40,
+      "ingredients": [
+        "600 g Rispentomaten",
+        "350 g Aubergine",
+        "250 g Makkaroni oder Spaghetti",
+        "100 g Hirtenkäse mit mikrobiellem Lab",
+        "40 g Panko",
+        "2 Knoblauchzehen",
+        "1 Zwiebel",
+        "1 EL Balsamico",
+        "3 EL Olivenöl",
+        "Kräuter, Chili, Salz, Pfeffer"
+      ],
+      "steps": [
+        "Aubergine würfeln, in Olivenöl goldbraun anbraten und herausnehmen.",
+        "Zwiebel und Knoblauch anschwitzen, gewürfelte Tomaten hinzufügen und 20 Minuten einkochen.",
+        "Mit Balsamico, Chili und Kräutern abschmecken. Aubergine hinzufügen.",
+        "Nudeln bissfest kochen und mit etwas Nudelwasser unter die Sauce mischen.",
+        "Panko separat mit Olivenöl und Kräutern knusprig rösten.",
+        "Mit zerbröseltem Hirtenkäse und Kräuter-Panko servieren."
+      ],
+      "note": "Für 2 Portionen.",
+      "createdAt": "2026-11-24T07:52:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-mediterranes-ofenhaehnchen",
+      "title": "Mediterranes Ofenhähnchen mit Paprikagemüse und Zitronenreis",
+      "categoryId": "ofengerichte",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "time": 60,
+      "ingredients": [
+        "1,1 kg Hähnchenschenkel",
+        "500 g rote Paprika",
+        "150 g Reis",
+        "40 g getrocknete Tomaten",
+        "100 g Joghurt",
+        "2 EL Zitronensaft",
+        "2 Knoblauchzehen",
+        "2 EL Olivenöl",
+        "Paprikapulver, Kräuter, Salz, Pfeffer"
+      ],
+      "steps": [
+        "Hähnchen mit Öl, Paprikapulver, Knoblauch, Salz und Pfeffer einreiben.",
+        "Bei 210 °C Ober-/Unterhitze 45–50 Minuten vollständig durchgaren.",
+        "Paprika in breite Streifen schneiden und während der letzten 30 Minuten mitrösten.",
+        "Reis kochen und mit Zitronensaft, gehackten getrockneten Tomaten und Kräutern verfeinern.",
+        "Joghurt würzen und als Dip servieren."
+      ],
+      "note": "Für 2 Portionen. Überschüssiges gegartes Hähnchen zeitnah abkühlen und einfrieren.",
+      "createdAt": "2026-11-24T07:52:00.000Z",
+      "isFavorite": false
     }
   ]
 }
-
