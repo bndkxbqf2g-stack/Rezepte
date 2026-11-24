@@ -1,28 +1,18 @@
 {
   "schemaVersion": 1,
   "app": "Steffi’s Rezeptewelt",
-  "updatedAt": "2026-11-24T07:55:00.000Z",
+  "updatedAt": "2026-11-24T10:40:00.000Z",
   "categories": [
-    {
-      "id": "schnell-einfach",
-      "name": "Schnell & einfach"
-    },
-    {
-      "id": "pasta",
-      "name": "Pasta"
-    },
-    {
-      "id": "ofengerichte",
-      "name": "Ofengerichte"
-    },
-    {
-      "id": "suesses",
-      "name": "Süßes"
-    },
-    {
-      "id": "drinks",
-      "name": "Drinks"
-    }
+    { "id": "schnell-einfach", "name": "Schnell & einfach" },
+    { "id": "pasta", "name": "Pasta" },
+    { "id": "ofengerichte", "name": "Ofengerichte" },
+    { "id": "suesses", "name": "Süßes" },
+    { "id": "drinks", "name": "Drinks" },
+    { "id": "fleischgerichte", "name": "Fleischgerichte" },
+    { "id": "fischgerichte", "name": "Fischgerichte" },
+    { "id": "vegetarisch", "name": "Vegetarisch" },
+    { "id": "asiatisch", "name": "Asiatisch" },
+    { "id": "mediterran", "name": "Mediterran" }
   ],
   "recipes": [
     {
@@ -32,19 +22,8 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 25,
-      "ingredients": [
-        "300 g Linguine",
-        "1 Bio-Zitrone",
-        "2 EL Olivenöl",
-        "40 g Parmesan",
-        "Salz & schwarzer Pfeffer"
-      ],
-      "steps": [
-        "Pasta in Salzwasser al dente kochen und eine Tasse Kochwasser auffangen.",
-        "Zitronenschale abreiben und den Saft mit Olivenöl verrühren.",
-        "Pasta mit Zitronenöl, Parmesan und etwas Kochwasser cremig schwenken.",
-        "Mit Pfeffer und Zitronenzeste servieren."
-      ],
+      "ingredients": ["300 g Linguine", "1 Bio-Zitrone", "2 EL Olivenöl", "40 g Parmesan", "Salz & schwarzer Pfeffer"],
+      "steps": ["Pasta in Salzwasser al dente kochen und eine Tasse Kochwasser auffangen.", "Zitronenschale abreiben und den Saft mit Olivenöl verrühren.", "Pasta mit Zitronenöl, Parmesan und etwas Kochwasser cremig schwenken.", "Mit Pfeffer und Zitronenzeste servieren."],
       "note": "Am liebsten mit extra viel schwarzem Pfeffer.",
       "createdAt": "2026-10-28T09:00:00.000Z",
       "isFavorite": true
@@ -56,19 +35,8 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 20,
-      "ingredients": [
-        "500 g Gnocchi",
-        "2 EL Butter",
-        "1 EL helles Miso",
-        "1 Knoblauchzehe",
-        "Frühlingszwiebeln"
-      ],
-      "steps": [
-        "Gnocchi in einer großen Pfanne goldbraun anbraten.",
-        "Butter und fein gehackten Knoblauch dazugeben.",
-        "Miso mit einem Schuss Wasser glatt rühren und unterheben.",
-        "Mit Frühlingszwiebeln und Sesam toppen."
-      ],
+      "ingredients": ["500 g Gnocchi", "2 EL Butter", "1 EL helles Miso", "1 Knoblauchzehe", "Frühlingszwiebeln"],
+      "steps": ["Gnocchi in einer großen Pfanne goldbraun anbraten.", "Butter und fein gehackten Knoblauch dazugeben.", "Miso mit einem Schuss Wasser glatt rühren und unterheben.", "Mit Frühlingszwiebeln und Sesam toppen."],
       "note": "Funktioniert auch mit gebratenem Brokkoli.",
       "createdAt": "2026-10-27T16:10:00.000Z",
       "isFavorite": true
@@ -80,19 +48,8 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 40,
-      "ingredients": [
-        "1 Süßkartoffel",
-        "2 Möhren",
-        "1 rote Zwiebel",
-        "1 Dose Kichererbsen",
-        "2 EL Tahini"
-      ],
-      "steps": [
-        "Gemüse würfeln, mit Öl und Gewürzen mischen.",
-        "Bei 200 °C ca. 30 Minuten rösten.",
-        "Tahini mit Zitronensaft, Wasser und Salz zu einer Sauce rühren.",
-        "Kichererbsen und Sauce über dem Ofengemüse verteilen."
-      ],
+      "ingredients": ["1 Süßkartoffel", "2 Möhren", "1 rote Zwiebel", "1 Dose Kichererbsen", "2 EL Tahini"],
+      "steps": ["Gemüse würfeln, mit Öl und Gewürzen mischen.", "Bei 200 °C ca. 30 Minuten rösten.", "Tahini mit Zitronensaft, Wasser und Salz zu einer Sauce rühren.", "Kichererbsen und Sauce über dem Ofengemüse verteilen."],
       "note": "Die Sauce lässt sich gut auf Vorrat vorbereiten.",
       "createdAt": "2026-10-25T12:30:00.000Z",
       "isFavorite": false
@@ -104,18 +61,8 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 10,
-      "ingredients": [
-        "2 Salatgurken",
-        "1 EL Reisessig",
-        "1 TL Sesamöl",
-        "1 TL Chiliöl",
-        "Gerösteter Sesam"
-      ],
-      "steps": [
-        "Gurken leicht andrücken und in mundgerechte Stücke schneiden.",
-        "Mit Reisessig, Sesamöl und Chiliöl marinieren.",
-        "Mit Sesam bestreuen und direkt servieren."
-      ],
+      "ingredients": ["2 Salatgurken", "1 EL Reisessig", "1 TL Sesamöl", "1 TL Chiliöl", "Gerösteter Sesam"],
+      "steps": ["Gurken leicht andrücken und in mundgerechte Stücke schneiden.", "Mit Reisessig, Sesamöl und Chiliöl marinieren.", "Mit Sesam bestreuen und direkt servieren."],
       "note": "Knackig, frisch und in zehn Minuten fertig.",
       "createdAt": "2026-10-23T18:45:00.000Z",
       "isFavorite": false
@@ -127,19 +74,8 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 65,
-      "ingredients": [
-        "180 g Mehl",
-        "120 g Zucker",
-        "2 Eier",
-        "1 Bio-Zitrone",
-        "120 g Blaubeeren"
-      ],
-      "steps": [
-        "Ofen auf 175 °C vorheizen und eine Kastenform auslegen.",
-        "Butter, Zucker, Eier und Zitronenabrieb cremig rühren.",
-        "Mehl unterheben, Blaubeeren vorsichtig einarbeiten.",
-        "Im Ofen backen und vollständig auskühlen lassen."
-      ],
+      "ingredients": ["180 g Mehl", "120 g Zucker", "2 Eier", "1 Bio-Zitrone", "120 g Blaubeeren"],
+      "steps": ["Ofen auf 175 °C vorheizen und eine Kastenform auslegen.", "Butter, Zucker, Eier und Zitronenabrieb cremig rühren.", "Mehl unterheben, Blaubeeren vorsichtig einarbeiten.", "Im Ofen backen und vollständig auskühlen lassen."],
       "note": "Mit Zitronenglasur wird er besonders frisch.",
       "createdAt": "2026-10-20T08:10:00.000Z",
       "isFavorite": false
@@ -151,18 +87,8 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 8,
-      "ingredients": [
-        "Eine Handvoll Beeren",
-        "1 Zweig Rosmarin",
-        "100 ml Tonic Water",
-        "100 ml alkoholfreier Sekt",
-        "Eiswürfel"
-      ],
-      "steps": [
-        "Beeren und Rosmarin in ein Glas geben und leicht andrücken.",
-        "Mit Eis auffüllen.",
-        "Tonic Water und Sekt langsam dazugeben."
-      ],
+      "ingredients": ["Eine Handvoll Beeren", "1 Zweig Rosmarin", "100 ml Tonic Water", "100 ml alkoholfreier Sekt", "Eiswürfel"],
+      "steps": ["Beeren und Rosmarin in ein Glas geben und leicht andrücken.", "Mit Eis auffüllen.", "Tonic Water und Sekt langsam dazugeben."],
       "note": "Für die alkoholfreie Variante genauso gedacht.",
       "createdAt": "2026-10-18T15:20:00.000Z",
       "isFavorite": false
@@ -239,17 +165,7 @@
       "servings": 4,
       "difficulty": "Mittel",
       "description": "Ein wunderbar cremiger und herzhafter Nudelauflauf mit aromatisch geröstetem Hokkaido-Kürbis, würzig angebratenem Hackfleisch, einer cremigen Parmesan-Frischkäse-Sauce und goldbrauner Käsekruste. Geröstete Kürbiskerne, frische Petersilie und ein Hauch Zitrone sorgen für das perfekte Finish.",
-      "tags": [
-        "Kürbis",
-        "Hackfleisch",
-        "Auflauf",
-        "Pasta",
-        "Herbst",
-        "Ofengericht",
-        "Familienessen",
-        "herzhaft",
-        "cremig"
-      ],
+      "tags": ["Kürbis", "Hackfleisch", "Auflauf", "Pasta", "Herbst", "Ofengericht", "Familienessen", "herzhaft", "cremig"],
       "ingredients": [
         "500 g Hokkaido-Kürbis",
         "500 g gemischtes Hackfleisch",
@@ -333,12 +249,7 @@
       "servings": 12,
       "servingLabel": "Muffins",
       "description": "Saftige Schoko-Muffins mit weicher Krume und reichlich Schokostückchen.",
-      "tags": [
-        "Muffins",
-        "Schokolade",
-        "Backen",
-        "Süßes"
-      ],
+      "tags": ["Muffins", "Schokolade", "Backen", "Süßes"],
       "ingredients": [
         "2 Eier (Größe M)",
         "150 g Zucker",
@@ -376,16 +287,7 @@
       "prepTime": 30,
       "servings": 4,
       "description": "Cremige Nudelpfanne mit Kochschinken, Brokkoli, Erbsen und einer herzhaften Käsesoße.",
-      "tags": [
-        "Nudeln",
-        "Pasta",
-        "Brokkoli",
-        "Erbsen",
-        "Schinken",
-        "Schnell",
-        "Cremig",
-        "Familienessen"
-      ],
+      "tags": ["Nudeln", "Pasta", "Brokkoli", "Erbsen", "Schinken", "Schnell", "Cremig", "Familienessen"],
       "ingredients": [
         "400 g Nudeln",
         "400 g TK-Brokkoli",
@@ -420,12 +322,186 @@
       "isFavorite": false
     },
     {
+      "id": "chatgpt-schweinefilet-parmesan-rahm",
+      "title": "Schweinefilet-Medaillons mit Paprika, Tomaten-Parmesan-Rahm und Ofenkartoffeln",
+      "categoryId": "fleischgerichte",
+      "source": "ChatGPT",
+      "sourceType": "ChatGPT",
+      "time": 0,
+      "servings": 2,
+      "tags": ["Fleischgerichte", "Schweinefilet", "Paprika", "Parmesan", "Ofenkartoffeln"],
+      "ingredients": [
+        "400 g Schweinefilet",
+        "250 g rote Paprika",
+        "50 g getrocknete Tomaten",
+        "150 ml Kochsahne",
+        "30 g Parmesan",
+        "500 g Kartoffeln",
+        "Frühlingszwiebeln",
+        "Knoblauch",
+        "Olivenöl",
+        "Salz, Pfeffer, Paprikapulver"
+      ],
+      "steps": [
+        "Kartoffeln in Spalten schneiden, mit Öl und Gewürzen vermengen und bei 220 °C etwa 30–35 Minuten goldbraun rösten.",
+        "Schweinefilet in Medaillons schneiden, würzen und von beiden Seiten kräftig anbraten. Herausnehmen.",
+        "Paprika, Frühlingszwiebeln, Knoblauch und getrocknete Tomaten im Bratensatz anschwitzen.",
+        "Kochsahne und Parmesan hinzufügen und die Sauce leicht einkochen lassen.",
+        "Medaillons zurück in die Sauce geben und fertig garen.",
+        "Mit den knusprigen Ofenkartoffeln servieren."
+      ],
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-mediterrane-lachs-spaghetti",
+      "title": "Mediterrane Lachs-Spaghetti mit Zitronenöl und Cocktailtomaten",
+      "categoryId": "pasta",
+      "source": "ChatGPT",
+      "sourceType": "ChatGPT",
+      "time": 0,
+      "servings": 2,
+      "tags": ["Pasta", "Fischgerichte", "Lachs", "Mediterran", "Zitrone"],
+      "ingredients": [
+        "250 g Lachsfilet",
+        "200–250 g Spaghetti",
+        "150 g Cocktailtomaten",
+        "Olivenöl",
+        "Zitronensaft",
+        "Knoblauch",
+        "Frühlingszwiebeln",
+        "Mediterrane Kräuter",
+        "Salz und Pfeffer"
+      ],
+      "steps": [
+        "Spaghetti bissfest kochen und etwas Nudelwasser auffangen.",
+        "Lachs würzen und in Olivenöl goldbraun braten und durchgaren.",
+        "Cocktailtomaten halbieren und mit Knoblauch und Frühlingszwiebeln in der Pfanne anschwitzen.",
+        "Olivenöl, Zitronensaft, Kräuter und etwas Nudelwasser hinzufügen.",
+        "Spaghetti darin schwenken und abschmecken.",
+        "Lachs in grobe Stücke teilen und auf der Pasta anrichten."
+      ],
+      "note": "Besonderheit: Ohne Sahne und Parmesan.",
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-asia-haehnchen-ahorn",
+      "title": "Asia-Hähnchen mit Soja-Ahorn-Glasur, Wildreis und Gurkensalat",
+      "categoryId": "asiatisch",
+      "source": "ChatGPT",
+      "sourceType": "ChatGPT",
+      "time": 0,
+      "servings": 2,
+      "tags": ["Asiatisch", "Fleischgerichte", "Hähnchen", "Wildreis", "Gurkensalat"],
+      "ingredients": [
+        "350–400 g Hähncheninnenbrustfilet",
+        "150 g Wildreis",
+        "½ Salatgurke",
+        "Sojasauce",
+        "Ahornsirup",
+        "Frühlingszwiebeln",
+        "Erdnussöl",
+        "Zitronensaft",
+        "Knoblauch",
+        "Ingwer",
+        "Chili"
+      ],
+      "steps": [
+        "Wildreis nach Packungsanweisung zubereiten.",
+        "Gurke in dünne Scheiben schneiden und mit Zitronensaft und etwas Sojasauce marinieren.",
+        "Hähnchen in Erdnussöl kräftig anbraten.",
+        "Gehackten Knoblauch, Ingwer und Chili hinzufügen.",
+        "Mit Sojasauce und Ahornsirup ablöschen und einkochen lassen, bis eine glänzende Glasur entsteht.",
+        "Hähnchen vollständig durchgaren und mit Wildreis, Gurkensalat und Frühlingszwiebeln servieren."
+      ],
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-kartoffel-paprika-camembert",
+      "title": "Kartoffel-Paprika-Auflauf mit Bacon, Camembert und Schmandkruste",
+      "categoryId": "ofengerichte",
+      "source": "ChatGPT",
+      "sourceType": "ChatGPT",
+      "time": 0,
+      "servings": 2,
+      "tags": ["Ofengerichte", "Kartoffeln", "Paprika", "Bacon", "Camembert", "Auflauf"],
+      "ingredients": [
+        "500 g Kartoffeln",
+        "250 g rote Paprika",
+        "100 g Bacon",
+        "100–120 g Camembert",
+        "100 g Schmand",
+        "40 g geriebener Käse",
+        "1 Zwiebel",
+        "Senf",
+        "Etwas Milch",
+        "Salz, Pfeffer, Gewürze"
+      ],
+      "steps": [
+        "Kartoffeln in Scheiben schneiden und vorkochen.",
+        "Paprika und Zwiebel schneiden.",
+        "Bacon knusprig anbraten.",
+        "Schmand mit etwas Milch, Senf und Gewürzen verrühren.",
+        "Kartoffeln, Paprika, Zwiebel, Bacon und Camembert in eine Auflaufform schichten.",
+        "Schmandsauce darüber verteilen und mit geriebenem Käse bestreuen.",
+        "Bei 200 °C backen, bis die Kartoffeln vollständig gar sind und eine goldbraune Kruste entstanden ist."
+      ],
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-hirtenkaese-panko",
+      "title": "Knuspriger Hirtenkäse im Panko-Mantel mit Tomaten-Gemüse und Zitronen-Kräuter-Dip",
+      "categoryId": "vegetarisch",
+      "source": "ChatGPT",
+      "sourceType": "ChatGPT",
+      "time": 0,
+      "servings": 2,
+      "tags": ["Vegetarisch", "Hirtenkäse", "Panko", "Tomaten", "Couscous", "Dip"],
+      "ingredients": [
+        "200 g Hirtenkäse mit mikrobiellem Lab",
+        "60 g Panko",
+        "1 Ei",
+        "2 EL Mehl",
+        "400 g gehackte Tomaten",
+        "1 rote Paprika",
+        "100 g Joghurt",
+        "120–150 g Couscous oder Reis",
+        "Knoblauch",
+        "Zitronensaft",
+        "Kräuter",
+        "Öl",
+        "Salz und Pfeffer"
+      ],
+      "steps": [
+        "Couscous oder Reis nach Packungsanweisung zubereiten.",
+        "Paprika würfeln und mit Knoblauch anbraten.",
+        "Gehackte Tomaten hinzufügen, würzen und zu einem aromatischen Tomatengemüse einkochen lassen.",
+        "Hirtenkäse in größere Stücke schneiden.",
+        "Nacheinander in Mehl, verquirltem Ei und Panko wenden.",
+        "In Öl von allen Seiten goldbraun und knusprig braten.",
+        "Joghurt mit Zitronensaft, Kräutern und Gewürzen verrühren.",
+        "Hirtenkäse mit Tomatengemüse, Beilage und Dip servieren."
+      ],
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
       "id": "chatgpt-paprika-balsamico-haehnchen",
       "title": "Italienisches Hähnchen in gerösteter Paprika-Balsamico-Sauce mit Kräuterreis",
-      "categoryId": "schnell-einfach",
-      "source": "",
+      "categoryId": "mediterran",
+      "source": "ChatGPT",
       "sourceType": "ChatGPT",
       "time": 40,
+      "servings": 2,
+      "tags": ["Mediterran", "Fleischgerichte", "Hähnchen", "Paprika", "Kräuterreis"],
       "ingredients": [
         "400 g Hähncheninnenbrustfilet",
         "500 g rote Paprika",
@@ -438,27 +514,36 @@
         "1 TL Ahornsirup",
         "1 EL Zitronensaft",
         "3 EL Olivenöl",
-        "Oregano, Kräuter, Paprikapulver, Chili, Salz, Pfeffer"
+        "Oregano",
+        "Paprikapulver",
+        "Kräuter",
+        "Chili, Salz und Pfeffer"
       ],
       "steps": [
-        "Paprika schneiden, mit Öl vermengen und bei 220 °C 20 Minuten rösten.",
+        "Paprika grob schneiden, mit Olivenöl vermengen und bei 220 °C etwa 20 Minuten kräftig rösten.",
         "Reis kochen und mit Zitronensaft und Kräutern verfeinern.",
-        "Hähnchen würzen, goldbraun anbraten, vollständig durchgaren und herausnehmen.",
-        "Zwiebel, Knoblauch und getrocknete Tomaten im Bratensatz anschwitzen. Zwei Drittel der Paprika und 100 ml Wasser hinzufügen.",
-        "Pürieren, mit Balsamico, Ahornsirup und Chili abschmecken. Restliche Paprika und Hähnchen hinzufügen.",
-        "Mit Kräuterreis und gewürztem Joghurt servieren."
+        "Hähnchen mit Paprikapulver, Oregano, Salz und Pfeffer würzen.",
+        "In einer heißen Pfanne goldbraun anbraten, vollständig durchgaren und herausnehmen.",
+        "Zwiebel, Knoblauch und getrocknete Tomaten im Bratensatz anschwitzen.",
+        "Zwei Drittel der gerösteten Paprika und etwa 100 ml Wasser hinzufügen.",
+        "Sauce pürieren und mit Balsamico, Ahornsirup und Chili abschmecken.",
+        "Restliche Paprika und Hähnchen hinzugeben und kurz erwärmen.",
+        "Mit Kräuterreis und einem Klecks gewürztem Joghurt servieren."
       ],
-      "note": "Für 2 Portionen.",
-      "createdAt": "2026-11-24T07:52:00.000Z",
+      "note": "Besonderheit: Aromatische Sauce ohne Sahne.",
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
       "isFavorite": false
     },
     {
       "id": "chatgpt-lachs-parmesan-stampf",
       "title": "Goldbrauner Lachs auf Parmesan-Kartoffelstampf mit Erbsen und brauner Butter",
-      "categoryId": "schnell-einfach",
-      "source": "",
+      "categoryId": "fischgerichte",
+      "source": "ChatGPT",
       "sourceType": "ChatGPT",
       "time": 35,
+      "servings": 2,
+      "tags": ["Fischgerichte", "Lachs", "Kartoffelstampf", "Erbsen", "Butter"],
       "ingredients": [
         "250 g Lachsfilet",
         "500 g Kartoffeln",
@@ -468,31 +553,38 @@
         "80 ml Milch",
         "1 EL Zitronensaft",
         "1 EL Mehl",
-        "Kräuter, Muskat, Salz, Pfeffer",
-        "Etwas Bratöl"
+        "Etwas Bratöl",
+        "Kräuter",
+        "Muskat",
+        "Salz und Pfeffer"
       ],
       "steps": [
-        "Lachs im Kühlschrank auftauen.",
-        "Kartoffeln weich kochen und mit warmer Milch, 15 g Butter und Parmesan stampfen. Mit Muskat abschmecken.",
+        "Tiefgefrorenen Lachs rechtzeitig im Kühlschrank auftauen.",
+        "Kartoffeln weich kochen.",
+        "Mit warmer Milch, 15 g Butter und Parmesan stampfen. Mit Muskat abschmecken.",
         "Lachs trocken tupfen, würzen und leicht mit Mehl bestäuben.",
-        "In Öl goldbraun braten und vollständig durchgaren.",
-        "Restliche Butter vorsichtig bräunen, Erbsen darin erhitzen und mit Zitronensaft und Kräutern abschmecken.",
-        "Auf dem Stampf mit Buttererbsen servieren."
+        "In etwas Öl bei mittlerer Hitze goldbraun braten und vollständig durchgaren.",
+        "Restliche Butter vorsichtig bräunen, bis sie nussig duftet.",
+        "Erbsen darin erhitzen und mit Zitronensaft und Kräutern abschmecken.",
+        "Lachs auf dem Kartoffelstampf anrichten und mit den Buttererbsen servieren."
       ],
-      "note": "Für 2 Portionen. Auftauzeit zusätzlich.",
-      "createdAt": "2026-11-24T07:52:00.000Z",
+      "note": "Zubereitungszeit: 35 Minuten plus gegebenenfalls Auftauzeit.",
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
       "isFavorite": false
     },
     {
       "id": "chatgpt-sizilianische-auberginen-pasta",
       "title": "Sizilianische Pasta mit geschmorter Aubergine, Tomaten und knusprigem Kräuter-Panko",
       "categoryId": "pasta",
-      "source": "",
+      "source": "ChatGPT",
       "sourceType": "ChatGPT",
       "time": 40,
+      "servings": 2,
+      "tags": ["Pasta", "Vegetarisch", "Aubergine", "Tomaten", "Panko", "Sizilianisch"],
       "ingredients": [
         "600 g Rispentomaten",
-        "350 g Aubergine",
+        "1 Aubergine, ca. 350 g",
         "250 g Makkaroni oder Spaghetti",
         "100 g Hirtenkäse mit mikrobiellem Lab",
         "40 g Panko",
@@ -500,27 +592,32 @@
         "1 Zwiebel",
         "1 EL Balsamico",
         "3 EL Olivenöl",
-        "Kräuter, Chili, Salz, Pfeffer"
+        "Mediterrane Kräuter",
+        "Chili, Salz und Pfeffer"
       ],
       "steps": [
-        "Aubergine würfeln, in Olivenöl goldbraun anbraten und herausnehmen.",
-        "Zwiebel und Knoblauch anschwitzen, gewürfelte Tomaten hinzufügen und 20 Minuten einkochen.",
-        "Mit Balsamico, Chili und Kräutern abschmecken. Aubergine hinzufügen.",
+        "Aubergine würfeln und mit Olivenöl bei kräftiger Hitze goldbraun anbraten. Herausnehmen.",
+        "Zwiebel und Knoblauch anschwitzen.",
+        "Gewürfelte Tomaten hinzufügen und etwa 20 Minuten einkochen lassen.",
+        "Mit Balsamico, Chili und Kräutern abschmecken.",
+        "Auberginen wieder hinzufügen.",
         "Nudeln bissfest kochen und mit etwas Nudelwasser unter die Sauce mischen.",
-        "Panko separat mit Olivenöl und Kräutern knusprig rösten.",
-        "Mit zerbröseltem Hirtenkäse und Kräuter-Panko servieren."
+        "Panko separat in etwas Olivenöl mit Kräutern knusprig rösten.",
+        "Pasta mit zerbröseltem Hirtenkäse und Kräuter-Panko anrichten."
       ],
-      "note": "Für 2 Portionen.",
-      "createdAt": "2026-11-24T07:52:00.000Z",
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
       "isFavorite": false
     },
     {
       "id": "chatgpt-mediterranes-ofenhaehnchen",
       "title": "Mediterranes Ofenhähnchen mit Paprikagemüse und Zitronenreis",
       "categoryId": "ofengerichte",
-      "source": "",
+      "source": "ChatGPT",
       "sourceType": "ChatGPT",
       "time": 60,
+      "servings": 2,
+      "tags": ["Ofengerichte", "Fleischgerichte", "Hähnchen", "Paprika", "Zitronenreis"],
       "ingredients": [
         "1,1 kg Hähnchenschenkel",
         "500 g rote Paprika",
@@ -530,140 +627,23 @@
         "2 EL Zitronensaft",
         "2 Knoblauchzehen",
         "2 EL Olivenöl",
-        "Paprikapulver, Kräuter, Salz, Pfeffer"
+        "Paprikapulver",
+        "Mediterrane Kräuter",
+        "Salz und Pfeffer"
       ],
       "steps": [
-        "Hähnchen mit Öl, Paprikapulver, Knoblauch, Salz und Pfeffer einreiben.",
-        "Bei 210 °C Ober-/Unterhitze 45–50 Minuten vollständig durchgaren.",
+        "Hähnchen mit Olivenöl, Paprikapulver, Knoblauch, Salz und Pfeffer einreiben.",
+        "Bei 210 °C Ober-/Unterhitze etwa 45–50 Minuten im Ofen vollständig durchgaren.",
         "Paprika in breite Streifen schneiden und während der letzten 30 Minuten mitrösten.",
         "Reis kochen und mit Zitronensaft, gehackten getrockneten Tomaten und Kräutern verfeinern.",
-        "Joghurt würzen und als Dip servieren."
+        "Joghurt würzen und als frischen Dip servieren.",
+        "Hähnchen mit gerösteter Paprika, Zitronenreis und Dip anrichten."
       ],
-      "note": "Für 2 Portionen. Überschüssiges gegartes Hähnchen zeitnah abkühlen und einfrieren.",
-      "createdAt": "2026-11-24T07:52:00.000Z",
-      "isFavorite": false
-    },
-    {
-      "id": "chatgpt-schweinefilet-parmesan-rahm",
-      "title": "Schweinefilet-Medaillons mit Paprika, Tomaten-Parmesan-Rahm und Ofenkartoffeln",
-      "categoryId": "ofengerichte",
-      "source": "",
-      "sourceType": "ChatGPT",
-      "ingredients": [
-        "400 g Schweinefilet",
-        "250 g rote Paprika",
-        "50 g getrocknete Tomaten",
-        "150 ml Kochsahne",
-        "30 g Parmesan",
-        "500 g Kartoffeln",
-        "Frühlingszwiebeln, Knoblauch, Öl, Salz, Pfeffer"
-      ],
-      "steps": [
-        "Kartoffeln in Spalten schneiden, würzen und bei 220 °C 30–35 Minuten rösten.",
-        "Schweinefilet in Medaillons schneiden, würzen und kräftig anbraten.",
-        "Paprika, Frühlingszwiebeln, Knoblauch und getrocknete Tomaten im Bratensatz anschwitzen.",
-        "Kochsahne und Parmesan hinzufügen, Medaillons in der Sauce fertig garen und mit Ofenkartoffeln servieren."
-      ],
-      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
-      "createdAt": "2026-11-24T07:55:00.000Z",
-      "isFavorite": false
-    },
-    {
-      "id": "chatgpt-mediterrane-lachs-spaghetti",
-      "title": "Mediterrane Lachs-Spaghetti mit Zitronenöl und Cocktailtomaten",
-      "categoryId": "pasta",
-      "source": "",
-      "sourceType": "ChatGPT",
-      "ingredients": [
-        "250 g Lachs",
-        "200–250 g Spaghetti",
-        "150 g Cocktailtomaten",
-        "Olivenöl, Zitronensaft, Kräuter, Knoblauch, Frühlingszwiebeln, Salz, Pfeffer"
-      ],
-      "steps": [
-        "Spaghetti bissfest kochen, etwas Nudelwasser auffangen.",
-        "Lachs würzen und in Olivenöl durchgaren.",
-        "Cocktailtomaten mit Knoblauch und Frühlingszwiebeln in der Pfanne schmelzen lassen.",
-        "Spaghetti mit Zitronenöl, Kräutern und etwas Nudelwasser vermengen. Lachs darauf anrichten."
-      ],
-      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
-      "createdAt": "2026-11-24T07:55:00.000Z",
-      "isFavorite": false
-    },
-    {
-      "id": "chatgpt-asia-haehnchen-ahorn",
-      "title": "Asia-Hähnchen mit Soja-Ahorn-Glasur, Wildreis und Gurkensalat",
-      "categoryId": "schnell-einfach",
-      "source": "",
-      "sourceType": "ChatGPT",
-      "ingredients": [
-        "350–400 g Hähncheninnenbrustfilet",
-        "150 g Wildreis",
-        "1/2 Gurke",
-        "Sojasauce, Ahornsirup, Frühlingszwiebeln, Erdnussöl, Zitronensaft, Knoblauch, Ingwer, Chili"
-      ],
-      "steps": [
-        "Wildreis nach Packungsangabe kochen.",
-        "Gurke schneiden und mit Zitronensaft und etwas Sojasauce marinieren.",
-        "Hähnchen in Erdnussöl anbraten, Knoblauch, Ingwer und Chili hinzufügen.",
-        "Mit Sojasauce und Ahornsirup glasieren und vollständig durchgaren. Mit Wildreis, Gurkensalat und Frühlingszwiebeln servieren."
-      ],
-      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
-      "createdAt": "2026-11-24T07:55:00.000Z",
-      "isFavorite": false
-    },
-    {
-      "id": "chatgpt-kartoffel-paprika-camembert",
-      "title": "Kartoffel-Paprika-Auflauf mit Bacon, Camembert und Schmandkruste",
-      "categoryId": "ofengerichte",
-      "source": "",
-      "sourceType": "ChatGPT",
-      "ingredients": [
-        "500 g Kartoffeln",
-        "250 g rote Paprika",
-        "100 g Bacon",
-        "100–120 g Camembert",
-        "100 g Schmand",
-        "40 g geriebener Käse",
-        "Zwiebel, Senf, Milch, Salz, Pfeffer, Gewürze"
-      ],
-      "steps": [
-        "Kartoffeln in Scheiben schneiden und vorkochen.",
-        "Paprika und Zwiebel schneiden, Bacon anbraten.",
-        "Schmand mit etwas Milch, Senf und Gewürzen verrühren.",
-        "Kartoffeln, Paprika, Bacon und Camembert in eine Auflaufform schichten, Schmandsauce und geriebenen Käse darübergeben.",
-        "Bei 200 °C backen, bis die Kartoffeln gar und die Kruste goldbraun ist."
-      ],
-      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
-      "createdAt": "2026-11-24T07:55:00.000Z",
-      "isFavorite": false
-    },
-    {
-      "id": "chatgpt-hirtenkaese-panko",
-      "title": "Knuspriger Hirtenkäse im Panko-Mantel mit Tomaten-Gemüse und Zitronen-Kräuter-Dip",
-      "categoryId": "schnell-einfach",
-      "source": "",
-      "sourceType": "ChatGPT",
-      "ingredients": [
-        "200 g Hirtenkäse mit mikrobiellem Lab",
-        "60 g Panko",
-        "1 Ei",
-        "2 EL Mehl",
-        "400 g gehackte Tomaten",
-        "1 rote Paprika",
-        "100 g Joghurt",
-        "120–150 g Couscous oder Reis",
-        "Kräuter, Knoblauch, Zitronensaft, Öl, Salz, Pfeffer"
-      ],
-      "steps": [
-        "Couscous oder Reis nach Packungsangabe zubereiten.",
-        "Paprika mit Knoblauch anbraten, gehackte Tomaten hinzufügen und einkochen lassen.",
-        "Hirtenkäse in Stücke schneiden, in Mehl, verquirltem Ei und Panko wenden und in Öl goldbraun braten.",
-        "Joghurt mit Zitronensaft, Kräutern und Gewürzen verrühren. Mit Tomatengemüse und Beilage servieren."
-      ],
-      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
-      "createdAt": "2026-11-24T07:55:00.000Z",
+      "note": "Hinweis: Nicht benötigtes gegartes Hähnchen zeitnah abkühlen und einfrieren.",
+      "createdAt": "2026-11-24T00:00:00.000Z",
+      "updatedAt": "2026-11-24T00:00:00.000Z",
       "isFavorite": false
     }
   ]
 }
+
