@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "app": "Steffi’s Rezeptewelt",
-  "updatedAt": "2026-11-24T07:52:00.000Z",
+  "updatedAt": "2026-11-24T07:55:00.000Z",
   "categories": [
     {
       "id": "schnell-einfach",
@@ -541,6 +541,128 @@
       ],
       "note": "Für 2 Portionen. Überschüssiges gegartes Hähnchen zeitnah abkühlen und einfrieren.",
       "createdAt": "2026-11-24T07:52:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-schweinefilet-parmesan-rahm",
+      "title": "Schweinefilet-Medaillons mit Paprika, Tomaten-Parmesan-Rahm und Ofenkartoffeln",
+      "categoryId": "ofengerichte",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "ingredients": [
+        "400 g Schweinefilet",
+        "250 g rote Paprika",
+        "50 g getrocknete Tomaten",
+        "150 ml Kochsahne",
+        "30 g Parmesan",
+        "500 g Kartoffeln",
+        "Frühlingszwiebeln, Knoblauch, Öl, Salz, Pfeffer"
+      ],
+      "steps": [
+        "Kartoffeln in Spalten schneiden, würzen und bei 220 °C 30–35 Minuten rösten.",
+        "Schweinefilet in Medaillons schneiden, würzen und kräftig anbraten.",
+        "Paprika, Frühlingszwiebeln, Knoblauch und getrocknete Tomaten im Bratensatz anschwitzen.",
+        "Kochsahne und Parmesan hinzufügen, Medaillons in der Sauce fertig garen und mit Ofenkartoffeln servieren."
+      ],
+      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
+      "createdAt": "2026-11-24T07:55:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-mediterrane-lachs-spaghetti",
+      "title": "Mediterrane Lachs-Spaghetti mit Zitronenöl und Cocktailtomaten",
+      "categoryId": "pasta",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "ingredients": [
+        "250 g Lachs",
+        "200–250 g Spaghetti",
+        "150 g Cocktailtomaten",
+        "Olivenöl, Zitronensaft, Kräuter, Knoblauch, Frühlingszwiebeln, Salz, Pfeffer"
+      ],
+      "steps": [
+        "Spaghetti bissfest kochen, etwas Nudelwasser auffangen.",
+        "Lachs würzen und in Olivenöl durchgaren.",
+        "Cocktailtomaten mit Knoblauch und Frühlingszwiebeln in der Pfanne schmelzen lassen.",
+        "Spaghetti mit Zitronenöl, Kräutern und etwas Nudelwasser vermengen. Lachs darauf anrichten."
+      ],
+      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
+      "createdAt": "2026-11-24T07:55:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-asia-haehnchen-ahorn",
+      "title": "Asia-Hähnchen mit Soja-Ahorn-Glasur, Wildreis und Gurkensalat",
+      "categoryId": "schnell-einfach",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "ingredients": [
+        "350–400 g Hähncheninnenbrustfilet",
+        "150 g Wildreis",
+        "1/2 Gurke",
+        "Sojasauce, Ahornsirup, Frühlingszwiebeln, Erdnussöl, Zitronensaft, Knoblauch, Ingwer, Chili"
+      ],
+      "steps": [
+        "Wildreis nach Packungsangabe kochen.",
+        "Gurke schneiden und mit Zitronensaft und etwas Sojasauce marinieren.",
+        "Hähnchen in Erdnussöl anbraten, Knoblauch, Ingwer und Chili hinzufügen.",
+        "Mit Sojasauce und Ahornsirup glasieren und vollständig durchgaren. Mit Wildreis, Gurkensalat und Frühlingszwiebeln servieren."
+      ],
+      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
+      "createdAt": "2026-11-24T07:55:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-kartoffel-paprika-camembert",
+      "title": "Kartoffel-Paprika-Auflauf mit Bacon, Camembert und Schmandkruste",
+      "categoryId": "ofengerichte",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "ingredients": [
+        "500 g Kartoffeln",
+        "250 g rote Paprika",
+        "100 g Bacon",
+        "100–120 g Camembert",
+        "100 g Schmand",
+        "40 g geriebener Käse",
+        "Zwiebel, Senf, Milch, Salz, Pfeffer, Gewürze"
+      ],
+      "steps": [
+        "Kartoffeln in Scheiben schneiden und vorkochen.",
+        "Paprika und Zwiebel schneiden, Bacon anbraten.",
+        "Schmand mit etwas Milch, Senf und Gewürzen verrühren.",
+        "Kartoffeln, Paprika, Bacon und Camembert in eine Auflaufform schichten, Schmandsauce und geriebenen Käse darübergeben.",
+        "Bei 200 °C backen, bis die Kartoffeln gar und die Kruste goldbraun ist."
+      ],
+      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
+      "createdAt": "2026-11-24T07:55:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "chatgpt-hirtenkaese-panko",
+      "title": "Knuspriger Hirtenkäse im Panko-Mantel mit Tomaten-Gemüse und Zitronen-Kräuter-Dip",
+      "categoryId": "schnell-einfach",
+      "source": "",
+      "sourceType": "ChatGPT",
+      "ingredients": [
+        "200 g Hirtenkäse mit mikrobiellem Lab",
+        "60 g Panko",
+        "1 Ei",
+        "2 EL Mehl",
+        "400 g gehackte Tomaten",
+        "1 rote Paprika",
+        "100 g Joghurt",
+        "120–150 g Couscous oder Reis",
+        "Kräuter, Knoblauch, Zitronensaft, Öl, Salz, Pfeffer"
+      ],
+      "steps": [
+        "Couscous oder Reis nach Packungsangabe zubereiten.",
+        "Paprika mit Knoblauch anbraten, gehackte Tomaten hinzufügen und einkochen lassen.",
+        "Hirtenkäse in Stücke schneiden, in Mehl, verquirltem Ei und Panko wenden und in Öl goldbraun braten.",
+        "Joghurt mit Zitronensaft, Kräutern und Gewürzen verrühren. Mit Tomatengemüse und Beilage servieren."
+      ],
+      "note": "Für 2 Portionen. Aus dem freigegebenen Fünf-Tage-Speiseplan; Zubereitung aus den verfügbaren Rezeptangaben rekonstruiert.",
+      "createdAt": "2026-11-24T07:55:00.000Z",
       "isFavorite": false
     }
   ]
