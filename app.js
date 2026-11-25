@@ -1234,13 +1234,39 @@ function closeDialog(id) {
   if (id === 'readerDialog') releaseWakeLock();
 }
 
+function updateWakeLockUi(state) {
+  const status = $('#readerWakeStatus');
+  if (!status) return;
+  if (state === 'active') {
+    status.textContent = 'Bildschirm bleibt aktiv';
+    status.parentElement.classList.add('wake-lock-active');
+    status.parentElement.classList.remove('wake-lock-unavailable');
+  } else if (state === 'unavailable') {
+    status.textContent = 'Bildschirm-Sperre nicht verfügbar';
+    status.parentElement.classList.remove('wake-lock-active');
+    status.parentElement.classList.add('wake-lock-unavailable');
+  } else {
+    status.textContent = 'Rezept-Reader';
+    status.parentElement.classList.remove('wake-lock-active', 'wake-lock-unavailable');
+  }
+}
+
 async function requestWakeLock() {
-  if (!('wakeLock' in navigator) || document.visibilityState !== 'visible') return;
+  if (!('wakeLock' in navigator)) {
+    updateWakeLockUi('unavailable');
+    return;
+  }
+  if (document.visibilityState !== 'visible' || wakeLock) return;
   try {
     wakeLock = await navigator.wakeLock.request('screen');
-    wakeLock.addEventListener('release', () => { wakeLock = null; });
+    updateWakeLockUi('active');
+    wakeLock.addEventListener('release', () => {
+      wakeLock = null;
+      if ($('#readerDialog') && $('#readerDialog').open && document.visibilityState === 'visible') updateWakeLockUi('');
+    });
   } catch (error) {
     wakeLock = null;
+    updateWakeLockUi('unavailable');
   }
 }
 
@@ -1248,6 +1274,7 @@ async function releaseWakeLock() {
   if (!wakeLock) return;
   try { await wakeLock.release(); } catch (error) { /* Browser may have released it already. */ }
   wakeLock = null;
+  updateWakeLockUi('');
 }
 
 async function saveRecipeFromForm() {
@@ -1474,10 +1501,12 @@ function renderReader(recipe) {
     '<h1 class="paper-title">' + escapeHtml(recipe.title) + '</h1>' +
     '<p class="paper-intro">' + escapeHtml(recipe.description || recipe.note || 'Ein Lieblingsrezept aus Steffis Rezeptewelt — gesammelt, sortiert und bereit zum Nachkochen.') + '</p>' +
     '<div class="paper-meta">' +
+      (recipe.servings ? '<span><strong>♧</strong> ' + escapeHtml(recipe.servings + ' Portionen') + '</span>' : '') +
       '<span><strong>⏱</strong> ' + (recipe.time ? escapeHtml(recipe.time + ' Minuten') : 'Zeit nach Gefühl') + '</span>' +
       '<span><strong>✦</strong> ' + ingredients.length + ' Zutaten</span>' +
       '<span><strong>↗</strong> ' + escapeHtml(recipe.source ? 'Quelle verknüpft' : 'Eigenes Rezept') + '</span>' +
     '</div>' +
+    '<div class="paper-device-note"><span class="paper-device-icon" aria-hidden="true">◌</span><span>Beim geöffneten Rezept bleibt der Bildschirm aktiv, sofern dein Browser diese Funktion unterstützt.</span></div>' +
     '<div class="paper-content">' +
       '<section class="paper-section"><h3>Zutaten</h3>' +
         (ingredients.length ? '<ul class="paper-ingredients">' + ingredients.map((item) => '<li>' + escapeHtml(item) + '</li>').join('') + '</ul>' : '<div class="paper-empty">Noch keine Zutaten ergänzt. Öffne „Bearbeiten“, sobald du das Rezept vervollständigen möchtest.</div>') +
@@ -1866,7 +1895,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=23', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=24', { updateViaCache: 'none' }).catch(() => {});
   document.addEventListener('gesturestart', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gesturechange', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gestureend', (event) => event.preventDefault(), { passive: false });

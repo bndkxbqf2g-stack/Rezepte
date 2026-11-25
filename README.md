@@ -1,6 +1,6 @@
 # Steffi’s Rezeptewelt
 
-Mobile-first PWA für eine persönliche Rezeptsammlung mit Kategorien, Instagram-Links, Rezept-Reader und GitHub-Dateiimport.
+Mobile-first PWA für eine persönliche Rezeptsammlung mit Kategorien, Instagram-Links, Rezept-Reader und GitHub-Dateiimport. Die Oberfläche ist als ruhige, warme Rezeptbuchverwaltung ohne Einkaufs- oder Planungsnavigation gestaltet.
 
 ## GitHub-Rezepte
 
@@ -13,6 +13,8 @@ Gelöschte Rezepte werden lokal zusätzlich als gelöscht markiert. Dadurch kön
 Zeitlich geplante Rezeptgruppen werden als Kategorie mit `temporary: true` und einem ISO-Zeitpunkt in `promoteAfter` gespeichert. Jedes Rezept dieser Gruppe erhält zusätzlich `promoteToCategoryId` für die spätere normale Kategorie. Beim Start, beim Aktualisieren und beim GitHub-Abgleich prüft die App das Datum; nach Ablauf verschiebt sie die Rezepte automatisch in ihre Zielkategorien, entfernt die leere temporäre Kategorie und synchronisiert die Änderung bei bestehender GitHub-Verbindung. Bleibt die App geöffnet, wird die Übernahme zum passenden Zeitpunkt ebenfalls automatisch ausgeführt. Dieser Ablauf kann für künftige Datumsgruppen mit denselben Feldern wiederverwendet werden.
 
 Im Rezept-Reader stehen außerdem **Kopieren** und **Teilen** zur Verfügung. Kopiert beziehungsweise teilt werden Titel, Zeit, Portionen, Zutaten, Zubereitung, Notiz und Quelle. Wenn das Gerät kein natives Teilen unterstützt, wird der vollständige Rezeptinhalt kopiert.
+
+Beim Öffnen eines Rezepts fordert die PWA, sofern der Browser die Screen-Wake-Lock-API unterstützt, eine aktive Bildschirm-Sperre an. So bleibt das Display während des Lesens eingeschaltet. Wird die App im Hintergrund pausiert, fordert sie die Sperre bei der Rückkehr automatisch erneut an.
 
 Der Schlüssel bleibt ausschließlich im lokalen Speicher des verbundenen Browsers. Dafür sollte ein eigener, fein-granularer Schlüssel verwendet werden, der nur Zugriff auf dieses Repository hat. Ohne Verbindung bleibt der Export als `recipes.json` als manueller Fallback verfügbar.
 
