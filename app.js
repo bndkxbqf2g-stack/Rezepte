@@ -299,9 +299,10 @@ async function connectGithub() {
     status.className = 'github-status is-success';
     const remote = await readGithubRepositoryFile({ repo, token, branch });
     if (remote.payload && Array.isArray(remote.payload.recipes)) {
-      replaceRepositoryData(remote.payload);
+      const result = replaceRepositoryData(remote.payload);
       writeStorage();
       render();
+      if (result.deletedRemote) await queueGithubSync({ silent: true, message: 'Gelöschte Rezepte bereinigt' });
       status.textContent = 'Verbunden und data/recipes.json geladen.';
       showToast('GitHub verbunden. Rezeptbestand geladen.');
     } else {
@@ -403,6 +404,7 @@ function replaceRepositoryData(payload) {
   const repositoryRecipes = Array.isArray(payload && payload.recipes) ? payload.recipes : [];
   const previousRecipeCount = recipes.length;
   const previousCategories = JSON.stringify(categories);
+  const deletedRemote = repositoryRecipes.filter(isRecipeDeleted).length;
 
   if (repositoryCategories.length) categories = repositoryCategories;
   recipes = repositoryRecipes
@@ -412,6 +414,7 @@ function replaceRepositoryData(payload) {
   return {
     loaded: recipes.length,
     removed: Math.max(0, previousRecipeCount - recipes.length),
+    deletedRemote,
     categoriesChanged: previousCategories !== JSON.stringify(categories),
     changed: true
   };
@@ -480,6 +483,9 @@ async function refreshRepositoryRecipes() {
     writeStorage();
     render();
     const removedMessage = result.removed ? ' ' + result.removed + ' entfernte lokal ausgeblendet.' : '';
+    if (result.deletedRemote && getGithubSettings().token) {
+      await queueGithubSync({ silent: true, message: 'Gelöschte Rezepte bereinigt' });
+    }
     showToast(result.loaded + ' Rezepte aus data/recipes.json geladen.' + removedMessage);
   } catch (error) {
     showToast('GitHub konnte nicht aktualisiert werden. Prüfe data/recipes.json.');
