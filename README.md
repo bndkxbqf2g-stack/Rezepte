@@ -8,6 +8,10 @@ Die veröffentlichte App liest den gemeinsamen Bestand aus `data/recipes.json`. 
 
 Gelöschte Rezepte werden lokal zusätzlich als gelöscht markiert. Dadurch können sie bei einem noch nicht abgeschlossenen GitHub-Sync oder beim Zusammenführen alter Daten nicht wieder auftauchen. Eine erneute Speicherung mit demselben Rezept/Link hebt diese Markierung ausdrücklich wieder auf.
 
+## Datierte Rezeptkategorien
+
+Zeitlich geplante Rezeptgruppen werden als Kategorie mit `temporary: true` und einem ISO-Zeitpunkt in `promoteAfter` gespeichert. Jedes Rezept dieser Gruppe erhält zusätzlich `promoteToCategoryId` für die spätere normale Kategorie. Beim Start, beim Aktualisieren und beim GitHub-Abgleich prüft die App das Datum; nach Ablauf verschiebt sie die Rezepte automatisch in ihre Zielkategorien, entfernt die leere temporäre Kategorie und synchronisiert die Änderung bei bestehender GitHub-Verbindung. Bleibt die App geöffnet, wird die Übernahme zum passenden Zeitpunkt ebenfalls automatisch ausgeführt. Dieser Ablauf kann für künftige Datumsgruppen mit denselben Feldern wiederverwendet werden.
+
 Im Rezept-Reader stehen außerdem **Kopieren** und **Teilen** zur Verfügung. Kopiert beziehungsweise teilt werden Titel, Zeit, Portionen, Zutaten, Zubereitung, Notiz und Quelle. Wenn das Gerät kein natives Teilen unterstützt, wird der vollständige Rezeptinhalt kopiert.
 
 Der Schlüssel bleibt ausschließlich im lokalen Speicher des verbundenen Browsers. Dafür sollte ein eigener, fein-granularer Schlüssel verwendet werden, der nur Zugriff auf dieses Repository hat. Ohne Verbindung bleibt der Export als `recipes.json` als manueller Fallback verfügbar.

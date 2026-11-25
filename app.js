@@ -131,9 +131,12 @@ let deferredInstallPrompt = null;
 let toastTimer = null;
 let wakeLock = null;
 let githubSyncPromise = Promise.resolve();
+let scheduledPromotionTimer = null;
 
 categories = Array.isArray(categories) && categories.length ? categories : starterCategories;
 recipes = Array.isArray(recipes) ? recipes : starterRecipes;
+const initialPromotion = promoteTemporaryRecipes();
+if (initialPromotion.changed) writeStorage();
 
 function readStorage(key, fallback) {
   try {
@@ -160,6 +163,63 @@ function readDeletedRecipeKeys() {
 
 function writeDeletedRecipeKeys() {
   localStorage.setItem(STORAGE_KEYS.deletedRecipes, JSON.stringify(Array.from(deletedRecipeKeys)));
+}
+
+function promoteTemporaryRecipes(now = Date.now()) {
+  const expiredCategories = new Map(categories
+    .filter((category) => category && category.temporary && category.promoteAfter && Date.parse(category.promoteAfter) <= now)
+    .map((category) => [category.id, category]));
+  if (!expiredCategories.size) return { changed: false, promoted: 0, removedCategories: 0 };
+
+  const categoryIds = new Set(categories.map((category) => category.id));
+  const promotedAt = new Date(now).toISOString();
+  let promoted = 0;
+  recipes = recipes.map((recipe) => {
+    const temporaryCategory = expiredCategories.get(recipe.categoryId);
+    const targetCategoryId = recipe.promoteToCategoryId;
+    if (!temporaryCategory || !targetCategoryId || !categoryIds.has(targetCategoryId)) return recipe;
+    const promotedRecipe = { ...recipe, categoryId: targetCategoryId, updatedAt: promotedAt };
+    delete promotedRecipe.promoteToCategoryId;
+    promoted += 1;
+    return promotedRecipe;
+  });
+
+  const usedTemporaryCategoryIds = new Set(recipes.map((recipe) => recipe.categoryId));
+  const nextCategories = categories.filter((category) => (
+    !expiredCategories.has(category.id) || usedTemporaryCategoryIds.has(category.id)
+  ));
+  const removedCategories = categories.length - nextCategories.length;
+  if (removedCategories) categories = nextCategories;
+
+  return {
+    changed: promoted > 0 || removedCategories > 0,
+    promoted,
+    removedCategories
+  };
+}
+
+function scheduleTemporaryPromotion() {
+  if (scheduledPromotionTimer) clearTimeout(scheduledPromotionTimer);
+  scheduledPromotionTimer = null;
+  const now = Date.now();
+  const nextPromotionAt = categories
+    .filter((category) => category && category.temporary && category.promoteAfter)
+    .map((category) => Date.parse(category.promoteAfter))
+    .filter((timestamp) => Number.isFinite(timestamp) && timestamp > now)
+    .sort((first, second) => first - second)[0];
+  if (!nextPromotionAt) return;
+
+  const delay = Math.min(nextPromotionAt - now, 2147483647);
+  scheduledPromotionTimer = setTimeout(() => {
+    const result = promoteTemporaryRecipes();
+    if (result.changed) {
+      writeStorage();
+      render();
+      queueGithubSync({ silent: true, message: 'Datierte Rezepte in die normale Datenbank übernommen' });
+      if (result.promoted) showToast(result.promoted + (result.promoted === 1 ? ' Rezept wurde' : ' Rezepte wurden') + ' in die normale Datenbank übernommen.');
+    }
+    scheduleTemporaryPromotion();
+  }, delay);
 }
 
 function recipeKeys(recipe) {
@@ -302,7 +362,12 @@ async function connectGithub() {
       const result = replaceRepositoryData(remote.payload);
       writeStorage();
       render();
-      if (result.deletedRemote) await queueGithubSync({ silent: true, message: 'Gelöschte Rezepte bereinigt' });
+      if (result.deletedRemote || result.promoted) {
+        await queueGithubSync({
+          silent: true,
+          message: result.promoted ? 'Datierte Rezepte in die normale Datenbank übernommen' : 'Gelöschte Rezepte bereinigt'
+        });
+      }
       status.textContent = 'Verbunden und data/recipes.json geladen.';
       showToast('GitHub verbunden. Rezeptbestand geladen.');
     } else {
@@ -410,11 +475,13 @@ function replaceRepositoryData(payload) {
   recipes = repositoryRecipes
     .filter((remoteRecipe) => remoteRecipe && remoteRecipe.title && !isRecipeDeleted(remoteRecipe))
     .map(normalizeRepositoryRecipe);
+  const promotion = promoteTemporaryRecipes();
 
   return {
     loaded: recipes.length,
     removed: Math.max(0, previousRecipeCount - recipes.length),
     deletedRemote,
+    promoted: promotion.promoted,
     categoriesChanged: previousCategories !== JSON.stringify(categories),
     changed: true
   };
@@ -431,11 +498,12 @@ function mergeRepositoryData(payload) {
     if (!remoteCategory || !remoteCategory.id || !remoteCategory.name) return;
     const localCategory = categories.find((category) => category.id === remoteCategory.id);
     if (!localCategory) {
-      categories.push({ id: remoteCategory.id, name: remoteCategory.name });
+      categories.push({ ...remoteCategory });
       categoriesChanged = true;
-    } else if (localCategory.name !== remoteCategory.name) {
-      localCategory.name = remoteCategory.name;
-      categoriesChanged = true;
+    } else {
+      const before = JSON.stringify(localCategory);
+      Object.assign(localCategory, remoteCategory);
+      if (before !== JSON.stringify(localCategory)) categoriesChanged = true;
     }
   });
 
@@ -464,7 +532,14 @@ function mergeRepositoryData(payload) {
   });
 
   recipes = mergedRecipes;
-  return { added, updated, categoriesChanged, changed: added > 0 || updated > 0 || categoriesChanged };
+  const promotion = promoteTemporaryRecipes();
+  return {
+    added,
+    updated,
+    categoriesChanged: categoriesChanged || promotion.removedCategories > 0,
+    promoted: promotion.promoted,
+    changed: added > 0 || updated > 0 || categoriesChanged || promotion.changed
+  };
 }
 
 async function refreshRepositoryRecipes() {
@@ -483,8 +558,11 @@ async function refreshRepositoryRecipes() {
     writeStorage();
     render();
     const removedMessage = result.removed ? ' ' + result.removed + ' entfernte lokal ausgeblendet.' : '';
-    if (result.deletedRemote && getGithubSettings().token) {
-      await queueGithubSync({ silent: true, message: 'Gelöschte Rezepte bereinigt' });
+    if ((result.deletedRemote || result.promoted) && getGithubSettings().token) {
+      await queueGithubSync({
+        silent: true,
+        message: result.promoted ? 'Datierte Rezepte in die normale Datenbank übernommen' : 'Gelöschte Rezepte bereinigt'
+      });
     }
     showToast(result.loaded + ' Rezepte aus data/recipes.json geladen.' + removedMessage);
   } catch (error) {
@@ -502,9 +580,10 @@ async function hydrateRepositoryRecipes() {
     if (!response.ok) return;
     const payload = await response.json();
     if (!Array.isArray(payload.recipes)) return;
-    replaceRepositoryData(payload);
+    const result = replaceRepositoryData(payload);
     writeStorage();
     render();
+    if (result.promoted) await queueGithubSync({ silent: true, message: 'Datierte Rezepte in die normale Datenbank übernommen' });
     showToast('GitHub-Rezeptbestand geladen.');
   } catch (error) {
     // The embedded starter data keeps the app usable when the repository file is unavailable.
@@ -1831,6 +1910,10 @@ render();
 updateGithubConnectionUi();
 registerInteractions();
 registerPwa();
+scheduleTemporaryPromotion();
+if (initialPromotion.changed) {
+  queueGithubSync({ silent: true, message: 'Datierte Rezepte in die normale Datenbank übernommen' });
+}
 hydrateRepositoryRecipes().then(() => {
   if (applyTortelliniIngredientUpdate()) {
     writeStorage();
@@ -1838,6 +1921,7 @@ hydrateRepositoryRecipes().then(() => {
     queueGithubSync({ silent: true, message: 'Tortellini-Zutaten ergänzt' });
     showToast('Tortellini-Zutaten wurden ergänzt.');
   }
+  scheduleTemporaryPromotion();
   return enrichPendingRecipes();
 }).catch(() => {});
 importSharedLink();

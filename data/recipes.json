@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "app": "Steffi’s Rezeptewelt",
-  "updatedAt": "2026-11-24T10:40:00.000Z",
+  "updatedAt": "2026-11-25T00:00:00.000Z",
   "categories": [
     { "id": "schnell-einfach", "name": "Schnell & einfach" },
     { "id": "pasta", "name": "Pasta" },
@@ -12,7 +12,8 @@
     { "id": "fischgerichte", "name": "Fischgerichte" },
     { "id": "vegetarisch", "name": "Vegetarisch" },
     { "id": "asiatisch", "name": "Asiatisch" },
-    { "id": "mediterran", "name": "Mediterran" }
+    { "id": "mediterran", "name": "Mediterran" },
+    { "id": "zeitraum-2026-11-27-bis-30", "name": "27.11. bis 30.11.", "temporary": true, "promoteAfter": "2026-12-01T00:00:00.000Z" }
   ],
   "recipes": [
     {
@@ -577,6 +578,141 @@
       "note": "Hinweis: Nicht benötigtes gegartes Hähnchen zeitnah abkühlen und einfrieren.",
       "createdAt": "2026-11-24T00:00:00.000Z",
       "updatedAt": "2026-11-24T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "milde-puten-gyros-dueruem",
+      "title": "Milde Puten-Gyros-Dürüm mit Paprika und Knoblauchjoghurt",
+      "categoryId": "zeitraum-2026-11-27-bis-30",
+      "promoteToCategoryId": "fleischgerichte",
+      "source": "",
+      "sourceType": "Eigenes Rezept",
+      "time": 30,
+      "servings": 4,
+      "ingredients": [
+        "600 g mariniertes Puten-Geschnetzeltes Gyros",
+        "4 Dürüm-Fladen",
+        "200 g Paprika-Mix",
+        "150 g Naturjoghurt",
+        "1 Knoblauchzehe",
+        "½ Zitrone",
+        "150 g Tomaten",
+        "etwa 100 g Salatblätter",
+        "1 TL Öl",
+        "Salz nach Bedarf"
+      ],
+      "steps": [
+        "Joghurt mit fein geriebenem Knoblauch, etwas Zitronensaft und einer Prise Salz verrühren. Tomaten würfeln, Salat waschen und Paprika in Streifen schneiden.",
+        "Öl in einer großen Pfanne erhitzen. Das Gyros nach Packungsangabe braten. Wegen der Marinade erst zum Schluss abschmecken.",
+        "Paprika kurz anbraten, bis sie weich wird, aber noch Biss hat.",
+        "Dürüm-Fladen nach Packungsangabe erwärmen und mit Fleisch, Paprika, Tomaten, Salat und Knoblauchjoghurt füllen."
+      ],
+      "note": "Kinderoption: Füllung und Fladen getrennt servieren, damit Kinder ihre Dürüm selbst belegen können.",
+      "createdAt": "2026-11-25T00:00:00.000Z",
+      "updatedAt": "2026-11-25T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "cremige-spinat-kaese-lasagne",
+      "title": "Cremige Spinat-Käse-Lasagne",
+      "categoryId": "zeitraum-2026-11-27-bis-30",
+      "promoteToCategoryId": "vegetarisch",
+      "source": "",
+      "sourceType": "Eigenes Rezept",
+      "time": 55,
+      "servings": 4,
+      "ingredients": [
+        "250 g Lasagneplatten",
+        "450 g TK-Blattspinat",
+        "250 g Ricotta",
+        "150 g geriebener Käse",
+        "1 Zwiebel",
+        "1 Knoblauchzehe",
+        "1 TL Öl",
+        "500 ml Milch",
+        "40 g Butter",
+        "40 g Mehl",
+        "Salz, Pfeffer und Muskat"
+      ],
+      "steps": [
+        "Backofen auf 200 °C Ober-/Unterhitze vorheizen. Spinat auftauen und überschüssige Flüssigkeit gut ausdrücken. Zwiebel fein würfeln und Knoblauch hacken.",
+        "Zwiebel und Knoblauch im Öl glasig dünsten. Spinat zugeben und kurz erwärmen. Ricotta einrühren und mild mit Salz, Pfeffer und Muskat würzen.",
+        "Für die Béchamelsauce Butter schmelzen, Mehl einrühren und kurz anschwitzen. Milch nach und nach unter Rühren zugießen. Etwa 5 Minuten köcheln lassen, bis die Sauce cremig ist; würzen.",
+        "Etwas Béchamel in eine Auflaufform geben. Lasagneplatten, Spinatfüllung und Béchamel abwechselnd einschichten. Mit Béchamel abschließen und den Käse darüberstreuen.",
+        "Etwa 35 Minuten backen. Vor dem Anschneiden 5 Minuten ruhen lassen."
+      ],
+      "note": "Kinderoption: Mild würzen und eine Portion mit wenig sichtbarer Spinatfüllung schneiden.",
+      "createdAt": "2026-11-25T00:00:00.000Z",
+      "updatedAt": "2026-11-25T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "schweineschnitzel-spaetzle-gurken-apfel-salat",
+      "title": "Schweineschnitzel mit Spätzle und Gurken-Apfel-Salat",
+      "categoryId": "zeitraum-2026-11-27-bis-30",
+      "promoteToCategoryId": "fleischgerichte",
+      "source": "",
+      "sourceType": "Eigenes Rezept",
+      "time": 40,
+      "servings": 4,
+      "ingredients": [
+        "600 g Schweineschnitzel",
+        "500 g Spätzle",
+        "2 Eier",
+        "60 g Mehl",
+        "100 g Semmelbrösel",
+        "1 Gurke",
+        "1 Apfel",
+        "1 EL Essig",
+        "1 TL Zucker",
+        "Bratöl",
+        "Salz und Pfeffer"
+      ],
+      "steps": [
+        "Spätzle nach Packungsangabe garen.",
+        "Gurke in dünne Scheiben schneiden. Apfel entkernen und fein würfeln. Beides mit Essig, Zucker, Salz und Pfeffer mischen.",
+        "Mehl, verquirlte Eier und Semmelbrösel auf drei Teller geben. Schnitzel erst in Mehl, dann Ei und zuletzt Semmelbröseln wenden.",
+        "Bratöl in einer Pfanne erhitzen. Schnitzel bei mittlerer Hitze je Seite etwa 3–4 Minuten goldbraun braten.",
+        "Mit Spätzle und Gurken-Apfel-Salat servieren."
+      ],
+      "note": "Kinderoption: Schnitzel in Streifen schneiden und den Salat separat anbieten.",
+      "createdAt": "2026-11-25T00:00:00.000Z",
+      "updatedAt": "2026-11-25T00:00:00.000Z",
+      "isFavorite": false
+    },
+    {
+      "id": "frikadellen-kartoffelbrei-erbsen-moehren-gemuese",
+      "title": "Frikadellen mit Kartoffelbrei und Erbsen-Möhren-Gemüse",
+      "categoryId": "zeitraum-2026-11-27-bis-30",
+      "promoteToCategoryId": "fleischgerichte",
+      "source": "",
+      "sourceType": "Eigenes Rezept",
+      "time": 40,
+      "servings": 4,
+      "ingredients": [
+        "600 g gemischtes Hackfleisch",
+        "1 Ei",
+        "40 g Semmelbrösel",
+        "1 kleine Zwiebel",
+        "1 kg Kartoffeln",
+        "250 g Erbsen",
+        "300 g Möhren",
+        "150 ml Milch",
+        "40 g Butter",
+        "1 TL Honig",
+        "etwas Öl",
+        "Salz und Pfeffer"
+      ],
+      "steps": [
+        "Kartoffeln schälen, würfeln und in Salzwasser etwa 15 Minuten weich kochen.",
+        "Möhren in kleine Stücke schneiden und mit wenig Wasser zugedeckt etwa 8–10 Minuten garen. Erbsen und Honig zugeben und weitere 4–5 Minuten erhitzen. Mit Salz abschmecken.",
+        "Hackfleisch mit Ei, Semmelbröseln, fein gewürfelter Zwiebel, Salz und Pfeffer vermengen. Kleine Frikadellen formen.",
+        "Etwas Öl in einer Pfanne erhitzen. Frikadellen bei mittlerer Hitze rundherum braten, bis sie vollständig durchgegart sind; das dauert etwa 10–12 Minuten.",
+        "Kartoffeln abgießen und mit Milch und Butter zerstampfen. Mit den Frikadellen und dem Erbsen-Möhren-Gemüse servieren."
+      ],
+      "note": "Kinderoption: Frikadellen, Kartoffelbrei und Gemüse getrennt anrichten.",
+      "createdAt": "2026-11-25T00:00:00.000Z",
+      "updatedAt": "2026-11-25T00:00:00.000Z",
       "isFavorite": false
     }
   ]
