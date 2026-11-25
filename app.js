@@ -470,7 +470,7 @@ function mergeRepositoryData(payload) {
 async function refreshRepositoryRecipes() {
   const button = $('#githubRefreshButton');
   if (!button) return;
-  const label = button.querySelector('strong');
+  const label = button.querySelector('strong, .refresh-label');
   const originalLabel = label ? label.textContent : 'Aktualisieren';
   button.disabled = true;
   if (label) label.textContent = 'Aktualisiere …';
@@ -1787,7 +1787,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=22', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=23', { updateViaCache: 'none' }).catch(() => {});
   document.addEventListener('gesturestart', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gesturechange', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gestureend', (event) => event.preventDefault(), { passive: false });

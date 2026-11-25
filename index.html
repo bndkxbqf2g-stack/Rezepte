@@ -7,7 +7,7 @@
     <meta name="description" content="Steffis persönliche Rezeptbibliothek für Lieblingsrezepte, Instagram-Links und versionierte GitHub-Rezepte." />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
-    <link rel="stylesheet" href="./styles.css?v=22" />
+    <link rel="stylesheet" href="./styles.css?v=23" />
     <title>Steffi’s Rezeptewelt</title>
   </head>
   <body>
@@ -71,13 +71,6 @@
                 <small>recipes.json für data/</small>
               </span>
             </button>
-            <button class="github-refresh-button" id="githubRefreshButton" type="button">
-              <span class="github-refresh-icon" aria-hidden="true">↻</span>
-              <span>
-                <strong>Aktualisieren</strong>
-                <small>data/recipes.json laden</small>
-              </span>
-            </button>
             <button class="github-sync-button is-hidden" id="githubSyncButton" type="button">
               <span class="github-sync-icon" aria-hidden="true">↑</span>
               <span>
@@ -109,6 +102,9 @@
             <p class="hero-description">Deine Lieblingsrezepte an einem Ort — schön sortiert, schnell gefunden und immer dabei.</p>
           </div>
           <div class="hero-actions">
+            <button class="button button-secondary" id="githubRefreshButton" type="button">
+              <span aria-hidden="true">↻</span> <span class="refresh-label">Aktualisieren</span>
+            </button>
             <button class="button button-secondary" id="quickLinkButton">
               <span aria-hidden="true">↗</span> Link importieren
             </button>
@@ -294,7 +290,7 @@
       </div>
     </dialog>
 
-    <script src="./app.js?v=22" defer></script>
+    <script src="./app.js?v=23" defer></script>
   </body>
 </html>
 
