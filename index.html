@@ -7,7 +7,7 @@
     <meta name="description" content="Steffis persönliche Rezeptbibliothek für Lieblingsrezepte, Instagram-Links und versionierte GitHub-Rezepte." />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
-    <link rel="stylesheet" href="./styles.css?v=21" />
+    <link rel="stylesheet" href="./styles.css?v=22" />
     <title>Steffi’s Rezeptewelt</title>
   </head>
   <body>
@@ -75,7 +75,7 @@
               <span class="github-refresh-icon" aria-hidden="true">↻</span>
               <span>
                 <strong>Aktualisieren</strong>
-                <small>GitHub-Rezepte laden</small>
+                <small>data/recipes.json laden</small>
               </span>
             </button>
             <button class="github-sync-button is-hidden" id="githubSyncButton" type="button">
@@ -239,7 +239,7 @@
           <section class="form-mode is-hidden" id="githubMode" data-mode-panel="github">
             <div class="quick-import-panel github-import-panel">
               <div class="quick-import-heading"><span class="quick-import-badge github-badge">GH</span><div><h3>Öffentliches Repository verbinden</h3><p>Markdown-Rezepte werden erkannt und als eigene Karten übernommen.</p></div></div>
-              <div class="import-note github-sync-note"><span aria-hidden="true">↕</span><span>Einmal verbinden, danach werden neue oder geänderte Rezepte direkt in dein GitHub-Repository gespeichert. Auf dem anderen Handy reicht „Aktualisieren“.</span></div>
+              <div class="import-note github-sync-note"><span aria-hidden="true">↕</span><span>Einmal verbinden, danach werden neue, geänderte oder gelöschte Rezepte direkt in dein GitHub-Repository gespeichert. „Aktualisieren“ lädt data/recipes.json als verbindlichen Bestand.</span></div>
               <div class="github-token-note"><strong>Einmalige Einrichtung</strong><span>Verwende einen fein-granularen GitHub-Schlüssel nur für dieses Repository mit <em>Contents: Read and write</em>. Er bleibt ausschließlich auf diesem Gerät gespeichert.</span></div>
               <div class="form-grid two-columns">
                 <label class="field field-wide"><span>GitHub-Schlüssel</span><input id="githubToken" type="password" autocomplete="off" placeholder="github_pat_…" /></label>
@@ -281,6 +281,8 @@
           <div class="reader-toolbar-label"><span class="reader-toolbar-dot"></span> Rezept-Reader</div>
           <div class="reader-toolbar-actions">
             <button class="reader-tool-button" id="readerPrint" aria-label="Rezept drucken">⎙</button>
+            <button class="reader-tool-button" id="readerCopy" aria-label="Rezeptinhalt kopieren" title="Rezeptinhalt kopieren">⧉</button>
+            <button class="reader-tool-button" id="readerShare" aria-label="Rezept teilen" title="Rezept teilen">↗</button>
             <button class="reader-tool-button" id="readerFavorite" aria-label="Favorit markieren">♡</button>
             <button class="reader-tool-button is-hidden" id="readerImport" aria-label="Rezept-Link erneut auslesen" title="Rezept-Link erneut auslesen">↻</button>
             <button class="reader-tool-button" id="readerEdit" aria-label="Rezept bearbeiten">✎</button>
@@ -292,7 +294,7 @@
       </div>
     </dialog>
 
-    <script src="./app.js?v=21" defer></script>
+    <script src="./app.js?v=22" defer></script>
   </body>
 </html>
 

@@ -4,7 +4,11 @@ Mobile-first PWA für eine persönliche Rezeptsammlung mit Kategorien, Instagram
 
 ## GitHub-Rezepte
 
-Die veröffentlichte App liest den gemeinsamen Bestand aus `data/recipes.json`. Für den einfachen Alltag kann GitHub einmal direkt in der App verbunden werden: Repository, Branch und ein fein-granularer GitHub-Schlüssel mit `Contents: Read and write` werden auf dem Schreibgerät hinterlegt. Danach werden neue, bearbeitete, gelöschte oder favorisierte Rezepte automatisch in `data/recipes.json` gespeichert. Auf dem anderen Handy reicht **Aktualisieren**.
+Die veröffentlichte App liest den gemeinsamen Bestand aus `data/recipes.json`. Für den einfachen Alltag kann GitHub einmal direkt in der App verbunden werden: Repository, Branch und ein fein-granularer GitHub-Schlüssel mit `Contents: Read and write` werden auf dem Schreibgerät hinterlegt. Danach werden neue, bearbeitete, gelöschte oder favorisierte Rezepte automatisch in `data/recipes.json` gespeichert. **Aktualisieren** ruft die JSON-Datei mit deaktiviertem Browser-Cache ab und ersetzt den lokalen Rezeptbestand vollständig durch ihren Inhalt.
+
+Gelöschte Rezepte werden lokal zusätzlich als gelöscht markiert. Dadurch können sie bei einem noch nicht abgeschlossenen GitHub-Sync oder beim Zusammenführen alter Daten nicht wieder auftauchen. Eine erneute Speicherung mit demselben Rezept/Link hebt diese Markierung ausdrücklich wieder auf.
+
+Im Rezept-Reader stehen außerdem **Kopieren** und **Teilen** zur Verfügung. Kopiert beziehungsweise teilt werden Titel, Zeit, Portionen, Zutaten, Zubereitung, Notiz und Quelle. Wenn das Gerät kein natives Teilen unterstützt, wird der vollständige Rezeptinhalt kopiert.
 
 Der Schlüssel bleibt ausschließlich im lokalen Speicher des verbundenen Browsers. Dafür sollte ein eigener, fein-granularer Schlüssel verwendet werden, der nur Zugriff auf dieses Repository hat. Ohne Verbindung bleibt der Export als `recipes.json` als manueller Fallback verfügbar.
 

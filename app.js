@@ -3,7 +3,8 @@ const STORAGE_KEYS = {
   categories: 'steffi-rezeptewelt-categories-v1',
   github: 'steffi-rezeptewelt-github-v1',
   githubToken: 'steffi-rezeptewelt-github-token-v1',
-  githubBranch: 'steffi-rezeptewelt-github-branch-v1'
+  githubBranch: 'steffi-rezeptewelt-github-branch-v1',
+  deletedRecipes: 'steffi-rezeptewelt-deleted-recipes-v1'
 };
 
 const REPOSITORY_RECIPES_URL = './data/recipes.json';
@@ -113,6 +114,7 @@ const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 
 let categories = readStorage(STORAGE_KEYS.categories, starterCategories);
 let recipes = readStorage(STORAGE_KEYS.recipes, starterRecipes);
+let deletedRecipeKeys = readDeletedRecipeKeys();
 let state = {
   view: 'all',
   categoryId: '',
@@ -145,6 +147,35 @@ function readStorage(key, fallback) {
 function writeStorage() {
   localStorage.setItem(STORAGE_KEYS.categories, JSON.stringify(categories));
   localStorage.setItem(STORAGE_KEYS.recipes, JSON.stringify(recipes));
+}
+
+function readDeletedRecipeKeys() {
+  try {
+    const stored = JSON.parse(readTextStorage(STORAGE_KEYS.deletedRecipes, '[]'));
+    return new Set(Array.isArray(stored) ? stored.filter(Boolean) : []);
+  } catch (error) {
+    return new Set();
+  }
+}
+
+function writeDeletedRecipeKeys() {
+  localStorage.setItem(STORAGE_KEYS.deletedRecipes, JSON.stringify(Array.from(deletedRecipeKeys)));
+}
+
+function recipeKeys(recipe) {
+  return [String(recipe && recipe.id || '').trim(), sourceKey(recipe && recipe.source)].filter(Boolean);
+}
+
+function isRecipeDeleted(recipe) {
+  return recipeKeys(recipe).some((key) => deletedRecipeKeys.has(key));
+}
+
+function forgetDeletedRecipe(recipe) {
+  let changed = false;
+  recipeKeys(recipe).forEach((key) => {
+    if (deletedRecipeKeys.delete(key)) changed = true;
+  });
+  if (changed) writeDeletedRecipeKeys();
 }
 
 function readTextStorage(key, fallback = '') {
@@ -266,10 +297,19 @@ async function connectGithub() {
     localStorage.setItem(STORAGE_KEYS.githubBranch, branch);
     updateGithubConnectionUi();
     status.className = 'github-status is-success';
-    status.textContent = 'Verbunden. Änderungen werden jetzt direkt gespeichert.';
-    showToast('GitHub verbunden. Rezeptbestand wird gespeichert …');
-    const synced = await queueGithubSync({ silent: true, message: 'Rezeptbestand initial synchronisiert' });
-    status.textContent = synced ? 'Verbunden und synchronisiert.' : 'Verbunden, aber der erste Upload ist fehlgeschlagen.';
+    const remote = await readGithubRepositoryFile({ repo, token, branch });
+    if (remote.payload && Array.isArray(remote.payload.recipes)) {
+      replaceRepositoryData(remote.payload);
+      writeStorage();
+      render();
+      status.textContent = 'Verbunden und data/recipes.json geladen.';
+      showToast('GitHub verbunden. Rezeptbestand geladen.');
+    } else {
+      status.textContent = 'Verbunden. Änderungen werden jetzt direkt gespeichert.';
+      showToast('GitHub verbunden. Rezeptbestand wird gespeichert …');
+      const synced = await queueGithubSync({ silent: true, message: 'Rezeptbestand initial synchronisiert' });
+      status.textContent = synced ? 'Verbunden und synchronisiert.' : 'Verbunden, aber der erste Upload ist fehlgeschlagen.';
+    }
   } catch (error) {
     status.className = 'github-status is-error';
     status.textContent = 'Verbindung fehlgeschlagen. Prüfe Repository, Schlüssel und Berechtigungen.';
@@ -349,6 +389,34 @@ function recipeTimestamp(recipe) {
   return Number.isFinite(value) ? value : 0;
 }
 
+function normalizeRepositoryRecipe(remoteRecipe) {
+  return {
+    ...remoteRecipe,
+    ingredients: Array.isArray(remoteRecipe.ingredients) ? remoteRecipe.ingredients : [],
+    steps: Array.isArray(remoteRecipe.steps) ? remoteRecipe.steps : [],
+    isFavorite: Boolean(remoteRecipe.isFavorite)
+  };
+}
+
+function replaceRepositoryData(payload) {
+  const repositoryCategories = Array.isArray(payload && payload.categories) ? payload.categories : [];
+  const repositoryRecipes = Array.isArray(payload && payload.recipes) ? payload.recipes : [];
+  const previousRecipeCount = recipes.length;
+  const previousCategories = JSON.stringify(categories);
+
+  if (repositoryCategories.length) categories = repositoryCategories;
+  recipes = repositoryRecipes
+    .filter((remoteRecipe) => remoteRecipe && remoteRecipe.title && !isRecipeDeleted(remoteRecipe))
+    .map(normalizeRepositoryRecipe);
+
+  return {
+    loaded: recipes.length,
+    removed: Math.max(0, previousRecipeCount - recipes.length),
+    categoriesChanged: previousCategories !== JSON.stringify(categories),
+    changed: true
+  };
+}
+
 function mergeRepositoryData(payload) {
   const repositoryCategories = Array.isArray(payload && payload.categories) ? payload.categories : [];
   const repositoryRecipes = Array.isArray(payload && payload.recipes) ? payload.recipes : [];
@@ -370,17 +438,12 @@ function mergeRepositoryData(payload) {
 
   const mergedRecipes = recipes.slice();
   repositoryRecipes.forEach((remoteRecipe) => {
-    if (!remoteRecipe || !remoteRecipe.title) return;
+    if (!remoteRecipe || !remoteRecipe.title || isRecipeDeleted(remoteRecipe)) return;
     const remoteSource = sourceKey(remoteRecipe.source);
     const index = mergedRecipes.findIndex((localRecipe) => localRecipe.id === remoteRecipe.id || (
       remoteSource && sourceKey(localRecipe.source) === remoteSource
     ));
-    const normalizedRemote = {
-      ...remoteRecipe,
-      ingredients: Array.isArray(remoteRecipe.ingredients) ? remoteRecipe.ingredients : [],
-      steps: Array.isArray(remoteRecipe.steps) ? remoteRecipe.steps : [],
-      isFavorite: Boolean(remoteRecipe.isFavorite)
-    };
+    const normalizedRemote = normalizeRepositoryRecipe(remoteRecipe);
     if (index < 0) {
       mergedRecipes.push(normalizedRemote);
       added += 1;
@@ -412,20 +475,12 @@ async function refreshRepositoryRecipes() {
     const response = await fetch(REPOSITORY_RECIPES_URL + '?refresh=' + Date.now(), { cache: 'no-store' });
     if (!response.ok) throw new Error('GitHub antwortete mit ' + response.status);
     const payload = await response.json();
-    const repositoryRecipes = Array.isArray(payload.recipes) ? payload.recipes : [];
-    if (!repositoryRecipes.length) throw new Error('Keine Rezepte in data/recipes.json gefunden.');
-    const result = mergeRepositoryData(payload);
-    if (result.changed) {
-      writeStorage();
-      render();
-    }
-    if (result.added || result.updated) {
-      showToast(result.added + ' neue und ' + result.updated + ' aktualisierte GitHub-Rezepte geladen.');
-    } else if (result.categoriesChanged) {
-      showToast('Kategorien aus GitHub aktualisiert.');
-    } else {
-      showToast('GitHub ist bereits aktuell.');
-    }
+    if (!Array.isArray(payload.recipes)) throw new Error('data/recipes.json enthält keine gültige Rezeptliste.');
+    const result = replaceRepositoryData(payload);
+    writeStorage();
+    render();
+    const removedMessage = result.removed ? ' ' + result.removed + ' entfernte lokal ausgeblendet.' : '';
+    showToast(result.loaded + ' Rezepte aus data/recipes.json geladen.' + removedMessage);
   } catch (error) {
     showToast('GitHub konnte nicht aktualisiert werden. Prüfe data/recipes.json.');
   } finally {
@@ -440,11 +495,8 @@ async function hydrateRepositoryRecipes() {
     const response = await fetch(REPOSITORY_RECIPES_URL, { cache: 'no-store' });
     if (!response.ok) return;
     const payload = await response.json();
-    const repositoryRecipes = Array.isArray(payload.recipes) ? payload.recipes : [];
-    const repositoryCategories = Array.isArray(payload.categories) ? payload.categories : [];
-    if (!repositoryRecipes.length) return;
-    if (repositoryCategories.length) categories = repositoryCategories;
-    recipes = repositoryRecipes;
+    if (!Array.isArray(payload.recipes)) return;
+    replaceRepositoryData(payload);
     writeStorage();
     render();
     showToast('GitHub-Rezeptbestand geladen.');
@@ -1157,6 +1209,7 @@ async function saveRecipeFromForm() {
     updatedAt: new Date().toISOString(),
     isFavorite: existing ? Boolean(existing.isFavorite) : false
   };
+  forgetDeletedRecipe(recipe);
   recipes = [recipe].concat(recipes.filter((item) => item.id !== recipe.id));
   writeStorage();
   render();
@@ -1212,6 +1265,7 @@ async function importBulkLinks() {
       isFavorite: false
     });
   }
+  newRecipes.forEach(forgetDeletedRecipe);
   submitButton.disabled = false;
   setDialogMode(state.mode);
   recipes = newRecipes.concat(recipes);
@@ -1263,6 +1317,64 @@ function openReader(recipeId) {
   renderReader(recipe);
   $('#readerDialog').showModal();
   requestWakeLock();
+}
+
+function recipeShareText(recipe) {
+  if (!recipe) return '';
+  const meta = [
+    recipe.servings ? recipe.servings + ' Portionen' : '',
+    recipe.time ? recipe.time + ' Minuten' : ''
+  ].filter(Boolean).join(' · ');
+  const lines = [recipe.title];
+  if (meta) lines.push(meta);
+  lines.push('', 'Zutaten');
+  (recipe.ingredients || []).forEach((ingredient) => lines.push('- ' + ingredient));
+  lines.push('', 'Zubereitung');
+  (recipe.steps || []).forEach((step, index) => lines.push((index + 1) + '. ' + step));
+  if (recipe.note) lines.push('', 'Notiz', recipe.note);
+  if (recipe.source) lines.push('', 'Quelle', recipe.source);
+  return lines.join('\n');
+}
+
+async function copyRecipeContent() {
+  const recipe = recipes.find((item) => item.id === state.readerId);
+  if (!recipe) return;
+  const text = recipeShareText(recipe);
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      if (!document.execCommand('copy')) throw new Error('Kopieren fehlgeschlagen.');
+      field.remove();
+    }
+    showToast('Rezeptinhalt kopiert.');
+  } catch (error) {
+    showToast('Rezeptinhalt konnte nicht kopiert werden.');
+  }
+}
+
+async function shareRecipeContent() {
+  const recipe = recipes.find((item) => item.id === state.readerId);
+  if (!recipe) return;
+  const text = recipeShareText(recipe);
+  if (!navigator.share) {
+    await copyRecipeContent();
+    showToast('Teilen wird hier nicht unterstützt — Rezeptinhalt kopiert.');
+    return;
+  }
+  try {
+    await navigator.share({ title: recipe.title, text });
+    showToast('Rezept geteilt.');
+  } catch (error) {
+    if (error && error.name !== 'AbortError') showToast('Rezept konnte nicht geteilt werden.');
+  }
 }
 
 function renderReader(recipe) {
@@ -1325,6 +1437,8 @@ function deleteRecipe(recipeId) {
   if (!recipe) return;
   if (!window.confirm('„' + recipe.title + '“ wirklich löschen?')) return;
   recipes = recipes.filter((item) => item.id !== recipeId);
+  recipeKeys(recipe).forEach((key) => deletedRecipeKeys.add(key));
+  writeDeletedRecipeKeys();
   writeStorage();
   queueGithubSync({ silent: true, message: 'Rezept gelöscht' });
   state.readerId = '';
@@ -1454,6 +1568,7 @@ async function importGithubFile(file) {
     const response = await fetch(file.download_url);
     if (!response.ok) throw new Error('Datei konnte nicht geladen werden.');
     const recipe = parseMarkdownRecipe(await response.text(), file);
+    forgetDeletedRecipe(recipe);
     recipes = [recipe].concat(recipes);
     writeStorage();
     render();
@@ -1633,6 +1748,8 @@ function registerInteractions() {
   $('#readerClose').addEventListener('click', () => closeDialog('readerDialog'));
   $('#readerBack').addEventListener('click', () => closeDialog('readerDialog'));
   $('#readerPrint').addEventListener('click', () => window.print());
+  $('#readerCopy').addEventListener('click', copyRecipeContent);
+  $('#readerShare').addEventListener('click', shareRecipeContent);
   $('#readerFavorite').addEventListener('click', () => toggleFavorite(state.readerId));
   $('#readerImport').addEventListener('click', retryRecipeSource);
   $('#readerEdit').addEventListener('click', () => {
@@ -1664,7 +1781,7 @@ function registerInteractions() {
 }
 
 function registerPwa() {
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=21', { updateViaCache: 'none' }).catch(() => {});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js?v=22', { updateViaCache: 'none' }).catch(() => {});
   document.addEventListener('gesturestart', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gesturechange', (event) => event.preventDefault(), { passive: false });
   document.addEventListener('gestureend', (event) => event.preventDefault(), { passive: false });
