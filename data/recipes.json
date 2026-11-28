@@ -3,17 +3,52 @@
   "app": "Steffi’s Rezeptewelt",
   "updatedAt": "2026-11-25T00:00:00.000Z",
   "categories": [
-    { "id": "schnell-einfach", "name": "Schnell & einfach" },
-    { "id": "pasta", "name": "Pasta" },
-    { "id": "ofengerichte", "name": "Ofengerichte" },
-    { "id": "suesses", "name": "Süßes" },
-    { "id": "drinks", "name": "Drinks" },
-    { "id": "fleischgerichte", "name": "Fleischgerichte" },
-    { "id": "fischgerichte", "name": "Fischgerichte" },
-    { "id": "vegetarisch", "name": "Vegetarisch" },
-    { "id": "asiatisch", "name": "Asiatisch" },
-    { "id": "mediterran", "name": "Mediterran" },
-    { "id": "zeitraum-2026-11-27-bis-30", "name": "27.11. bis 30.11.", "temporary": true, "promoteAfter": "2026-12-01T00:00:00.000Z" }
+    {
+      "id": "schnell-einfach",
+      "name": "Schnell & einfach"
+    },
+    {
+      "id": "pasta",
+      "name": "Pasta"
+    },
+    {
+      "id": "ofengerichte",
+      "name": "Ofengerichte"
+    },
+    {
+      "id": "suesses",
+      "name": "Süßes"
+    },
+    {
+      "id": "drinks",
+      "name": "Drinks"
+    },
+    {
+      "id": "fleischgerichte",
+      "name": "Fleischgerichte"
+    },
+    {
+      "id": "fischgerichte",
+      "name": "Fischgerichte"
+    },
+    {
+      "id": "vegetarisch",
+      "name": "Vegetarisch"
+    },
+    {
+      "id": "asiatisch",
+      "name": "Asiatisch"
+    },
+    {
+      "id": "mediterran",
+      "name": "Mediterran"
+    },
+    {
+      "id": "zeitraum-2026-11-27-bis-30",
+      "name": "27.11. bis 30.11.",
+      "temporary": true,
+      "promoteAfter": "2026-12-01T00:00:00.000Z"
+    }
   ],
   "recipes": [
     {
@@ -23,8 +58,19 @@
       "source": "https://www.instagram.com/",
       "sourceType": "Instagram",
       "time": 25,
-      "ingredients": ["300 g Linguine", "1 Bio-Zitrone", "2 EL Olivenöl", "40 g Parmesan", "Salz & schwarzer Pfeffer"],
-      "steps": ["Pasta in Salzwasser al dente kochen und eine Tasse Kochwasser auffangen.", "Zitronenschale abreiben und den Saft mit Olivenöl verrühren.", "Pasta mit Zitronenöl, Parmesan und etwas Kochwasser cremig schwenken.", "Mit Pfeffer und Zitronenzeste servieren."],
+      "ingredients": [
+        "300 g Linguine",
+        "1 Bio-Zitrone",
+        "2 EL Olivenöl",
+        "40 g Parmesan",
+        "Salz & schwarzer Pfeffer"
+      ],
+      "steps": [
+        "Pasta in Salzwasser al dente kochen und eine Tasse Kochwasser auffangen.",
+        "Zitronenschale abreiben und den Saft mit Olivenöl verrühren.",
+        "Pasta mit Zitronenöl, Parmesan und etwas Kochwasser cremig schwenken.",
+        "Mit Pfeffer und Zitronenzeste servieren."
+      ],
       "note": "Am liebsten mit extra viel schwarzem Pfeffer.",
       "createdAt": "2026-10-28T09:00:00.000Z",
       "isFavorite": true
@@ -101,7 +147,17 @@
       "servings": 4,
       "difficulty": "Mittel",
       "description": "Ein wunderbar cremiger und herzhafter Nudelauflauf mit aromatisch geröstetem Hokkaido-Kürbis, würzig angebratenem Hackfleisch, einer cremigen Parmesan-Frischkäse-Sauce und goldbrauner Käsekruste. Geröstete Kürbiskerne, frische Petersilie und ein Hauch Zitrone sorgen für das perfekte Finish.",
-      "tags": ["Kürbis", "Hackfleisch", "Auflauf", "Pasta", "Herbst", "Ofengericht", "Familienessen", "herzhaft", "cremig"],
+      "tags": [
+        "Kürbis",
+        "Hackfleisch",
+        "Auflauf",
+        "Pasta",
+        "Herbst",
+        "Ofengericht",
+        "Familienessen",
+        "herzhaft",
+        "cremig"
+      ],
       "ingredients": [
         "500 g Hokkaido-Kürbis",
         "500 g gemischtes Hackfleisch",
@@ -185,7 +241,12 @@
       "servings": 12,
       "servingLabel": "Muffins",
       "description": "Saftige Schoko-Muffins mit weicher Krume und reichlich Schokostückchen.",
-      "tags": ["Muffins", "Schokolade", "Backen", "Süßes"],
+      "tags": [
+        "Muffins",
+        "Schokolade",
+        "Backen",
+        "Süßes"
+      ],
       "ingredients": [
         "2 Eier (Größe M)",
         "150 g Zucker",
@@ -223,7 +284,16 @@
       "prepTime": 30,
       "servings": 4,
       "description": "Cremige Nudelpfanne mit Kochschinken, Brokkoli, Erbsen und einer herzhaften Käsesoße.",
-      "tags": ["Nudeln", "Pasta", "Brokkoli", "Erbsen", "Schinken", "Schnell", "Cremig", "Familienessen"],
+      "tags": [
+        "Nudeln",
+        "Pasta",
+        "Brokkoli",
+        "Erbsen",
+        "Schinken",
+        "Schnell",
+        "Cremig",
+        "Familienessen"
+      ],
       "ingredients": [
         "400 g Nudeln",
         "400 g TK-Brokkoli",
@@ -259,36 +329,52 @@
     },
     {
       "id": "chatgpt-schweinefilet-parmesan-rahm",
-      "title": "Schweinefilet-Medaillons mit Paprika, Tomaten-Parmesan-Rahm und Ofenkartoffeln",
+      "title": "Schweinelende mit Speckbohnen, Pfefferrahmsoße und Ofenkartoffeln",
       "categoryId": "fleischgerichte",
       "source": "ChatGPT",
       "sourceType": "ChatGPT",
-      "time": 0,
+      "time": 50,
       "servings": 2,
-      "tags": ["Fleischgerichte", "Schweinefilet", "Paprika", "Parmesan", "Ofenkartoffeln"],
+      "tags": [
+        "Fleischgerichte",
+        "Schweinelende",
+        "Schweinefilet",
+        "Speckbohnen",
+        "Pfefferrahmsoße",
+        "Ofenkartoffeln"
+      ],
       "ingredients": [
         "400 g Schweinefilet",
-        "250 g rote Paprika",
-        "50 g getrocknete Tomaten",
-        "150 ml Kochsahne",
-        "30 g Parmesan",
+        "400 g grüne Bohnen",
+        "8 dünne Scheiben Frühstücksspeck",
         "500 g Kartoffeln",
-        "Frühlingszwiebeln",
-        "Knoblauch",
-        "Olivenöl",
-        "Salz, Pfeffer, Paprikapulver"
+        "1 Schalotte",
+        "1 kleine Knoblauchzehe",
+        "1 TL Tomatenmark",
+        "150 ml kräftige Rinder- oder Gemüsebrühe",
+        "150 ml Kochsahne",
+        "1 TL Dijon- oder mittelscharfer Senf",
+        "1 TL Worcestersauce",
+        "½ TL grob zerstoßener schwarzer Pfeffer",
+        "1 TL kalte Butter",
+        "etwas Zitronensaft",
+        "Öl, Salz und Paprikapulver",
+        "optional: etwas Thymian"
       ],
       "steps": [
-        "Kartoffeln in Spalten schneiden, mit Öl und Gewürzen vermengen und bei 220 °C etwa 30–35 Minuten goldbraun rösten.",
-        "Schweinefilet in Medaillons schneiden, würzen und von beiden Seiten kräftig anbraten. Herausnehmen.",
-        "Paprika, Frühlingszwiebeln, Knoblauch und getrocknete Tomaten im Bratensatz anschwitzen.",
-        "Kochsahne und Parmesan hinzufügen und die Sauce leicht einkochen lassen.",
-        "Medaillons zurück in die Sauce geben und fertig garen.",
-        "Mit den knusprigen Ofenkartoffeln servieren."
+        "Backofen auf 220 °C Ober-/Unterhitze vorheizen. Kartoffeln in Spalten schneiden, mit Öl, Salz und Paprikapulver vermengen. Auf einem Blech verteilen und etwa 30–35 Minuten goldbraun backen, zwischendurch wenden.",
+        "Bohnen putzen und in Salzwasser 6–8 Minuten vorgaren. Abgießen und kurz kalt abschrecken. Jeweils eine kleine Portion Bohnen mit einer Scheibe Speck umwickeln.",
+        "Schweinefilet in etwa 3–4 cm dicke Medaillons schneiden, salzen und pfeffern. In einer heißen Pfanne mit etwas Öl von beiden Seiten kräftig anbraten. Hitze reduzieren und die Medaillons noch einige Minuten fertig garen. Herausnehmen und abgedeckt ruhen lassen.",
+        "Die Bohnenpäckchen in derselben Pfanne rundherum anbraten, bis der Speck knusprig und die Bohnen gar sind. Herausnehmen und warm halten. Überschüssiges Fett aus der Pfanne abgießen, den Bratensatz aber darin lassen.",
+        "Schalotte fein würfeln und im Bratensatz glasig braten. Knoblauch und Tomatenmark hinzufügen und kurz mitrösten. Mit Brühe ablöschen und den Bratensatz vom Pfannenboden lösen. Sahne, Senf, Worcestersauce und Pfeffer einrühren. Die Soße einige Minuten cremig einkochen lassen.",
+        "Kalte Butter in die Soße rühren und mit ein paar Tropfen Zitronensaft abschmecken. Erst jetzt vorsichtig salzen, da der Speck schon Würze abgibt. Lendenmedaillons kurz in der Soße erwärmen und mit Speckbohnen und Ofenkartoffeln servieren."
       ],
       "createdAt": "2026-11-24T00:00:00.000Z",
-      "updatedAt": "2026-11-24T00:00:00.000Z",
-      "isFavorite": false
+      "updatedAt": "2026-11-28T00:00:00.000Z",
+      "isFavorite": false,
+      "prepTime": 20,
+      "description": "Zarte Schweinelende mit knusprigen Speckbohnen, kräftiger Pfefferrahmsoße und goldbraunen Ofenkartoffeln.",
+      "note": "Die Soße erst am Ende salzen, da der Speck bereits Würze abgibt. Für eine besonders kräftige Soße den Bratensatz gut mit der Brühe lösen."
     },
     {
       "id": "chatgpt-mediterrane-lachs-spaghetti",
@@ -298,7 +384,13 @@
       "sourceType": "ChatGPT",
       "time": 0,
       "servings": 2,
-      "tags": ["Pasta", "Fischgerichte", "Lachs", "Mediterran", "Zitrone"],
+      "tags": [
+        "Pasta",
+        "Fischgerichte",
+        "Lachs",
+        "Mediterran",
+        "Zitrone"
+      ],
       "ingredients": [
         "250 g Lachsfilet",
         "200–250 g Spaghetti",
@@ -331,7 +423,13 @@
       "sourceType": "ChatGPT",
       "time": 0,
       "servings": 2,
-      "tags": ["Asiatisch", "Fleischgerichte", "Hähnchen", "Wildreis", "Gurkensalat"],
+      "tags": [
+        "Asiatisch",
+        "Fleischgerichte",
+        "Hähnchen",
+        "Wildreis",
+        "Gurkensalat"
+      ],
       "ingredients": [
         "350–400 g Hähncheninnenbrustfilet",
         "150 g Wildreis",
@@ -365,7 +463,14 @@
       "sourceType": "ChatGPT",
       "time": 0,
       "servings": 2,
-      "tags": ["Ofengerichte", "Kartoffeln", "Paprika", "Bacon", "Camembert", "Auflauf"],
+      "tags": [
+        "Ofengerichte",
+        "Kartoffeln",
+        "Paprika",
+        "Bacon",
+        "Camembert",
+        "Auflauf"
+      ],
       "ingredients": [
         "500 g Kartoffeln",
         "250 g rote Paprika",
@@ -399,7 +504,14 @@
       "sourceType": "ChatGPT",
       "time": 0,
       "servings": 2,
-      "tags": ["Vegetarisch", "Hirtenkäse", "Panko", "Tomaten", "Couscous", "Dip"],
+      "tags": [
+        "Vegetarisch",
+        "Hirtenkäse",
+        "Panko",
+        "Tomaten",
+        "Couscous",
+        "Dip"
+      ],
       "ingredients": [
         "200 g Hirtenkäse mit mikrobiellem Lab",
         "60 g Panko",
@@ -437,7 +549,13 @@
       "sourceType": "ChatGPT",
       "time": 40,
       "servings": 2,
-      "tags": ["Mediterran", "Fleischgerichte", "Hähnchen", "Paprika", "Kräuterreis"],
+      "tags": [
+        "Mediterran",
+        "Fleischgerichte",
+        "Hähnchen",
+        "Paprika",
+        "Kräuterreis"
+      ],
       "ingredients": [
         "400 g Hähncheninnenbrustfilet",
         "500 g rote Paprika",
@@ -479,7 +597,13 @@
       "sourceType": "ChatGPT",
       "time": 35,
       "servings": 2,
-      "tags": ["Fischgerichte", "Lachs", "Kartoffelstampf", "Erbsen", "Butter"],
+      "tags": [
+        "Fischgerichte",
+        "Lachs",
+        "Kartoffelstampf",
+        "Erbsen",
+        "Butter"
+      ],
       "ingredients": [
         "250 g Lachsfilet",
         "500 g Kartoffeln",
@@ -517,7 +641,14 @@
       "sourceType": "ChatGPT",
       "time": 40,
       "servings": 2,
-      "tags": ["Pasta", "Vegetarisch", "Aubergine", "Tomaten", "Panko", "Sizilianisch"],
+      "tags": [
+        "Pasta",
+        "Vegetarisch",
+        "Aubergine",
+        "Tomaten",
+        "Panko",
+        "Sizilianisch"
+      ],
       "ingredients": [
         "600 g Rispentomaten",
         "1 Aubergine, ca. 350 g",
@@ -553,7 +684,13 @@
       "sourceType": "ChatGPT",
       "time": 60,
       "servings": 2,
-      "tags": ["Ofengerichte", "Fleischgerichte", "Hähnchen", "Paprika", "Zitronenreis"],
+      "tags": [
+        "Ofengerichte",
+        "Fleischgerichte",
+        "Hähnchen",
+        "Paprika",
+        "Zitronenreis"
+      ],
       "ingredients": [
         "1,1 kg Hähnchenschenkel",
         "500 g rote Paprika",
@@ -717,4 +854,3 @@
     }
   ]
 }
-
